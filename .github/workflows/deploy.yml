@@ -63,6 +63,6 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        cname: ${{ github.ref == 'ref/head/master' && 'app' || 'test' }}.2pi.finance
+        cname: ${{ github.ref == 'ref/head/master' && 'app' || 'test' }}.2pi.network
         publish_branch: pages
         publish_dir: ./out
