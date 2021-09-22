@@ -6,7 +6,7 @@ const Footer = () => (
 
     <ul className="list-inline lead">
       <li className="list-inline-item mx-2">
-        <Link href="https://twitter.com/2piFinance">
+        <Link href="https://twitter.com/2piNetwork">
           <a target="_blank" rel="noreferrer" title="Tweet us!">
             <i className="bi-twitter"></i>
           </a>
