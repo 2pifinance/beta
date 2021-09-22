@@ -13,7 +13,7 @@ const Footer = () => (
         </Link>
       </li>
       <li className="list-inline-item mx-2">
-        <Link href="https://github.com/2pifinance/">
+        <Link href="https://github.com/2pinetwork/">
           <a target="_blank" rel="noreferrer" title="Fork / inspect us!">
             <i className="bi-github"></i>
           </a>
@@ -34,7 +34,7 @@ const Footer = () => (
         </Link>
       </li>
       <li className="list-inline-item mx-2">
-        <Link href="mailto:hello@2pi.finance">
+        <Link href="mailto:hello@2pi.network">
           <a title="Email us!">
             <i className="bi-envelope"></i>
           </a>

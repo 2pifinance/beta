@@ -15,7 +15,7 @@ const Referral = () => {
         </div>
 
         <h2 className="h1 text-primary mt-4 mb-0">
-          2pi.finance
+          2pi.network
         </h2>
 
         <h3 className="h1 text-primary">
