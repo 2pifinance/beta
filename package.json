@@ -30,7 +30,7 @@
   "scripts": {
     "start": "next start",
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "NEXT_PUBLIC_SENTRY_RELEASE=\"${NEXT_PUBLIC_SENTRY_RELEASE:=CF-$CF_PAGES_COMMIT_SHA}\" next build && next export",
     "lint": "next lint",
     "test": "jest",
     "release": "node scripts/sentry.js"
