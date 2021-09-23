@@ -33,7 +33,7 @@
     "build": "scripts/build.sh",
     "lint": "next lint",
     "test": "jest",
-    "release": "node scripts/sentry.js"
+    "release": "scripts/release.sh"
   },
   "eslintConfig": {
     "extends": [
