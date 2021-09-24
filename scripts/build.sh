@@ -6,4 +6,5 @@ NEXT_PUBLIC_SENTRY_RELEASE=${NEXT_PUBLIC_SENTRY_RELEASE:=CF-${CF_PAGES_COMMIT_SH
 
 echo "Building release $NEXT_PUBLIC_SENTRY_RELEASE"
 
-next build && next export
+next build
+next export
