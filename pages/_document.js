@@ -23,8 +23,8 @@ class MyDocument extends Document {
           <meta property="og:title" content="2pi" />
           <meta property="og:description" content="Yield Maximizer" />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://2pi.finance" />
-          <meta property="og:image" content="https://2pi.finance/images/logo512.png" />
+          <meta property="og:url" content="https://app.2pi.network" />
+          <meta property="og:image" content="https://app.2pi.network/images/logo512.png" />
         </Head>
 
         <body>
