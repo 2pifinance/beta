@@ -10,7 +10,7 @@ const VaultPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>2pi</title>
+        <title>2PI</title>
       </Head>
 
       {id ? <Vault id={id} /> : <Spinner />}

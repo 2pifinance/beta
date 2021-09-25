@@ -8,12 +8,12 @@ const Header = props => (
     <div className="container">
       <Link href="/">
         <a className="navbar-brand me-auto mt-n2 ms-n4 d-none d-lg-inline">
-          <Image src={`${props.path ?? '.'}/images/logo.svg`} alt="2pi" width="136" height="108" unoptimized={true} />
+          <Image src={`${props.path ?? '.'}/images/logo.svg`} alt="2PI" width="136" height="108" unoptimized={true} />
         </a>
       </Link>
       <Link href="/">
         <a className="navbar-brand me-auto ms-n3 d-lg-none">
-          <Image src={`${props.path ?? '.'}/images/logo.svg`} alt="2pi" width="95" height="76" unoptimized={true} />
+          <Image src={`${props.path ?? '.'}/images/logo.svg`} alt="2PI" width="95" height="76" unoptimized={true} />
         </a>
       </Link>
 

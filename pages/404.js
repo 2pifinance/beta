@@ -40,7 +40,7 @@ const NotFoundPage = () => {
   return (
     <div className="container">
       <Head>
-        <title>2pi - Not found</title>
+        <title>2PI - Not found</title>
       </Head>
 
       <Experimental />

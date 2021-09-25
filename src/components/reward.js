@@ -84,7 +84,7 @@ const Reward = () => {
                 {formatAmount(reward, '', 6)}
               </span>
 
-              <span>2pi</span>
+              <span>2PI</span>
 
               <button type="button"
                       className="btn btn-dark btn-sm text-white ms-3"
