@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { fetchVaultsData } from './fetchVaultsData'
+import { SUPPORTED_CHAINS } from '../data/constants'
 import vaults from '../data/vaults'
+import { fetchVaultsData } from './fetchVaultsData'
 import {
   selectAddress,
   selectChainId,
   selectProvider,
-  selectWeb3,
-  supportedChains
+  selectWeb3
 } from './walletSlice'
 
 const initialState = {
@@ -30,7 +30,7 @@ export const fetchVaultsDataAsync = createAsyncThunk(
     const provider = selectProvider(state)
     const web3     = selectWeb3(state)
 
-    if (supportedChains.includes(chainId)) {
+    if (SUPPORTED_CHAINS.includes(chainId)) {
       fetchVaultsData(address, chainId, provider, web3, dispatch, order, errors)
     }
   }

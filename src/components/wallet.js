@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { SUPPORTED_CHAINS } from '../data/constants'
 import {
   connectAsync,
   disconnectAsync,
   selectAddress,
   selectChainId,
   selectStatus,
-  supportedChains
 } from '../features/walletSlice'
 
 const addressLabel = (address, status) => {
@@ -32,7 +32,7 @@ const Wallet = () => {
   const chainId   = useSelector(selectChainId)
   const status    = useSelector(selectStatus)
   const dispatch  = useDispatch()
-  const supported = isNaN(chainId) || supportedChains.includes(chainId)
+  const supported = isNaN(chainId) || SUPPORTED_CHAINS.includes(chainId)
   const border    = supported ? 'primary' : 'danger'
 
   return (

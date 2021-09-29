@@ -1,14 +1,13 @@
 import Web3 from 'web3'
 import { SafeAppWeb3Modal } from '@gnosis.pm/safe-apps-web3modal'
+import { DEFAULT_CHAIN, SUPPORTED_CHAINS } from '../data/constants'
 import { networks } from '../data/networks'
 import { walletConnect, walletLink } from './walletProviders'
 import { toastAdded, toastDestroyed } from '../features/toastsSlice'
 import {
   addressChanged,
   chainChanged,
-  defaultChain,
   disconnectAsync,
-  supportedChains
 } from '../features/walletSlice'
 
 const providerOptions = {
@@ -56,8 +55,8 @@ const extend = web3 => {
 
 const request = async (walletChainId, dispatch) => {
   const provider  = window.ethereum
-  const supported = supportedChains.includes(walletChainId)
-  const chainId   = supported ? walletChainId : defaultChain
+  const supported = SUPPORTED_CHAINS.includes(walletChainId)
+  const chainId   = supported ? walletChainId : DEFAULT_CHAIN
   const settings  = networks[chainId]
   const chainName = settings?.chainName
 
