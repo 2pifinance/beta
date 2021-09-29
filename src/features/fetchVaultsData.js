@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js'
 import { Contract, Provider, setMulticallAddress } from 'ethers-multicall'
 import vaults from '../data/vaults'
-import { vaultsLoaded, vaultsFetchError } from './vaultsSlice'
-import { toastAdded, toastDestroyed } from './toastsSlice'
 import { fetchApys, getVaultApy } from '../helpers/apy'
 import { getEthersProvider } from '../helpers/ethers'
 import { getPrices } from '../helpers/prices'
+import { toastAdded, toastDestroyed } from './toastsSlice'
+import { vaultsLoaded, vaultsFetchError } from './vaultsSlice'
 
 const chunk = (array, size) => {
   return Array.from({ length: Math.ceil(array.length / size) }, (v, i) =>
