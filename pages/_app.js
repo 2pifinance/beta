@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { Provider } from 'react-redux'
 import { store } from '../src/app/store'
 import { dsn, integrations } from '../src/data/sentry'
+import Wallet from '../src/components/wallet'
 import Loading from '../src/components/loading'
 
 const release = process.env.NEXT_PUBLIC_SENTRY_RELEASE
@@ -44,7 +45,9 @@ const App = ({ Component, pageProps }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {loading ? <Loading /> : <Component {...pageProps} />}
+      <Wallet>
+        {loading ? <Loading /> : <Component {...pageProps} />}
+      </Wallet>
     </Provider>
   )
 }

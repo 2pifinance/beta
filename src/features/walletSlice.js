@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { DEFAULT_CHAIN } from '../data/constants'
-import WalletModal from '../helpers/walletModal'
+import { DEFAULT_CHAIN, SUPPORTED_CHAINS } from '../data/constants'
+import { connect, disconnect, addChain } from '../helpers/wallet'
+import { toastAdded, toastDestroyed } from './toastsSlice'
 
 
 
@@ -26,25 +27,42 @@ export const selectWeb3     = state => state.wallet.web3
 
 // -- ACTIONS --
 
+const errorToastAdded = (title, message) => {
+  return toastAdded({
+    title:    title,
+    body:     message,
+    icon:     'exclamation-triangle',
+    style:    'danger',
+    autohide: true
+  })
+}
+
 export const connectAsync = createAsyncThunk('wallet/connectAsync',
-  (_, { dispatch }) => WalletModal.connect(dispatch)
-)
+  async (_, { dispatch }) => {
+    const title   = 'Unsupported network.'
+    const message = 'Switch your wallet to a supported network.'
 
-export const disconnectAsync = createAsyncThunk('wallet/disconnectAsync',
-  async (_, { getState }) => {
-    const state    = getState()
-    const provider = selectProvider(state)
-    const modal    = selectModal(state)
+    // Close previous errors, if any.
+    dispatch(toastDestroyed(title))
 
-    if (provider?.close) {
-      await provider.close()
+    // Connect and get wallet info
+    const data = await connect()
+
+    if (! SUPPORTED_CHAINS.includes(data.chainId)) {
+      // Notify the wallet is set to an unsupported chain
+      dispatch(errorToastAdded(title, message))
+
+      // Request adding/swithing to the default chain.
+      // NOTE: Avoid awaiting this, it _hangs_ without error on some clients.
+      addChain(DEFAULT_CHAIN)
     }
 
-    if (modal?.clearCachedProvider) {
-      await modal.clearCachedProvider()
-    }
+    return data
   }
 )
+
+export const disconnectAsync =
+  createAsyncThunk('wallet/disconnectAsync', disconnect)
 
 
 
