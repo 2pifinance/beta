@@ -4,5 +4,5 @@ export const DEFAULT_CHAIN = 137
 
 // Includes local and test networks for development
 export const SUPPORTED_CHAINS = (process.env.NODE_ENV === 'development')
-  ? [ 1337, 137, 80001 ]
-  : [ 137 ]
+  ? [ 1337, 42161, 421611, 137, 80001 ]
+  : [ 42161, 137 ]

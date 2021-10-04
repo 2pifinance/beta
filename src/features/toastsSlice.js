@@ -10,6 +10,20 @@ export const selectToasts = state => state.toasts
 
 
 
+// -- ACTIONS --
+
+export const errorToastAdded = (title, message, autohide = false) => {
+  return toastAdded({
+    title:    title,
+    body:     message,
+    icon:     'exclamation-triangle',
+    style:    'danger',
+    autohide
+  })
+}
+
+
+
 // -- REDUCER --
 
 export const toastsSlice = createSlice({

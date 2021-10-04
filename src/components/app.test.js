@@ -1,9 +1,10 @@
 import { Provider } from 'react-redux'
+import { getDefaultMiddleware } from '@reduxjs/toolkit'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
 import App from './app'
 
-const mockStore = configureStore([])
+const mockStore = configureStore(getDefaultMiddleware())
 
 describe('app component render', () => {
   let store
@@ -14,7 +15,9 @@ describe('app component render', () => {
       vaults: {
         value: []
       },
-      wallet: {}
+      wallet: {
+        chainId: 137
+      }
     }
 
     store = mockStore(initialState)

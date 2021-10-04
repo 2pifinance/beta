@@ -7,7 +7,7 @@ import ReferralButton from './referralButton'
 import Tvl from './tvl'
 import Deposited from './deposited'
 import Reward from './reward'
-import Network from './network'
+import NetworkMenu from './networkMenu'
 import Vaults from './vaults'
 import Toasts from './toasts'
 import Footer from './footer'
@@ -35,7 +35,7 @@ const App = () => {
       <Tvl />
       <Deposited />
       <Reward />
-      <Network />
+      <NetworkMenu />
       <Vaults />
       <Toasts />
       <Footer />
