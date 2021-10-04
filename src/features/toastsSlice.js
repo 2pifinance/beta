@@ -1,9 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
+
+// -- STATE --
+
+const initialState = []
+
+export const selectToasts = state => state.toasts
+
+
+
+// -- REDUCER --
+
 export const toastsSlice = createSlice({
   name: 'toasts',
-
-  initialState: [],
+  initialState,
 
   reducers: {
     toastAdded: (state, action) => {
@@ -25,8 +36,9 @@ export const toastsSlice = createSlice({
   }
 })
 
-export const selectToasts = state => state.toasts
-
-export const { toastAdded, toastDestroyed } = toastsSlice.actions
+export const {
+  toastAdded,
+  toastDestroyed
+} = toastsSlice.actions
 
 export default toastsSlice.reducer

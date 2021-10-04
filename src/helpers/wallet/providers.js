@@ -1,6 +1,6 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { WalletLink } from 'walletlink'
-import { getRpcUrl } from '../data/networks'
+import { getRpcUrl } from '../../data/networks'
 import { projectId as infuraId } from './infura'
 
 export const walletLink = {

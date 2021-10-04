@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useSelector } from 'react-redux'
-import { selectChainId, supportedChains } from '../features/walletSlice'
+import { SUPPORTED_CHAINS } from '../data/constants'
+import { selectChainId } from '../features/walletSlice'
 
 const networkName = chainId => {
   const names = {
@@ -25,7 +26,7 @@ const networkLogo = chainId => {
 const Network = () => {
   const chainId = useSelector(selectChainId)
   const network = networkName(chainId)
-  const style   = supportedChains.includes(chainId) ? 'primary' : 'danger'
+  const style   = SUPPORTED_CHAINS.includes(chainId) ? 'primary' : 'danger'
   const margin  = chainId === 80001 ? 'mt-3' : 'mt-5'
 
   return (

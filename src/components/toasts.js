@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Toast from './toast'
+import { SUPPORTED_CHAINS } from '../data/constants'
 import { selectToasts, toastAdded, toastDestroyed } from '../features/toastsSlice'
+import Toast from './toast'
 import {
   selectAddress,
   selectChainId,
-  supportedChains
 } from '../features/walletSlice'
 
 const renderToasts = toasts => {
@@ -26,7 +26,7 @@ const Toasts = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (address && ! supportedChains.includes(chainId)) {
+    if (address && ! SUPPORTED_CHAINS.includes(chainId)) {
       dispatch(
         toastAdded({
           title: 'Wrong network',

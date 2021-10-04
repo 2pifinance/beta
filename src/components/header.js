@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Image from 'next/image'
 import Link from 'next/link'
-import Wallet from './wallet'
+import WalletButton from './walletButton'
 
 const Header = props => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-transparent mt-1">
@@ -28,7 +28,7 @@ const Header = props => (
       </button>
 
       <div className="collapse navbar-collapse" id="menu">
-        <Wallet />
+        <WalletButton />
 
         <ul className="navbar-nav me-auto mb-2 mb-lg-0 mt-lg-2 ms-lg-4 order-1 order-lg-0">
           <li className="nav-item d-none d-lg-inline">

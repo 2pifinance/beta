@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { fetchVaultsData } from './fetchVaultsData'
+import { SUPPORTED_CHAINS } from '../data/constants'
 import vaults from '../data/vaults'
+import { fetchVaultsData } from './fetchVaultsData'
 import {
   selectAddress,
   selectChainId,
   selectProvider,
-  selectWeb3,
-  supportedChains
+  selectWeb3
 } from './walletSlice'
+
+
+
+// -- STATE --
 
 const initialState = {
   order:  0,
@@ -19,8 +23,14 @@ const initialState = {
 const selectOrder  = state => state.vaults.order
 const selectErrors = state => state.vaults.errors
 
-export const fetchVaultsDataAsync = createAsyncThunk(
-  'vaults/fetchVaultsData',
+export const selectStatus = state => state.vaults.status
+export const selectVaults = state => state.vaults.value
+
+
+
+// -- ACTIONS --
+
+export const fetchVaultsDataAsync = createAsyncThunk('vaults/fetchVaultsData',
   async (_, { dispatch, getState }) => {
     const state    = getState()
     const address  = selectAddress(state)
@@ -30,25 +40,30 @@ export const fetchVaultsDataAsync = createAsyncThunk(
     const provider = selectProvider(state)
     const web3     = selectWeb3(state)
 
-    if (supportedChains.includes(chainId)) {
+    if (SUPPORTED_CHAINS.includes(chainId)) {
       fetchVaultsData(address, chainId, provider, web3, dispatch, order, errors)
     }
   }
 )
 
+
+
+// -- REDUCER --
+
 export const vaultsSlice = createSlice({
   name: 'vaults',
-
   initialState,
 
   reducers: {
     newVaultFetch: state => {
       state.order++
     },
+
     resetVaults: state => {
       state.status = initialState.status
       state.value  = initialState.value
     },
+
     vaultsLoaded: (state, action) => {
       if (action.payload.order === state.order) {
         state.status = 'loaded'
@@ -56,7 +71,8 @@ export const vaultsSlice = createSlice({
         state.errors = 0
       }
     },
-    vaultsFetchError: (state, action) => {
+
+    vaultsFetchError: state => {
       state.errors++
     }
   },
@@ -65,19 +81,17 @@ export const vaultsSlice = createSlice({
     [fetchVaultsDataAsync.pending]: state => {
       state.status = 'loading'
     },
+
     [fetchVaultsDataAsync.fulfilled]: state => {
       state.status = 'succeded'
     },
+
     [fetchVaultsDataAsync.rejected]: (state, action) => {
       console.error(action.error.name, action.error.message)
-
       state.status = 'failed'
     }
   }
 })
-
-export const selectStatus = state => state.vaults.status
-export const selectVaults = state => state.vaults.value
 
 export const {
   newVaultFetch,

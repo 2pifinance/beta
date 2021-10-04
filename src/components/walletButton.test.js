@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
-import Wallet from './wallet'
+import WalletButton from './walletButton'
 
 const mockStore = configureStore([])
 
-describe('connected wallet component render', () => {
+describe('connected wallet render', () => {
   let store
 
   beforeEach(() => {
@@ -22,10 +22,10 @@ describe('connected wallet component render', () => {
     store = mockStore(initialState)
   })
 
-  test('renders wallet with connected account', () => {
+  test('renders wallet button with connected account', () => {
     render(
       <Provider store={store}>
-        <Wallet />
+        <WalletButton />
       </Provider>
     )
 
@@ -35,7 +35,7 @@ describe('connected wallet component render', () => {
   })
 })
 
-describe('disconnected wallet component render', () => {
+describe('disconnected wallet render', () => {
   let store
 
   beforeEach(() => {
@@ -46,10 +46,10 @@ describe('disconnected wallet component render', () => {
     store = mockStore(initialState)
   })
 
-  test('renders wallet with no connected account', () => {
+  test('renders wallet button with no connected account', () => {
     render(
       <Provider store={store}>
-        <Wallet />
+        <WalletButton />
       </Provider>
     )
 
