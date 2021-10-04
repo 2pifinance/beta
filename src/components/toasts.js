@@ -1,12 +1,7 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { SUPPORTED_CHAINS } from '../data/constants'
-import { selectToasts, toastAdded, toastDestroyed } from '../features/toastsSlice'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { selectToasts } from '../features/toastsSlice'
 import Toast from './toast'
-import {
-  selectAddress,
-  selectChainId,
-} from '../features/walletSlice'
 
 const renderToasts = toasts => {
   return toasts.map((toast, i) => {
@@ -20,37 +15,17 @@ const renderToasts = toasts => {
 }
 
 const Toasts = () => {
-  const toasts   = useSelector(selectToasts)
-  const address  = useSelector(selectAddress)
-  const chainId  = useSelector(selectChainId)
-  const dispatch = useDispatch()
+  const toasts = useSelector(selectToasts)
 
-  useEffect(() => {
-    if (address && ! SUPPORTED_CHAINS.includes(chainId)) {
-      dispatch(
-        toastAdded({
-          title: 'Wrong network',
-          body:  'Switch to Polygon Mainnet and try again',
-          icon:  'exclamation-triangle',
-          style: 'danger'
-        })
-      )
-    } else {
-      dispatch(toastDestroyed('Wrong network'))
-    }
-  }, [address, chainId, dispatch])
+  if (! toasts.length) return null
 
-  if (toasts.length) {
-    return (
-      <div aria-live="polite" aria-atomic="true" className="position-fixed top-0 start-0 end-0">
-        <div className="toast-container p-3 ms-0 ms-lg-4 mt-5 pt-5">
-          {renderToasts(toasts)}
-        </div>
+  return (
+    <div aria-live="polite" aria-atomic="true" className="position-fixed top-0 start-0 end-0">
+      <div className="toast-container p-3 ms-0 ms-lg-4 mt-5 pt-5">
+        {renderToasts(toasts)}
       </div>
-    )
-  } else {
-    return null
-  }
+    </div>
+  )
 }
 
 export default Toasts

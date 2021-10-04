@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { DEFAULT_CHAIN, SUPPORTED_CHAINS } from '../data/constants'
 import { connect, disconnect, addChain } from '../helpers/wallet'
-import { toastAdded, toastDestroyed } from './toastsSlice'
+import { errorToastAdded, toastDestroyed } from './toastsSlice'
 
 
 
@@ -26,16 +26,6 @@ export const selectWeb3     = state => state.wallet.web3
 
 
 // -- ACTIONS --
-
-const errorToastAdded = (title, message) => {
-  return toastAdded({
-    title:    title,
-    body:     message,
-    icon:     'exclamation-triangle',
-    style:    'danger',
-    autohide: true
-  })
-}
 
 export const connectAsync = createAsyncThunk('wallet/connectAsync',
   async (_, { dispatch }) => {
