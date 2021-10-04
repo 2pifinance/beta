@@ -25,8 +25,10 @@ describe('network menu component render', () => {
       </Provider>
     )
 
-    const networkNameElement = screen.getByText('Polygon')
+    const arbitrumElement = screen.getByText('Arbitrum')
+    const polygonElement  = screen.getByText('Polygon')
 
-    expect(networkNameElement).toBeInTheDocument()
+    expect(arbitrumElement).toBeInTheDocument()
+    expect(polygonElement).toBeInTheDocument()
   })
 })

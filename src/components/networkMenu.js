@@ -16,6 +16,8 @@ const classNames = names => {
 const networkName = chainId => {
   const names = {
     1337:   'Local',
+    42161:  'Arbitrum',
+    421611: 'Arbitrum test',
     137:    'Polygon',
     80001:  'Polygon test'
   }
@@ -26,6 +28,8 @@ const networkName = chainId => {
 const networkLogo = chainId => {
   const logos = {
     1337:   'localhost',
+    42161:  'arbitrum',
+    421611: 'arbitrum',
     137:    'polygon',
     80001:  'polygon'
   }
