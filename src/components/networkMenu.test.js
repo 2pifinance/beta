@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
-import Network from './network'
+import NetworkMenu from './networkMenu'
 
 const mockStore = configureStore([])
 
-describe('network component render', () => {
+describe('network menu component render', () => {
   let store
 
   beforeEach(() => {
@@ -18,10 +18,10 @@ describe('network component render', () => {
     store = mockStore(initialState)
   })
 
-  test('renders network', () => {
+  test('renders network menu', () => {
     render(
       <Provider store={store}>
-        <Network />
+        <NetworkMenu />
       </Provider>
     )
 

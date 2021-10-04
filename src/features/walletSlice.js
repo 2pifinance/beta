@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { DEFAULT_CHAIN, SUPPORTED_CHAINS } from '../data/constants'
+import { networks } from '../data/networks'
 import { connect, disconnect, addChain } from '../helpers/wallet'
 import { errorToastAdded, toastDestroyed } from './toastsSlice'
 
@@ -54,6 +55,26 @@ export const connectAsync = createAsyncThunk('wallet/connectAsync',
 export const disconnectAsync =
   createAsyncThunk('wallet/disconnectAsync', disconnect)
 
+export const setChainAsync = createAsyncThunk('wallet/addChainAsync',
+  async (chainId, { dispatch }) => {
+    if (! SUPPORTED_CHAINS.includes(chainId)) return
+
+    const network = networks[chainId].chainName
+    const title   = 'Unsupported network.'
+    const message = `Add the ${network} network to your wallet.`
+
+    // Close previous errors, if any.
+    dispatch(toastDestroyed(title))
+
+    // Avoid awaiting, this _hangs_ without error on some clients.
+    addChain(chainId).catch(() => dispatch(errorToastAdded(title, message)))
+
+    // Wallet address is the same for all chains, so it's safe to asume wallet
+    // network did change, fetch and show balance info.
+    return chainId
+  }
+)
+
 
 
 // -- REDUCER --
@@ -106,6 +127,10 @@ export const walletSlice = createSlice({
     [disconnectAsync.rejected]: (state, action) => {
       console.error(action.error.name, action.error.message)
       state.status = 'failed'
+    },
+
+    [setChainAsync.fulfilled]: (state, action) => {
+      state.chainId = +action.payload
     }
   }
 })
