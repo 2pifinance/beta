@@ -29,7 +29,7 @@ const Footer = () => (
       <li className="list-inline-item mx-2">
         <Link href="https://2pifinance.medium.com">
           <a target="_blank" rel="noreferrer" title="Read us!">
-            <i className="bi-file-text"></i>
+            <i className="bi-medium"></i>
           </a>
         </Link>
       </li>
