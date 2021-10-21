@@ -154,6 +154,8 @@ const vaultAbi = (v, chainId) => {
 
 const getCalls = (address, chainId, ethcallProvider, v) => {
   const vault         = vaultAbi(v, chainId)
+  console.log(`Chain: ${chainId}, v:`, v)
+console.log(vault)
   const token         = require(`../abis/tokens/${chainId}/${v.token}`).default
   const vaultContract = new Contract(vault.address, vault.abi)
   const notPiToken    = v.token != '2Pi'
@@ -218,7 +220,7 @@ const getCalls = (address, chainId, ethcallProvider, v) => {
 
     if (chainId === 80001 && vaultContract.pendingPiToken) {
       balanceCall       = vaultContract.balanceOf(v.pid, address)
-      pendingTokensCall = vaultContract.pendingPiToken(v.pid, address)
+      pendingTokensCall = vaultContract.pendingPiToken(v.pid)
     } else {
       balanceCall       = vaultContract.balanceOf(address)
       pendingTokensCall = vaultContract.balanceOf(address) // _fake_ call

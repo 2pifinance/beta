@@ -1,5 +1,6 @@
-const address = '0xe4f273cb4352982D3dB0dCF636D318ED63a04be9'
-const abi = [
+// Este es el "vault"
+const address = '0xE02E8D8c1A44a6E1152C21062750703B7157B6FF'
+const abi =     [
   {
     "inputs": [
       {
@@ -52,6 +53,25 @@ const abi = [
       {
         "indexed": true,
         "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "previousOwner",
         "type": "address"
       },
@@ -88,6 +108,25 @@ const abi = [
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdraw",
     "type": "event"
   },
   {
@@ -255,14 +294,26 @@ const abi = [
       }
     ],
     "name": "deposit",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "depositAll",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -545,6 +596,9 @@ const abi = [
     "type": "function"
   }
 ]
+
+
+
 
 const aToken = {
   address: '0xc9276ECa6798A14f64eC33a526b547DAd50bDa2F',

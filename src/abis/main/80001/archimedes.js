@@ -1,821 +1,1056 @@
-const address = '0xf4ac02cC28c1baa306B2eFb8D9188e6F3ab65fc9'
+const address = '0xc8d392E6915533341eFFe30DE3607810b1183c84'
 const abi     = [
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'contract IPiToken',
-        'name': '_piToken',
-        'type': 'address'
+        "internalType": "contract IPiToken",
+        "name": "_piToken",
+        "type": "address"
       },
       {
-        'internalType': 'uint256',
-        'name': '_startBlock',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_startBlock",
+        "type": "uint256"
       },
       {
-        'internalType': 'address',
-        'name': '_treasury',
-        'type': 'address'
+        "internalType": "contract IWNative",
+        "name": "_wNative",
+        "type": "address"
       }
     ],
-    'stateMutability': 'nonpayable',
-    'type': 'constructor'
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    'anonymous': false,
-    'inputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'user',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "pid",
+        "type": "uint256"
       },
       {
-        'indexed': true,
-        'internalType': 'uint256',
-        'name': 'pid',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       },
       {
-        'indexed': false,
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    'name': 'Deposit',
-    'type': 'event'
+    "name": "Deposit",
+    "type": "event"
   },
   {
-    'anonymous': false,
-    'inputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'user',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "pid",
+        "type": "uint256"
       },
       {
-        'indexed': true,
-        'internalType': 'uint256',
-        'name': 'pid',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       },
       {
-        'indexed': false,
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    'name': 'EmergencyWithdraw',
-    'type': 'event'
+    "name": "EmergencyWithdraw",
+    "type": "event"
   },
   {
-    'anonymous': false,
-    'inputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'previousOwner',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "pid",
+        "type": "uint256"
       },
       {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'newOwner',
-        'type': 'address'
-      }
-    ],
-    'name': 'OwnershipTransferred',
-    'type': 'event'
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'user',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       },
       {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'referrer',
-        'type': 'address'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Harvested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "pid",
+        "type": "uint256"
       },
       {
-        'indexed': false,
-        'internalType': 'uint256',
-        'name': 'commissionAmount',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'ReferralCommissionPaid',
-    'type': 'event'
-  },
-  {
-    'anonymous': false,
-    'inputs': [
-      {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'user',
-        'type': 'address'
+        "indexed": false,
+        "internalType": "address",
+        "name": "want",
+        "type": "address"
       },
       {
-        'indexed': true,
-        'internalType': 'contract IReferral',
-        'name': 'newAddress',
-        'type': 'address'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "weighing",
+        "type": "uint256"
       }
     ],
-    'name': 'SetReferralAddress',
-    'type': 'event'
+    "name": "NewPool",
+    "type": "event"
   },
   {
-    'anonymous': false,
-    'inputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'indexed': true,
-        'internalType': 'address',
-        'name': 'user',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "pid",
+        "type": "uint256"
       },
       {
-        'indexed': true,
-        'internalType': 'uint256',
-        'name': 'pid',
-        'type': 'uint256'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldWeighing",
+        "type": "uint256"
       },
       {
-        'indexed': false,
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newWeighing",
+        "type": "uint256"
       }
     ],
-    'name': 'Withdraw',
-    'type': 'event'
+    "name": "PoolWeighingUpdated",
+    "type": "event"
   },
   {
-    'inputs': [],
-    'name': 'COMMISSION_RATE_PRECISION',
-    'outputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'internalType': 'uint16',
-        'name': '',
-        'type': 'uint16'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'MAXIMUM_REFERRAL_COMMISSION_RATE',
-    'outputs': [
-      {
-        'internalType': 'uint16',
-        'name': '',
-        'type': 'uint16'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'SHARE_PRECISION',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'contract IERC20',
-        'name': '_want',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        'internalType': 'address',
-        'name': '_strat',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
       },
       {
-        'internalType': 'uint256',
-        'name': '_weighing',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
       }
     ],
-    'name': 'addNewPool',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "name": "RoleAdminChanged",
+    "type": "event"
   },
   {
-    'inputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'balance',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        'internalType': 'address',
-        'name': '_user',
-        'type': 'address'
-      }
-    ],
-    'name': 'balanceOf',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       },
       {
-        'internalType': 'uint256',
-        'name': '_weighing',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
       }
     ],
-    'name': 'changePoolWeighing',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "name": "RoleGranted",
+    "type": "event"
   },
   {
-    'inputs': [],
-    'name': 'communityLeftToMint',
-    'outputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'decimals',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
       },
       {
-        'internalType': 'uint256',
-        'name': '_amount',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
       },
       {
-        'internalType': 'address',
-        'name': '_referrer',
-        'type': 'address'
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
       }
     ],
-    'name': 'deposit',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "name": "RoleRevoked",
+    "type": "event"
   },
   {
-    'inputs': [
+    "anonymous": false,
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "pid",
+        "type": "uint256"
       },
       {
-        'internalType': 'address',
-        'name': '_referrer',
-        'type': 'address'
-      }
-    ],
-    'name': 'depositMATIC',
-    'outputs': [],
-    'stateMutability': 'payable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'emergencyWithdraw',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_from',
-        'type': 'uint256'
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       },
       {
-        'internalType': 'uint256',
-        'name': '_to',
-        'type': 'uint256'
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    'name': 'getMultiplier',
-    'outputs': [
+    "name": "Withdraw",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "COMMISSION_RATE_PRECISION",
+    "outputs": [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
       }
     ],
-    'stateMutability': 'pure',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       }
     ],
-    'name': 'getPricePerFullShare',
-    'outputs': [
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAXIMUM_REFERRAL_COMMISSION_RATE",
+    "outputs": [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [],
+    "name": "SHARE_PRECISION",
+    "outputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    'name': 'harvest',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [],
-    'name': 'harvestAll',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'massUpdatePools',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'owner',
-    'outputs': [
+    "inputs": [],
+    "name": "WNative",
+    "outputs": [
       {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
+        "internalType": "contract IWNative",
+        "name": "",
+        "type": "address"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "internalType": "contract IERC20",
+        "name": "_want",
+        "type": "address"
       },
       {
-        'internalType': 'address',
-        'name': '_user',
-        'type': 'address'
-      }
-    ],
-    'name': 'pendingPiToken',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'piToken',
-    'outputs': [
-      {
-        'internalType': 'contract IPiToken',
-        'name': '',
-        'type': 'address'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'piTokenPerBlock',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'poolInfo',
-    'outputs': [
-      {
-        'internalType': 'contract IERC20',
-        'name': 'want',
-        'type': 'address'
+        "internalType": "address",
+        "name": "_ctroller",
+        "type": "address"
       },
       {
-        'internalType': 'uint256',
-        'name': 'weighing',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_weighing",
+        "type": "uint256"
       },
       {
-        'internalType': 'uint256',
-        'name': 'lastRewardBlock',
-        'type': 'uint256'
+        "internalType": "bool",
+        "name": "_massUpdate",
+        "type": "bool"
+      }
+    ],
+    "name": "addNewPool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
       },
       {
-        'internalType': 'uint256',
-        'name': 'accPiTokenPerShare',
-        'type': 'uint256'
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
       },
       {
-        'internalType': 'address',
-        'name': 'strategy',
-        'type': 'address'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'poolLength',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'referralCommissionRate',
-    'outputs': [
-      {
-        'internalType': 'uint16',
-        'name': '',
-        'type': 'uint16'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'referralMgr',
-    'outputs': [
-      {
-        'internalType': 'contract IReferral',
-        'name': '',
-        'type': 'address'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'renounceOwnership',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'contract IReferral',
-        'name': '_newReferral',
-        'type': 'address'
-      }
-    ],
-    'name': 'setReferralAddress',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint16',
-        'name': '_referralCommissionRate',
-        'type': 'uint16'
-      }
-    ],
-    'name': 'setReferralCommissionRate',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'startBlock',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
-        'internalType': 'address',
-        'name': 'from',
-        'type': 'address'
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "afterSharesTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "balance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
       },
       {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
       },
       {
-        'internalType': 'uint256',
-        'name': 'amount',
-        'type': 'uint256'
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
       },
       {
-        'internalType': 'bytes',
-        'name': '',
-        'type': 'bytes'
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
-        'internalType': 'bytes',
-        'name': '',
-        'type': 'bytes'
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    'name': 'tokensReceived',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "name": "beforeSharesTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    'inputs': [],
-    'name': 'totalWeighing',
-    'outputs': [
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'address',
-        'name': 'newOwner',
-        'type': 'address'
-      }
-    ],
-    'name': 'transferOwnership',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'treasuryAddress',
-    'outputs': [
-      {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'treasuryLeftToMint',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [],
-    'name': 'treasuryTokensPerCommunity',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
-      }
-    ],
-    'stateMutability': 'view',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
-      }
-    ],
-    'name': 'updatePool',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
-  },
-  {
-    'inputs': [
-      {
-        'internalType': 'uint256',
-        'name': '',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
       },
       {
-        'internalType': 'address',
-        'name': '',
-        'type': 'address'
-      }
-    ],
-    'name': 'userInfo',
-    'outputs': [
-      {
-        'internalType': 'uint256',
-        'name': 'shares',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_weighing",
+        "type": "uint256"
       },
       {
-        'internalType': 'uint256',
-        'name': 'paidReward',
-        'type': 'uint256'
+        "internalType": "bool",
+        "name": "_massUpdate",
+        "type": "bool"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "name": "changePoolWeighing",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "decimals",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
       },
       {
-        'internalType': 'uint256',
-        'name': '_shares',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
       }
     ],
-    'name': 'withdraw',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    'inputs': [
+    "inputs": [
       {
-        'internalType': 'uint256',
-        'name': '_pid',
-        'type': 'uint256'
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
       }
     ],
-    'name': 'withdrawAll',
-    'outputs': [],
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "name": "depositAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    'inputs': [],
-    'name': 'wmatic',
-    'outputs': [
+    "inputs": [
       {
-        'internalType': 'contract IWMATIC',
-        'name': '',
-        'type': 'address'
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
       }
     ],
-    'stateMutability': 'view',
-    'type': 'function'
+    "name": "depositMATIC",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "emergencyWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "getPricePerFullShare",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "grantRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "harvest",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "harvestAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "massUpdatePools",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "paidRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "paidRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "pendingPiToken",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "piToken",
+    "outputs": [
+      {
+        "internalType": "contract IPiToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "piTokenPerBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "poolInfo",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "want",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "weighing",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastRewardBlock",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "accPiTokenPerShare",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "controller",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "poolLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "redeemStuckedPiTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralCommissionRate",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "referralMgr",
+    "outputs": [
+      {
+        "internalType": "contract IReferral",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IReferral",
+        "name": "_newReferral",
+        "type": "address"
+      }
+    ],
+    "name": "setReferralAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_referralCommissionRate",
+        "type": "uint16"
+      }
+    ],
+    "name": "setReferralCommissionRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startBlock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalWeighing",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "updatePool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "userPaidRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "userShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "userShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_shares",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]
-
 
 const aToken = {
   address: '0xc9276ECa6798A14f64eC33a526b547DAd50bDa2F',
