@@ -36,7 +36,7 @@ const VaultData = props => {
     <div className="row justify-content-center">
       <div className="col-lg-9 col-xl-7">
         <div className="card my-4 shadow-none">
-          <div className="card-body bg-dark border border-primary border-2 rounded px-lg-5 py-lg-4">
+          <div className="card-body bg-blur border border-primary border-2 rounded px-lg-5 py-lg-4">
             <div className="text-start mb-0">
               <Back />
             </div>

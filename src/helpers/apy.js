@@ -1,12 +1,28 @@
 const BigNumber = require('bignumber.js')
 
+const APYS_API_URL     = process.env.NEXT_PUBLIC_APYS_API_URL
 const SECONDS_PER_YEAR = 31536000
-const BASE_HPY = 8760
-const RAY_DECIMALS = '1e27'
-const COMMON_DECIMALS = '1e18'
+const BASE_HPY         = 8760
+const RAY_DECIMALS     = '1e27'
+const COMMON_DECIMALS  = '1e18'
+const PERFORMANCE_FEE  = 0.035
 
-const compound = (r, n = 365, t = 1, c = 1) => {
-  return (1 + (r * c) / n) ** (n * t) - 1
+// Convert annual proportional rates (APR) to annual compound rates (APY).
+// Takes the rate and the amount of compoundings per year.
+const toCompoundRate = (r, n = 365) => {
+  return (1 + r / n) ** n - 1
+}
+
+const fetchApys = async () => {
+  const cacheInvalidator = Math.trunc(Date.now() / (1000 * 60))
+  const apiUrl           = `${APYS_API_URL}?_=${cacheInvalidator}`
+  const options          = { headers: { 'Content-Type': 'application/json' } }
+  const response         = await fetch(apiUrl, options)
+
+  if (! response.ok)
+    throw new TypeError(response.status)
+
+  return response.json()
 }
 
 const getVaultApy = (vault, dataProvider, distributionManager, prices, depth) => {
@@ -34,8 +50,9 @@ const getVaultApy = (vault, dataProvider, distributionManager, prices, depth) =>
     vault.borrow.percentage
   )
 
-  let totalMatic = leveragedSupplyMatic.plus(leveragedBorrowMatic)
-  let compoundedMatic = compound(totalMatic, BASE_HPY, 0.96)
+  const totalMatic          = leveragedSupplyMatic.plus(leveragedBorrowMatic)
+  const totalMaticAfterFees = totalMatic * (1 - PERFORMANCE_FEE)
+  const compoundedMatic     = toCompoundRate(totalMaticAfterFees, BASE_HPY)
 
   return leveragedSupplyBase.minus(leveragedBorrowBase).plus(compoundedMatic).toNumber()
 }
@@ -122,4 +139,4 @@ const getLeveragedApys = (
   }
 }
 
-module.exports = { getVaultApy }
+module.exports = { fetchApys, getVaultApy }

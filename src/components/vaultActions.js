@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { SUPPORTED_CHAINS } from '../data/constants'
+import { selectStatus } from '../features/vaultsSlice'
 import Approve from './approve'
 import Connect from './connect'
 import Deposit from './deposit'
 import Withdraw from './withdraw'
-import { selectStatus } from '../features/vaultsSlice'
 import {
   selectAddress,
   selectChainId,
   selectWeb3,
-  supportedChains
 } from '../features/walletSlice'
 
 const VaultActions = props => {
@@ -21,13 +21,13 @@ const VaultActions = props => {
   const [action, setAction] = useState('deposit')
 
   const getTokenData = () => {
-    if (supportedChains.includes(chainId)) {
+    if (SUPPORTED_CHAINS.includes(chainId)) {
       return require(`../abis/tokens/${chainId}/${props.token}`).default
     }
   }
 
   const getVaultData = () => {
-    if (supportedChains.includes(chainId)) {
+    if (SUPPORTED_CHAINS.includes(chainId)) {
       if (chainId === 80001) {
         if (props.token === '2Pi') {
           return require(`../abis/main/${chainId}/2Pi`).default
@@ -143,8 +143,8 @@ VaultActions.propTypes = {
   balance:           PropTypes.object,
   decimals:          PropTypes.object,
   deposited:         PropTypes.object,
-  pid:               PropTypes.string.isRequired,
-  pool:              PropTypes.string.isRequired,
+  pid:               PropTypes.string,
+  pool:              PropTypes.string,
   pricePerFullShare: PropTypes.object,
   symbol:            PropTypes.string.isRequired,
   token:             PropTypes.string.isRequired,

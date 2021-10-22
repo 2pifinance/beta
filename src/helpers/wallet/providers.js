@@ -1,7 +1,7 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { WalletLink } from 'walletlink'
-import { getRpcUrl } from '../data/networks'
-import { projectId as infuraId, rpc } from './infura'
+import { getRpcUrl } from '../../data/networks'
+import { projectId as infuraId } from './infura'
 
 export const walletLink = {
   display: {
@@ -10,7 +10,7 @@ export const walletLink = {
     description: 'Scan with WalletLink to connect',
   },
   options: {
-    appName:    '2pi',
+    appName:    '2PI',
     chainId:    137, // Polygon Mainnet
     networkUrl: getRpcUrl(137)
   },
@@ -30,5 +30,14 @@ export const walletLink = {
 
 export const walletConnect = {
   package: WalletConnectProvider,
-  options: { rpc, infuraId }
+  options: {
+    network: 'matic',
+    rpc: {
+      // 1 is needed at least for Trust Wallet
+      1:     'https://polygon-rpc.com/',
+      137:   'https://polygon-rpc.com/',
+      80001: 'https://rpc-mumbai.matic.today/'
+    },
+    infuraId
+  }
 }

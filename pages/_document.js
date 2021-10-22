@@ -11,7 +11,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="description" content="2pi Finance, Yield Maximizer over Polygon Network" />
+          <meta name="description" content="2PI, Yield Maximizer" />
           <meta name="theme-color" content="#0f80aa" />
 
           <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any" />
@@ -20,11 +20,11 @@ class MyDocument extends Document {
           <link rel="manifest" href="/manifest.json" />
 
           <meta property="og:local" content="en_US" />
-          <meta property="og:title" content="2pi Finance" />
-          <meta property="og:description" content="Yield Maximizer over Polygon Network" />
+          <meta property="og:title" content="2PI" />
+          <meta property="og:description" content="Yield Maximizer" />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://2pi.finance" />
-          <meta property="og:image" content="https://2pi.finance/images/logo512.png" />
+          <meta property="og:url" content="https://app.2pi.network" />
+          <meta property="og:image" content="https://app.2pi.network/images/logo512.png" />
         </Head>
 
         <body>

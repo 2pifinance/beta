@@ -6,7 +6,7 @@ const AirdropPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>2pi Finance - Airdrop</title>
+        <title>2PI - Airdrop</title>
       </Head>
 
       <Airdrop />

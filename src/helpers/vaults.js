@@ -3,15 +3,15 @@ import {
   newVaultFetch,
   resetVaults
 } from '../features/vaultsSlice'
-import { defaultChain, supportedChains } from '../features/walletSlice'
+import { DEFAULT_CHAIN, SUPPORTED_CHAINS } from '../data/constants'
 
 const FETCH_INTERVAL = 30 * 1000
 
 export const constantVaultFetch = (address, chainId, dispatch) => {
   const delay     = address ? FETCH_INTERVAL : FETCH_INTERVAL * 6
   const fetchData = () => {
-    const skip      = chainId !== defaultChain && ! address
-    const supported = supportedChains.includes(chainId)
+    const skip      = chainId !== DEFAULT_CHAIN && ! address
+    const supported = SUPPORTED_CHAINS.includes(chainId)
 
     if (skip && supported) {
       return

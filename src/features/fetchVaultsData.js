@@ -1,43 +1,31 @@
 import BigNumber from 'bignumber.js'
 import { Contract, Provider, setMulticallAddress } from 'ethers-multicall'
 import vaults from '../data/vaults'
-import { vaultsLoaded } from './vaultsSlice'
-import { toastAdded, toastDestroyed } from './toastsSlice'
-import { getVaultApy } from '../helpers/apy'
+import { fetchApys, getVaultApy } from '../helpers/apy'
 import { getEthersProvider } from '../helpers/ethers'
 import { getPrices } from '../helpers/prices'
+import { toastAdded, toastDestroyed } from './toastsSlice'
+import { vaultsLoaded, vaultsFetchError } from './vaultsSlice'
 
-const helpers = {
-  chunk (array, size) {
-    return Array.from({ length: Math.ceil(array.length / size) }, (v, i) =>
-      array.slice(i * size, i * size + size)
-    )
-  },
-
-  getVaultApy (vault, dataProvider, distributionManager, prices) {
-    let apy
-    let altApy = 0
-
-    if (vault.pool === 'curve') {
-      apy = 0.1324 // To be really calculated
-    } else if (vault.token === '2Pi') {
-      apy = 0.1
-    } else {
-      apy    = getVaultApy(vault, dataProvider, distributionManager, prices)
-      altApy = getVaultApy(vault, dataProvider, distributionManager, prices, 0)
-    }
-
-    return apy > altApy ? apy : altApy
-  }
+const chunk = (array, size) => {
+  return Array.from({ length: Math.ceil(array.length / size) }, (v, i) =>
+    array.slice(i * size, i * size + size)
+  )
 }
 
-const call = (promises, keys, chainId, dispatch, order) => {
-  Promise.all(promises).then(data => {
+const getMaxVaultApy = (vault, dataProvider, distributionManager, prices) => {
+  return Math.max(
+    getVaultApy(vault, dataProvider, distributionManager, prices),
+    getVaultApy(vault, dataProvider, distributionManager, prices, 0)
+  )
+}
+
+const call = (promises, keys, chainId, dispatch, order, errors) => {
+  Promise.all(promises).then(results => {
+    const [ apys, data, prices ] = results
     const extraData = []
-    const prices    = data.pop()
 
-
-    helpers.chunk(data.flat(), keys.length).forEach((chunkedData, i) => {
+    chunk(data, keys.length).forEach((chunkedData, i) => {
       let dataProvider
       let distributionManager = {}
 
@@ -75,13 +63,13 @@ const call = (promises, keys, chainId, dispatch, order) => {
         extraData[i]['allowance'] = new BigNumber(1e58.toString())
       }
 
-      extraData[i]['apy'] = helpers.getVaultApy(
-        vault,
-        dataProvider,
-        distributionManager,
-        prices
-      )
-
+      if (vault.token === '2Pi') {
+        extraData[i]['apy'] = 0.1
+      } else if (vault.pool === 'curve') {
+        extraData[i]['apy'] = (apys['curve-poly-ren'] || {}).totalApy
+      } else {
+        extraData[i]['apy'] = getMaxVaultApy(vault, dataProvider, distributionManager, prices)
+      }
     })
 
     const vaultsData = vaults[chainId].map((vault, i) => {
@@ -105,15 +93,20 @@ const call = (promises, keys, chainId, dispatch, order) => {
     )
     dispatch(toastDestroyed('Data loading error'))
   }).catch(error => {
+    dispatch(vaultsFetchError())
+
     console.log(error)
-    dispatch(
-      toastAdded({
-        title: 'Data loading error',
-        body:  "We can't reach out some resources, please refresh the page and try again",
-        icon:  'exclamation-triangle',
-        style: 'danger'
-      })
-    )
+    // Do not complain on first fetch error since they are so frequent
+    if (errors > 2) {
+      dispatch(
+        toastAdded({
+          title: 'Data loading error',
+          body:  "We can't reach out some resources, please refresh the page and try again",
+          icon:  'exclamation-triangle',
+          style: 'danger'
+        })
+      )
+    }
   })
 }
 
@@ -156,7 +149,6 @@ const getCalls = (address, chainId, ethcallProvider, v) => {
   const vault         = vaultAbi(v, chainId)
   const token         = require(`../abis/tokens/${chainId}/${v.token}`).default
   const vaultContract = new Contract(vault.address, vault.abi)
-  const notPiToken    = v.token != '2Pi'
 
   let results, decimals, balance, allowance
 
@@ -168,7 +160,7 @@ const getCalls = (address, chainId, ethcallProvider, v) => {
     allowance = tokenContract.allowance(address, vault.address)
   } else {
     // MATIC is native so it needs other functions
-    if (chainId === 80001 && notPiToken) {
+    if (chainId === 80001 && v.token !== '2Pi') {
       decimals = vaultContract.decimals(v.pid) // same decimals
     } else {
       decimals = vaultContract.decimals() // same decimals
@@ -178,7 +170,7 @@ const getCalls = (address, chainId, ethcallProvider, v) => {
     allowance = ethcallProvider.getEthBalance(address) // fake allowance
   }
 
-  if (chainId === 80001 && notPiToken) {
+  if (chainId === 80001 && v.token !== '2Pi') {
     results = [
       decimals,
       vaultContract.getPricePerFullShare(v.pid),
@@ -236,7 +228,8 @@ export async function fetchVaultsData (
   provider,
   web3,
   dispatch,
-  order
+  order,
+  errors
 ) {
   // Localhost address
   setMulticallAddress(1337, process.env.NEXT_PUBLIC_LOCAL_MULTICALL_ADDR)
@@ -252,9 +245,10 @@ export async function fetchVaultsData (
   })
 
   const promises = [
+    fetchApys(),
     ethcallProvider.all(calls),
     getPrices(vaults[chainId], dispatch)
   ]
 
-  call(promises, keys, chainId, dispatch, order)
+  call(promises, keys, chainId, dispatch, order, errors)
 }

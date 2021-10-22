@@ -111,9 +111,15 @@ const polygonVaults = [
 ]
 
 const vaults = {
-  137:   polygonVaults,
-  1337:  localhostVauls,
-  80001: polygonVaults // .filter(vault => vault.pool === 'aave')
+  1337: localhostVauls,
+
+  // Arbitrum
+  42161:  [],
+  421611: [],
+
+  // Polygon
+  137:   polygonVaults.filter(v => v.pool),
+  80001: polygonVaults // .filter(v => v.pool === 'aave' || v.pool === undefined)
 }
 
 export default vaults

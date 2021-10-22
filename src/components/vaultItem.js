@@ -6,7 +6,7 @@ import { formatAmount, toPercentage } from '../helpers/format'
 
 const VaultItem = props => {
   return (
-    <div className={`card border border-${props.color} border-2 bg-dark my-4`}>
+    <div className={`card border border-${props.color} border-2 bg-blur my-4`}>
       <div className="card-body ms-2">
         <div className="row align-items-center cursor-pointer">
           <div className="col-3 col-md-2 col-lg-2 pt-1">

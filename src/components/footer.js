@@ -6,14 +6,14 @@ const Footer = () => (
 
     <ul className="list-inline lead">
       <li className="list-inline-item mx-2">
-        <Link href="https://twitter.com/2piFinance">
+        <Link href="https://twitter.com/2piNetwork">
           <a target="_blank" rel="noreferrer" title="Tweet us!">
             <i className="bi-twitter"></i>
           </a>
         </Link>
       </li>
       <li className="list-inline-item mx-2">
-        <Link href="https://github.com/2pifinance/">
+        <Link href="https://github.com/2pinetwork/">
           <a target="_blank" rel="noreferrer" title="Fork / inspect us!">
             <i className="bi-github"></i>
           </a>
@@ -29,12 +29,12 @@ const Footer = () => (
       <li className="list-inline-item mx-2">
         <Link href="https://2pifinance.medium.com">
           <a target="_blank" rel="noreferrer" title="Read us!">
-            <i className="bi-file-text"></i>
+            <i className="bi-medium"></i>
           </a>
         </Link>
       </li>
       <li className="list-inline-item mx-2">
-        <Link href="mailto:hello@2pi.finance">
+        <Link href="mailto:hello@2pi.network">
           <a title="Email us!">
             <i className="bi-envelope"></i>
           </a>

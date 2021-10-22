@@ -23,7 +23,7 @@ describe('withdraw component render', () => {
       apy:               10,
       decimals:          new BigNumber(18),
       deposited:         new BigNumber(0),
-      pid:               '0',
+      pid:               undefined,
       pricePerFullShare: new BigNumber(1),
       symbol:            'DAI',
       token:             'dai',

@@ -1,15 +1,13 @@
-export const projectId = '5c86b242025449ee96c9120c215bd029'
-
 const networkNames = {
   137:   'matic',
   1337:  'local',
   80001: 'matic-mumbai'
 }
 
-export const rpc = {
-  137:   `https://polygon-mainnet.infura.io/v3/${projectId}`,
+const rpc = {
+  137:   'https://polygon-rpc.com/',
   1337:  'http://localhost:8545',
-  80001: `https://polygon-mumbai.infura.io/v3/${projectId}`,
+  80001: 'https://matic-mumbai.chainstacklabs.com/'
 }
 
 export const getDefaultProvider = chainId => {

@@ -1,51 +1,64 @@
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { SUPPORTED_CHAINS } from '../data/constants'
+import { errorToastAdded, toastDestroyed } from '../features/toastsSlice'
 import {
-  connectAsync,
+  selectProvider,
   disconnectAsync,
-  selectAddress,
-  selectChainId,
-  selectStatus,
-  supportedChains
+  addressChanged,
+  chainChanged
 } from '../features/walletSlice'
 
-const addressLabel = (address, status) => {
-  if (address) {
-    return `${address.substr(0, 6)}...${address.substr(38, 42)}`
-  } else if (status === 'loading') {
-    return 'Connecting...'
-  } else {
-    return 'Connect'
-  }
+const useProvider = () => {
+  const dispatch = useDispatch()
+  const provider = useSelector(selectProvider)
+
+  useEffect(() => {
+    if (! provider?.on) return
+
+    const onDisconnect = () => {
+      dispatch(disconnectAsync())
+    }
+
+    const onChainChanged = chainId => {
+      // Hex to decimal conversion
+      chainId = +chainId
+
+      dispatch(chainChanged({ chainId }))
+
+      if (! SUPPORTED_CHAINS.includes(chainId)) {
+        const title   = 'Unsupported network.'
+        const message = 'Switch your wallet to a supported network.'
+
+        dispatch(toastDestroyed(title))
+        dispatch(errorToastAdded(title, message))
+      }
+    }
+
+    const onAccountsChanged = () => {
+      const address = provider.selectedAddress || undefined
+
+      dispatch(addressChanged({ address }))
+    }
+
+    provider.on('close', onDisconnect)
+    provider.on('disconnect', onDisconnect)
+    provider.on('chainChanged', onChainChanged)
+    provider.on('accountsChanged', onAccountsChanged)
+
+    return () => {
+      provider.removeListener('close', onDisconnect)
+      provider.removeListener('disconnect', onDisconnect)
+      provider.removeListener('chainChanged', onChainChanged)
+      provider.removeListener('accountsChanged', onAccountsChanged)
+    }
+  }, [ dispatch, provider ])
 }
 
-const walletIcon = (address, supported) => {
-  if (address && supported) {
-    return 'bi-wallet-fill'
-  } else if (address) {
-    return 'bi-exclamation-diamond-fill'
-  } else {
-    return 'bi-plug-fill'
-  }
-}
-const Wallet = () => {
-  const address   = useSelector(selectAddress)
-  const chainId   = useSelector(selectChainId)
-  const status    = useSelector(selectStatus)
-  const dispatch  = useDispatch()
-  const supported = isNaN(chainId) || supportedChains.includes(chainId)
-  const border    = supported ? 'primary' : 'danger'
+const Wallet = ({ children }) => {
+  useProvider()
 
-  return (
-    <button type="button"
-            className={`btn btn-outline-${border} btn-sm bg-dark text-primary fw-semi-bold order-0 order-lg-1 mt-3 mt-lg-0`}
-            disabled={status === 'loading'}
-            onClick={() => { address ? dispatch(disconnectAsync()) : dispatch(connectAsync()) }}>
-      <span className="me-2">
-        <i className={walletIcon(address, supported)}></i>
-      </span>
-      {addressLabel(address, status)}
-    </button>
-  )
+  return children
 }
 
 export default Wallet

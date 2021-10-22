@@ -46,40 +46,71 @@ const Deposit = props => {
     setDeposit(value)
   }
 
-  const handleDepositClick = () => {
+  const depositCall = () => {
     const vaultContract = props.vaultContract()
-    let   amount        = toWeiFormatted(new BigNumber(deposit), props.decimals)
-
-    setDepositLabel('Deposit...')
-    setStatus('deposit')
-
-    let call
+    const amount        = toWeiFormatted(new BigNumber(deposit), props.decimals)
 
     if (chainId === 80001) {
       if (props.token === 'matic') {
-        call = vaultContract.methods.depositMATIC(props.pid, referral).send({
-          from: props.address,
+        return vaultContract.methods.depositMATIC(props.pid, referral).send({
+          from:  props.address,
           value: amount
         })
       } else if (props.token === '2Pi') {
-        call = vaultContract.methods.deposit(amount).send({
+        return vaultContract.methods.deposit(amount).send({
           from: props.address
         })
       } else {
-        call = vaultContract.methods.deposit(props.pid, amount, referral).send({
+        return vaultContract.methods.deposit(props.pid, amount, referral).send({
           from: props.address
         })
       }
     } else {
       if (props.token === 'matic') {
-        call = vaultContract.methods.depositMATIC().send({
-          from: props.address,
+        return vaultContract.methods.depositMATIC().send({
+          from:  props.address,
           value: amount
         })
       } else {
-        call = vaultContract.methods.deposit(amount).send({ from: props.address })
+        return vaultContract.methods.deposit(amount).send({ from: props.address })
       }
     }
+  }
+
+  const depositAllCall = () => {
+    const vaultContract = props.vaultContract()
+
+    if (chainId === 80001) {
+      if (props.token === '2Pi') {
+        return vaultContract.methods.depositAll().send({
+          from: props.address
+        })
+      } else {
+        return vaultContract.methods.depositAll(props.pid).send({
+          from: props.address
+        })
+      }
+    } else if (vaultContract.methods.depositMATIC) {
+      const amount = maxMaticDepositAmount(props.balance)
+
+      if (! amount) {
+        return
+      }
+
+      return vaultContract.methods.depositMATIC().send({
+        from: props.address, value: amount.toFixed()
+      })
+    } else {
+      return vaultContract.methods.depositAll().send({ from: props.address })
+    }
+
+  }
+
+  const handleDepositClick = () => {
+    const call = depositCall()
+
+    setDepositLabel('Deposit...')
+    setStatus('deposit')
 
     call.on('transactionHash', hash => {
       transactionSent(hash, dispatch)
@@ -115,36 +146,11 @@ const Deposit = props => {
   }
 
   const handleDepositAllClick = () => {
-    const vaultContract = props.vaultContract()
+    const call = depositAllCall()
 
     setMax()
     setDepositLabel('Deposit...')
     setStatus('deposit')
-
-    let call
-
-    if (chainId === 80001) {
-      if (props.token === '2Pi') {
-        call = vaultContract.methods.depositAll().send({
-          from: props.address
-        })
-      } else {
-        call = vaultContract.methods.depositAll(props.pid).send({
-          from: props.address
-        })
-      }
-    } else if (vaultContract.methods.depositMATIC) {
-      let amount = maxMaticDepositAmount(props.balance)
-
-      if (!amount)
-        return
-
-      call = vaultContract.methods.depositMATIC().send({
-        from: props.address, value: amount.toFixed()
-      })
-    } else {
-      call = vaultContract.methods.depositAll().send({ from: props.address })
-    }
 
     call.on('transactionHash', hash => {
       transactionSent(hash, dispatch)
@@ -258,7 +264,7 @@ Deposit.propTypes = {
   address:       PropTypes.string.isRequired,
   balance:       PropTypes.object.isRequired,
   decimals:      PropTypes.object.isRequired,
-  pid:           PropTypes.string.isRequired,
+  pid:           PropTypes.string,
   symbol:        PropTypes.string.isRequired,
   token:         PropTypes.string.isRequired,
   vaultContract: PropTypes.func.isRequired

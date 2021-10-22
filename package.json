@@ -3,36 +3,37 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@popperjs/core": "^2.9.3",
-    "@reduxjs/toolkit": "^1.6.1",
-    "@sentry/react": "^6.11.0",
-    "@sentry/tracing": "^6.11.0",
+    "@gnosis.pm/safe-apps-web3modal": "^3.0.0",
+    "@popperjs/core": "^2.10.2",
+    "@reduxjs/toolkit": "^1.6.2",
+    "@sentry/react": "^6.13.3",
+    "@sentry/tracing": "^6.13.3",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@walletconnect/web3-provider": "^1.6.0",
-    "bootstrap": "^5.1.0",
-    "bootstrap-icons": "^1.5.0",
-    "bootswatch": "^5.1.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@walletconnect/web3-provider": "^1.6.6",
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.6.1",
+    "bootswatch": "^5.1.3",
     "ethers-multicall": "^0.2.1",
-    "next": "^11.1.0",
+    "next": "^11.1.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^7.2.4",
-    "sass": "^1.37.5",
-    "walletlink": "^2.1.7",
-    "web-vitals": "^2.1.0",
-    "web3": "^1.5.2",
+    "react-redux": "^7.2.5",
+    "sass": "^1.43.3",
+    "walletlink": "^2.1.11",
+    "web-vitals": "^2.1.2",
+    "web3": "^1.6.0",
     "web3modal": "^1.9.4"
   },
   "scripts": {
     "start": "next start",
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "scripts/build.sh",
     "lint": "next lint",
     "test": "jest",
-    "release": "node scripts/sentry.js"
+    "release": "scripts/release.sh"
   },
   "eslintConfig": {
     "extends": [
@@ -59,11 +60,11 @@
     ]
   },
   "devDependencies": {
-    "@sentry/cli": "^1.68.0",
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.1.0",
-    "eslint-plugin-jest": "^24.4.0",
-    "jest": "^27.0.6",
+    "@sentry/cli": "^1.70.1",
+    "eslint": "^8.0.1",
+    "eslint-config-next": "^11.1.2",
+    "eslint-plugin-jest": "^25.2.2",
+    "jest": "^27.3.1",
     "redux-mock-store": "^1.5.4"
   }
 }

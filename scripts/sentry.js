@@ -6,7 +6,7 @@ const createRelease = async () => {
 
   if (! release) {
     console.warn('NEXT_PUBLIC_SENTRY_RELEASE is not set')
-    return
+    process.exit(1)
   }
 
   try {

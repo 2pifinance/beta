@@ -16,14 +16,14 @@ describe('header component render', () => {
     store = mockStore(initialState)
   })
 
-  test('renders 2pi finance link', () => {
+  test('renders 2pi network link', () => {
     render(
       <Provider store={store}>
         <Header />
       </Provider>
     )
 
-    const linkElement = screen.getByAltText(/2pi/i)
+    const linkElement = screen.getByText(/How-to guide/i)
 
     expect(linkElement).toBeInTheDocument()
   })

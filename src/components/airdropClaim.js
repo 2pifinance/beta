@@ -9,13 +9,13 @@ const AirdropClaim = () => {
 
   return (
     <div className="card my-4 shadow-none">
-      <div className="card-body text-center bg-dark border border-primary border-2 rounded px-lg-5 py-lg-4">
+      <div className="card-body text-center bg-blur border border-primary border-2 rounded px-lg-5 py-lg-4">
         <div className="text-start mb-0">
           <Back />
         </div>
 
         <h2 className="h1 text-primary mt-4 mb-0">
-          2pi.finance
+          2pi.network
         </h2>
 
         <h3 className="h1 text-primary">

@@ -10,7 +10,7 @@ const Index = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>2pi Finance</title>
+        <title>2PI</title>
       </Head>
 
       <App />

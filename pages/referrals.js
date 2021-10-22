@@ -6,7 +6,7 @@ const ReferralsPage = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>2pi Finance - Referrals</title>
+        <title>2PI - Referrals</title>
       </Head>
 
       <Referrals />
