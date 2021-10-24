@@ -26,7 +26,7 @@ const VaultData = props => {
   const chainId  = useSelector(selectChainId)
   const vaults   = useSelector(selectVaults)
   const dispatch = useDispatch()
-  const vault    = (vaults[chainId] || []).find(vault => vault.key === props.id)
+  const vault    = (vaults[chainId] || []).find(vault => vault.id === props.id)
 
   useEffect(() => {
     return constantVaultFetch(address, chainId, dispatch)

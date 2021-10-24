@@ -14,7 +14,7 @@ describe('vault details', () => {
         value: {
           137: [
             {
-              key:    'dai',
+              id:    'polygon-dai-aave',
               symbol: 'xDAI'
             }
           ]
@@ -31,10 +31,9 @@ describe('vault details', () => {
   test('renders vault', () => {
     const props = {
       vault: {
-        key:     'dai',
+        id:      'polygon-dai-aave',
         token:   'dai',
         earn:    'DAI',
-        priceId: 'dai',
         uses:    'Aave',
         pool:    'aave',
         symbol:  'xDAI',

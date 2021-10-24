@@ -16,7 +16,7 @@ describe('new vault component render', () => {
         value: {
           137: [
             {
-              key:    'dai',
+              id:     'polygon-dai-aave',
               pid:    '0',
               pool:   'aave',
               symbol: 'DAI',
@@ -35,7 +35,7 @@ describe('new vault component render', () => {
 
   test('renders new vault', () => {
     const props = {
-      id:     'dai',
+      id:     'polygon-dai-aave',
       symbol: 'DAI'
     }
 

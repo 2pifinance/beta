@@ -1,5 +1,5 @@
-import { Provider } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
 import Approve from './approve'
@@ -10,26 +10,34 @@ describe('approve component render', () => {
   let store
 
   beforeEach(() => {
-    const initialState = {}
+    const initialState = {
+      wallet: {}
+    }
 
     store = mockStore(initialState)
   })
 
   test('renders approve', () => {
-    const props = {
-      address:       '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-      balance:       new BigNumber(0),
-      decimals:      new BigNumber(0),
+    const vault = {
+      id:            'polygon-dai-aave',
       symbol:        'DAI',
       token:         'dai',
-      tokenContract: () => {},
-      vault:         {},
-      web3:          {}
+      tokenDecimals: 18,
+      earn:          'DAI',
+      uses:          'Aave',
+      apy:           new BigNumber(0.17),
+      allowance:     new BigNumber(0),
+      deposited:     new BigNumber(0),
+      balance:       new BigNumber(0),
+      sharePrice:    new BigNumber(1.5),
+      vaultDecimals: 18,
+      tvl:           new BigNumber(1000),
+      price:         new BigNumber(1),
     }
 
     render(
       <Provider store={store}>
-        <Approve {...props} />
+        <Approve vault={vault} />
       </Provider>
     )
 

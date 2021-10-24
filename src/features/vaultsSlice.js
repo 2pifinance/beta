@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { SUPPORTED_CHAINS } from '../data/constants'
-import vaults from '../data/vaults'
-import { fetchVaultsData } from './fetchVaultsData'
+import { getVaults } from '../data/vaults'
+import vaultsList from '../data/vaults/list'
+import { errorToastAdded } from './toastsSlice'
 import {
   selectAddress,
   selectChainId,
@@ -17,7 +17,7 @@ const initialState = {
   order:  0,
   errors: 0,
   status: 'idle',
-  value:  vaults
+  value:  vaultsList
 }
 
 const selectOrder  = state => state.vaults.order
@@ -40,11 +40,44 @@ export const fetchVaultsDataAsync = createAsyncThunk('vaults/fetchVaultsData',
     const provider = selectProvider(state)
     const web3     = selectWeb3(state)
 
-    if (SUPPORTED_CHAINS.includes(chainId)) {
-      fetchVaultsData(address, chainId, provider, web3, dispatch, order, errors)
+    const wallet = (address)
+      ? { chainId, address, provider, web3 }
+      : undefined
+
+    try {
+      const vaults = await fetchVaults(chainId, wallet)
+
+      dispatch(vaultsLoaded({ order, vaults }))
+    } catch (error) {
+      // Don't complain on first fetch error, they are too frequent
+      if (errors > 2) {
+        dispatch(fetchErrorAdded())
+      }
+
+      dispatch(vaultsFetchError())
     }
   }
 )
+
+const fetchVaults = async (chainId, wallet) => {
+  const base = vaultsList[chainId] || []
+  const data = await getVaults(chainId, wallet)
+
+  const vaults = base.map(vault => {
+    const vaultData = data.find(item => item.id === vault.id) || {}
+
+    return { ...vault, ...vaultData }
+  })
+
+  return { ...vaultsList, [chainId]: vaults }
+}
+
+const fetchErrorAdded = () => {
+  const title = 'Data loading error'
+  const msg   = 'We can’t reach out some resources, please refresh the page and try again'
+
+  return errorToastAdded(title, msg)
+}
 
 
 

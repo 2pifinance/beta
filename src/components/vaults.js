@@ -1,55 +1,31 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import VaultItem from './vaultItem'
-import { fromWei } from '../helpers/wei'
-import { toUsd } from '../helpers/format'
 import { selectVaults } from '../features/vaultsSlice'
 import { constantVaultFetch } from '../helpers/vaults'
 import { selectAddress, selectChainId } from '../features/walletSlice'
 
-const renderVaults = (vaults, chainId) => {
-  return (vaults[chainId] || []).map(vaultData => {
-    const {
-      balance,
-      decimals,
-      earn,
-      pricePerFullShare,
-      shares,
-      tvl,
-      usdPrice,
-      vaultDecimals
-    } = vaultData
-
-    const staked       = shares && fromWei(shares, vaultDecimals)
-    const deposited    = staked?.times(pricePerFullShare)
-    const balanceUsd   = toUsd(balance, decimals, usdPrice)
-    const depositedUsd = toUsd(deposited, decimals, usdPrice)
-    const tvlUsd       = toUsd(tvl, decimals, usdPrice)
-
-    return (
-      <VaultItem apy={vaultData.apy}
-                 balance={balance}
-                 balanceUsd={balanceUsd}
-                 color={vaultData.color}
-                 decimals={decimals}
-                 deposited={deposited}
-                 depositedUsd={depositedUsd}
-                 earn={earn}
-                 key={vaultData.key}
-                 symbol={vaultData.symbol}
-                 token={vaultData.token}
-                 tvlUsd={tvlUsd}
-                 uses={vaultData.uses}
-                 vaultKey={vaultData.key} />
-    )
-  })
-}
+const renderVault = (vault) => (
+  <VaultItem key={vault.id}
+             apy={vault.apy}
+             balance={vault.balance}
+             color={vault.color}
+             deposited={vault.deposited}
+             earn={vault.earn}
+             price={vault.price}
+             symbol={vault.symbol}
+             token={vault.token}
+             tvl={vault.tvl}
+             uses={vault.uses}
+             vaultId={vault.id} />
+)
 
 const Vaults = () => {
-  const address  = useSelector(selectAddress)
-  const chainId  = useSelector(selectChainId)
-  const vaults   = useSelector(selectVaults)
-  const dispatch = useDispatch()
+  const dispatch      = useDispatch()
+  const address       = useSelector(selectAddress)
+  const chainId       = useSelector(selectChainId)
+  const vaults        = useSelector(selectVaults)
+  const currentVaults = vaults[chainId] || []
 
   useEffect(() => {
     return constantVaultFetch(address, chainId, dispatch)
@@ -72,7 +48,7 @@ const Vaults = () => {
       </div>
 
       <div className="mt-3">
-        {renderVaults(vaults, chainId)}
+        {currentVaults.map(renderVault)}
       </div>
     </div>
   )

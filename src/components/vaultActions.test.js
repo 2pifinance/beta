@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
@@ -10,9 +11,6 @@ describe('vault actions component render', () => {
 
   beforeEach(() => {
     const initialState = {
-      vaults: {
-        value: []
-      },
       wallet: {}
     }
 
@@ -20,23 +18,26 @@ describe('vault actions component render', () => {
   })
 
   test('renders vault actions', () => {
-    const props = {
-      allowance:         undefined,
-      apy:               10,
-      balance:           undefined,
-      decimals:          undefined,
-      deposited:         undefined,
-      pid:               undefined,
-      pool:              undefined,
-      pricePerFullShare: undefined,
-      symbol:            'DAI',
-      token:             'dai',
-      vaultDecimals:     undefined
+    const vault = {
+      id:            'polygon-dai-aave',
+      symbol:        'DAI',
+      token:         'dai',
+      tokenDecimals: 18,
+      earn:          'DAI',
+      uses:          'Aave',
+      apy:           new BigNumber(0.17),
+      allowance:     new BigNumber(0),
+      deposited:     new BigNumber(0),
+      balance:       new BigNumber(0),
+      sharePrice:    new BigNumber(1.5),
+      vaultDecimals: 18,
+      tvl:           new BigNumber(1000),
+      price:         new BigNumber(1),
     }
 
     render(
       <Provider store={store}>
-        <VaultActions {...props}/>
+        <VaultActions vault={vault}/>
       </Provider>
     )
 
