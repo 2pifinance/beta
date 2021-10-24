@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { toWei, fromWei } from './wei'
 
 export const formatAmount = (amount, prefix, decimals = 2) => {
@@ -14,13 +15,7 @@ export const formatAmount = (amount, prefix, decimals = 2) => {
 }
 
 export const decimalPlaces = (decimals, max = 8) => {
-  return decimals.comparedTo(max) > 0 ? max : decimals.toNumber()
-}
-
-export const toUsd = (amountInWei, decimals, usdPrice) => {
-  const amount = amountInWei && fromWei(amountInWei, decimals)
-
-  return amount?.times(usdPrice)
+  return BigNumber.min(decimals, max).toNumber()
 }
 
 export const toWeiFormatted = (amount, decimals) => {

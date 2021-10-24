@@ -5,6 +5,8 @@ import { networks } from '../data/networks'
 import { connect, disconnect, addChain } from '../helpers/wallet'
 import { errorToastAdded, toastDestroyed } from './toastsSlice'
 
+
+
 // -- STATE --
 
 const initialState = {
@@ -16,6 +18,7 @@ const initialState = {
   web3:     undefined
 }
 
+export const selectWallet   = ({ wallet }) => (wallet?.address) ? wallet : undefined
 export const selectAddress  = state => state.wallet.address
 export const selectChainId  = state => state.wallet.chainId
 export const selectModal    = state => state.wallet.modal

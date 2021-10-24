@@ -1,219 +1,60 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import BigNumber from 'bignumber.js'
-import { fromWei, toWei } from '../helpers/wei'
+import { deposit } from '../data/vaults'
+import { errorToastAdded, successToastAdded, toastDestroyed } from '../features/toastsSlice'
 import { fetchVaultsDataAsync, newVaultFetch } from '../features/vaultsSlice'
-import { toastAdded, toastDestroyed } from '../features/toastsSlice'
-import { decimalPlaces, formatAmount, toWeiFormatted } from '../helpers/format'
-import { transactionSent } from '../helpers/transactions'
-import { selectChainId } from '../features/walletSlice'
-import { ZERO_ADDRESS } from '../data/constants'
+import { selectWallet } from '../features/walletSlice'
+import { formatAmount } from '../helpers/format'
 
-const Deposit = props => {
-  const chainId                         = useSelector(selectChainId)
+// [TODO]
+// - Get transaction hash on deposit success
+const Deposit = ({ vault }) => {
+  const { balance, symbol, token } = vault
+
   const dispatch                        = useDispatch()
-  const [referral, setReferral]         = useState('')
-  const [deposit, setDeposit]           = useState('')
-  const [useAll, setUseAll]             = useState(false)
-  const [depositLabel, setDepositLabel] = useState('Deposit')
-  const [status, setStatus]             = useState('blank')
+  const wallet                          = useSelector(selectWallet)
+  const [ value, setValue ]             = useState('')
+  const [ buttonLabel, setButtonLabel ] = useState('Deposit')
+  const [ status, setStatus ]           = useState('blank')
 
   useEffect(() => {
-    setReferral(localStorage.getItem('referral') || ZERO_ADDRESS)
-  }, [])
+    if (status === 'deposit') return
 
-  useEffect(() => {
-    if (status !== 'deposit') {
-      if (/^\d*\.?\d*$/.test(deposit) && +deposit) {
-        const amount = toWei(new BigNumber(deposit), props.decimals)
+    const isValid = isValidNumber(value) && (+value) > 0 && balance.gte(value)
 
-        setStatus(props.balance.comparedTo(amount) >= 0 ? 'valid' : 'invalid')
-      } else {
-        setStatus('invalid')
-      }
-    }
-  }, [deposit, status, props.balance, props.decimals])
-
-  const onChange = e => {
-    const value = e.target.value
-
-    if (status === 'deposit') {
-      setStatus('invalid')
-    }
-
-    setUseAll(false)
-    setDeposit(value)
-  }
-
-  const depositCall = () => {
-    const vaultContract = props.vaultContract()
-    const amount        = toWeiFormatted(new BigNumber(deposit), props.decimals)
-
-    if (chainId === 80001) {
-      if (props.token === 'matic') {
-        return vaultContract.methods.depositMATIC(props.pid, referral).send({
-          from:  props.address,
-          value: amount
-        })
-      } else if (props.token === '2Pi') {
-        return vaultContract.methods.deposit(amount).send({
-          from: props.address
-        })
-      } else {
-        return vaultContract.methods.deposit(props.pid, amount, referral).send({
-          from: props.address
-        })
-      }
-    } else {
-      if (props.token === 'matic') {
-        return vaultContract.methods.depositMATIC().send({
-          from:  props.address,
-          value: amount
-        })
-      } else {
-        return vaultContract.methods.deposit(amount).send({ from: props.address })
-      }
-    }
-  }
-
-  const depositAllCall = () => {
-    const vaultContract = props.vaultContract()
-
-    if (chainId === 80001) {
-      if (props.token === '2Pi') {
-        return vaultContract.methods.depositAll().send({
-          from: props.address
-        })
-      } else {
-        return vaultContract.methods.depositAll(props.pid).send({
-          from: props.address
-        })
-      }
-    } else if (vaultContract.methods.depositMATIC) {
-      const amount = maxMaticDepositAmount(props.balance)
-
-      if (! amount) {
-        return
-      }
-
-      return vaultContract.methods.depositMATIC().send({
-        from: props.address, value: amount.toFixed()
-      })
-    } else {
-      return vaultContract.methods.depositAll().send({ from: props.address })
-    }
-
-  }
-
-  const handleDepositClick = () => {
-    const call = depositCall()
-
-    setDepositLabel('Deposit...')
-    setStatus('deposit')
-
-    call.on('transactionHash', hash => {
-      transactionSent(hash, dispatch)
-    }).then(() => {
-      setDeposit('')
-      setStatus('blank')
-      setDepositLabel('Deposit')
-      dispatch(toastDestroyed('Deposit rejected'))
-      dispatch(newVaultFetch())
-      dispatch(fetchVaultsDataAsync())
-      dispatch(
-        toastAdded({
-          title:    'Deposit approved',
-          body:     'Your deposit was successful',
-          icon:     'check-circle',
-          style:    'success',
-          autohide: true
-        })
-      )
-    }).catch(() => {
-      setStatus('blank')
-      setDepositLabel('Deposit')
-      dispatch(
-        toastAdded({
-          title:    'Deposit rejected',
-          body:     'Your deposit has been rejected, please check the explorer and try again',
-          icon:     'exclamation-triangle',
-          style:    'danger',
-          autohide: true
-        })
-      )
-    })
-  }
-
-  const handleDepositAllClick = () => {
-    const call = depositAllCall()
-
-    setMax()
-    setDepositLabel('Deposit...')
-    setStatus('deposit')
-
-    call.on('transactionHash', hash => {
-      transactionSent(hash, dispatch)
-    }).then(() => {
-      setDeposit('')
-      setStatus('blank')
-      setDepositLabel('Deposit')
-      dispatch(toastDestroyed('Deposit all rejected'))
-      dispatch(newVaultFetch())
-      dispatch(fetchVaultsDataAsync())
-      dispatch(
-        toastAdded({
-          title:    'Deposit all approved',
-          body:     'Your deposit was successful',
-          icon:     'check-circle',
-          style:    'success',
-          autohide: true
-        })
-      )
-    }).catch(error => {
-      setDepositLabel('Deposit')
-      setStatus('blank')
-      dispatch(
-        toastAdded({
-          title:    'Deposit all rejected',
-          body:     error.message,
-          icon:     'exclamation-triangle',
-          style:    'danger',
-          autohide: true
-        })
-      )
-    })
-  }
+    setStatus(isValid ? 'valid' : 'invalid')
+  }, [ value, status, balance ])
 
   const setMax = () => {
-    const places       = decimalPlaces(props.decimals)
-    const roundingMode = BigNumber.ROUND_DOWN
+    const value = (token === 'matic') ? balance.minus(0.25) : balance
 
-    setUseAll(true)
-    setDeposit(
-      fromWei(props.balance, props.decimals).toFixed(places, roundingMode)
-    )
+    setValue(value)
   }
 
-  const balanceId = () => `balance-${props.token}`
+  const onChange = event => {
+    setValue(event.target.value)
+  }
 
-  const maxMaticDepositAmount = amount => {
-    const reserve = new BigNumber(0.025e18)
+  const onDepositClick = async () => {
+    setStatus('deposit')
+    setButtonLabel('Deposit...')
+    dispatch(toastDestroyed('Deposit rejected'))
 
-    if (amount.comparedTo(reserve) > 0)
-      return amount.minus(reserve)
-    else {
-      setDepositLabel('Deposit')
+    try {
+      await deposit(wallet, vault, value)
+
+      setValue('')
       setStatus('blank')
-      dispatch(
-        toastAdded({
-          title:    'Deposit all rejected',
-          body:     'Deposit should be greater than 0.025 MATIC',
-          icon:     'exclamation-triangle',
-          style:    'danger',
-          autohide: true
-        })
-      )
+      setButtonLabel('Deposit')
+
+      dispatch(newVaultFetch())
+      dispatch(fetchVaultsDataAsync())
+      dispatch(depositSuccess())
+    } catch (error) {
+      setStatus('blank')
+      setButtonLabel('Deposit')
+      dispatch(depositError())
     }
   }
 
@@ -222,13 +63,15 @@ const Deposit = props => {
       <div className="input-group mb-1">
         <input type="number"
                className="form-control"
-               id={balanceId()}
-               onKeyDown={e => onChange(e) && e.preventDefault()}
+               id={`balance-${token}`}
+               onKeyDown={e => { e.preventDefault(); onChange(e) }}
                onChange={onChange}
-               value={deposit} />
+               value={value}
+               disabled={status === 'deposit'} />
+
         <button type="button"
                 className="btn btn-link bg-input"
-                disabled={props.balance?.isZero() || useAll}
+                disabled={balance?.isZero()}
                 onClick={setMax}>
           Max
         </button>
@@ -236,9 +79,9 @@ const Deposit = props => {
 
       <div className="text-end">
         <label className="small text-uppercase text-decoration-underline-dotted cursor-pointer"
-               htmlFor={balanceId()}
+               htmlFor={`balance-${token}`}
                onClick={setMax}>
-          Wallet balance: {formatAmount(fromWei(props.balance, props.decimals), '', 8)} {props.symbol}
+          Wallet balance: {formatAmount(balance, '', 8)} {symbol}
         </label>
       </div>
 
@@ -250,8 +93,8 @@ const Deposit = props => {
             <button type="button"
                     className="btn btn-outline-primary bg-dark text-white fw-bold"
                     disabled={status !== 'valid'}
-                    onClick={useAll ? handleDepositAllClick : handleDepositClick}>
-              {depositLabel}
+                    onClick={onDepositClick}>
+              {buttonLabel}
             </button>
           </div>
         </div>
@@ -261,13 +104,22 @@ const Deposit = props => {
 }
 
 Deposit.propTypes = {
-  address:       PropTypes.string.isRequired,
-  balance:       PropTypes.object.isRequired,
-  decimals:      PropTypes.object.isRequired,
-  pid:           PropTypes.string,
-  symbol:        PropTypes.string.isRequired,
-  token:         PropTypes.string.isRequired,
-  vaultContract: PropTypes.func.isRequired
+  vault: PropTypes.object.isRequired
 }
 
 export default Deposit
+
+
+
+// -- HELPERS --
+
+const isValidNumber =
+  RegExp.prototype.test.bind(/^\d+\.?\d*$/)
+
+const depositSuccess = () => {
+  return successToastAdded('Deposit approved', 'Your deposit was successful')
+}
+
+const depositError = () => {
+  return errorToastAdded('Deposit rejected', 'An error occured, your deposit has been rejected')
+}

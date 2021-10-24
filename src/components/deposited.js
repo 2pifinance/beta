@@ -2,37 +2,24 @@ import BigNumber from 'bignumber.js'
 import { useSelector } from 'react-redux'
 import { selectVaults } from '../features/vaultsSlice'
 import { selectAddress, selectChainId } from '../features/walletSlice'
-import { formatAmount, toUsd } from '../helpers/format'
-import { fromWei } from '../helpers/wei'
+import { formatAmount } from '../helpers/format'
 
 const Deposited = () => {
   const address     = useSelector(selectAddress)
   const chainId     = useSelector(selectChainId)
   const vaults      = useSelector(selectVaults)
   const chainVaults = vaults[chainId] || []
-  const dataLoaded  = chainVaults.every(vault => vault.shares)
-  const total       = dataLoaded ? new BigNumber(0) : new BigNumber()
-  const deposited   = chainVaults.reduce((acc, vault) => {
-    const {
-      shares,
-      decimals,
-      pricePerFullShare,
-      vaultDecimals,
-      usdPrice
-    } = vault
+  const deposited   = chainVaults.reduce((total, { deposited, price }) => {
+    const amount = deposited?.times(price)
 
-    const staked    = shares && fromWei(shares, vaultDecimals)
-    const deposited = staked?.times(pricePerFullShare)
-    const amount    = toUsd(deposited, decimals, usdPrice)
-
-    return amount?.isFinite() ? acc.plus(amount) : acc
-  }, total)
+    return amount?.isFinite() ? total.plus(amount) : total
+  }, new BigNumber(0))
 
   return (
     <div className="row">
       <div className="col-8 col-sm-9 col-lg-10 text-end border-end pe-3 border-2">
         <h3 className="h5 text-primary-dark fw-bold mb-0 mt-1">
-          ${address && deposited.isFinite() ? formatAmount(deposited.toNumber()) : ' -'}
+          ${address ? formatAmount(deposited.toNumber()) : ' -'}
         </h3>
       </div>
       <div className="col-4 col-sm-3 col-lg-2">

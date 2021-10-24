@@ -3,31 +3,20 @@ import PropTypes from 'prop-types'
 import Image from 'next/image'
 import VaultActions from './vaultActions'
 import Claim from './claim'
-import { fromWei } from '../helpers/wei'
-import { formatAmount, toPercentage, toUsd } from '../helpers/format'
+import { toDailyRate } from '../lib/math'
+import { formatAmount, toPercentage } from '../helpers/format'
 
-const VaultDetails = props => {
-  const {
-    balance,
-    decimals,
-    earn,
-    pricePerFullShare,
-    shares,
-    tvl,
-    usdPrice,
-    vaultDecimals
-  } = props.vault
+const VaultDetails = ({ vault }) => {
+  const { apy, balance, deposited, price, token, tvl } = vault
 
-  const vault        = props.vault
-  const staked       = shares && fromWei(shares, vaultDecimals)
-  const deposited    = staked?.times(pricePerFullShare)
-  const depositedUsd = toUsd(deposited, decimals, usdPrice)
-  const tvlUsd       = toUsd(tvl, decimals, usdPrice)
+  const daily        = toDailyRate(apy || 0)
+  const depositedUsd = deposited?.times(price)
+  const tvlUsd       = tvl?.times(price)
 
   return (
     <React.Fragment>
       <div className="text-center">
-        <Image src={`../images/tokens/${vault.token}.svg`} alt={vault.token} height="48" width="48" unoptimized={true} />
+        <Image src={`../images/tokens/${token}.svg`} alt={token} height="48" width="48" unoptimized={true} />
 
         <h3 className="h4 mt-2 mb-1">
           {vault.symbol}
@@ -52,7 +41,7 @@ const VaultDetails = props => {
               </div>
               <div className="col-6 text-end">
                 <p className="fw-bold mb-0">
-                  {balance ? formatAmount(fromWei(balance, decimals), '', 8) : '-'}
+                  {balance ? formatAmount(balance, '', 8) : '-'}
                 </p>
               </div>
             </div>
@@ -65,7 +54,7 @@ const VaultDetails = props => {
               </div>
               <div className="col-6 text-end">
                 <p className="fw-bold mb-0">
-                  {deposited ? formatAmount(fromWei(deposited, decimals), '', 8) : '-'}
+                  {deposited ? formatAmount(deposited, '', 8) : '-'}
                 </p>
               </div>
             </div>
@@ -93,7 +82,7 @@ const VaultDetails = props => {
               </div>
               <div className="col-6 text-end">
                 <p className="fw-bold mb-0">
-                  {toPercentage((vault.apy || 0.0) / 365)}
+                  {toPercentage(daily)}
                 </p>
               </div>
             </div>
@@ -119,7 +108,7 @@ const VaultDetails = props => {
               </div>
               <div className="col-6 text-end">
                 <p className="fw-bold mb-0">
-                  {earn}
+                  {vault.earn}
                 </p>
               </div>
             </div>
@@ -129,18 +118,7 @@ const VaultDetails = props => {
 
       <hr className="border border-primary border-1 opacity-100" />
 
-      <VaultActions allowance={vault.allowance}
-                    apy={vault.apy}
-                    balance={balance}
-                    decimals={decimals}
-                    deposited={deposited}
-                    pid={vault.pid}
-                    pool={vault.pool}
-                    pricePerFullShare={vault.pricePerFullShare}
-                    symbol={vault.symbol}
-                    token={vault.token}
-                    vault={vault}
-                    vaultDecimals={vaultDecimals} />
+      <VaultActions vault={vault} />
 
       <div className="text-center mt-4">
         <h3 className="h6 text-muted text-uppercase">

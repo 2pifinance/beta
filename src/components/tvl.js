@@ -2,16 +2,16 @@ import BigNumber from 'bignumber.js'
 import { useSelector } from 'react-redux'
 import { selectVaults } from '../features/vaultsSlice'
 import { selectChainId } from '../features/walletSlice'
-import { toUsd } from '../helpers/format'
 
 const Tvl = () => {
-  const chainId = useSelector(selectChainId)
-  const vaults  = useSelector(selectVaults)
-  const tvl     = (vaults[chainId] || []).reduce((acc, vault) => {
-    const { tvl, decimals, usdPrice } = vault
-    const amount = toUsd(tvl, decimals, usdPrice)
+  const chainId     = useSelector(selectChainId)
+  const vaults      = useSelector(selectVaults)
+  const chainVaults = vaults[chainId] || []
 
-    return amount?.isFinite() ? acc.plus(amount) : acc
+  const tvl = chainVaults.reduce((total, { tvl, price }) => {
+    const amount = tvl?.times(price)
+
+    return amount?.isFinite() ? total.plus(amount) : total
   }, new BigNumber('0'))
 
   return (

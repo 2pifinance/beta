@@ -1,5 +1,5 @@
-import { Provider } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
 import Deposit from './deposit'
@@ -18,19 +18,26 @@ describe('deposit component render', () => {
   })
 
   test('renders deposit', () => {
-    const props = {
-      address:       '0x06012c8cf97bead5deae237070f9587f8e7a266d',
-      balance:       new BigNumber(0),
-      decimals:      new BigNumber(18),
-      pid:           undefined,
+    const vault = {
+      id:            'polygon-dai-aave',
       symbol:        'DAI',
       token:         'dai',
-      vaultContract: () => {}
+      tokenDecimals: 18,
+      earn:          'DAI',
+      uses:          'Aave',
+      apy:           new BigNumber(0.17),
+      allowance:     new BigNumber(0),
+      deposited:     new BigNumber(0),
+      balance:       new BigNumber(0),
+      sharePrice:    new BigNumber(1.5),
+      vaultDecimals: 18,
+      tvl:           new BigNumber(1000),
+      price:         new BigNumber(1),
     }
 
     render(
       <Provider store={store}>
-        <Deposit {...props} />
+        <Deposit vault={vault} />
       </Provider>
     )
 

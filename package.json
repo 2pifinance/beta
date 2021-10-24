@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@gnosis.pm/safe-apps-web3modal": "^3.0.0",
+    "@2pi-network/js-sdk": "git+ssh://git@github.com/2pinetwork/sdk.git",
+    "@gnosis.pm/safe-apps-web3modal": "^4.0.0",
     "@popperjs/core": "^2.10.2",
     "@reduxjs/toolkit": "^1.6.2",
     "@sentry/react": "^6.13.3",
@@ -16,6 +17,7 @@
     "bootstrap-icons": "^1.6.1",
     "bootswatch": "^5.1.3",
     "ethers-multicall": "^0.2.1",
+    "jest-fetch-mock": "^3.0.3",
     "next": "^11.1.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
@@ -61,7 +63,7 @@
   },
   "devDependencies": {
     "@sentry/cli": "^1.70.1",
-    "eslint": "^8.0.1",
+    "eslint": "^8.1.0",
     "eslint-config-next": "^11.1.2",
     "eslint-plugin-jest": "^25.2.2",
     "jest": "^27.3.1",
