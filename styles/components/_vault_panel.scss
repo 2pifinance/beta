@@ -1,0 +1,20 @@
+.vault-panel {
+  border-top: 1px solid $vaults-table-border-color;
+}
+
+.vault-panel-connect {
+  border: 1px solid hsla(197, 75%, 55%, 0.25);
+  border-radius: $border-radius;
+  box-shadow: inset 0px 0px 6px hsl(197, 75%, 55%);
+  color: hsl(0, 0%, 50%);
+}
+
+.vault-panel-actions > *:first-child {
+  @include media-breakpoint-up(lg) {
+    border-right: 1px solid hsla(0, 0%, 100%, 0.2);
+  }
+}
+
+.vault-panel-highlight {
+  color: $theme-green;
+}

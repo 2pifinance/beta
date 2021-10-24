@@ -1,0 +1,135 @@
+.btn-outline-primary {
+  @include button-outline-variant(
+    darken($white, 50%),  // color
+    $white,               // color-hover
+    rgba($primary, 0.25), // active-bg
+    $primary,             // active-border
+    $white                // active-color
+  );
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.7;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+
+  &:not(.btn-sm) {
+    padding-left:  2.5em;
+    padding-right: 2.5em;
+  }
+
+  &:hover {
+    text-shadow: 0px 0px 6px hsl(185, 100%, 50%);
+  }
+
+  &:focus {
+    box-shadow: 0 0 $input-btn-focus-blur $input-btn-focus-width rgba($primary, 0.5);
+  }
+}
+
+.input-group > .btn-outline-primary {
+  padding-left:  $btn-padding-x;
+  padding-right: $btn-padding-x;
+  background-color: $input-bg;
+  border-color: $input-border-color;
+  font-weight: $font-weight-normal;
+
+  &:hover {
+    color: $primary;
+    text-shadow: none;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:disabled,
+  &[readonly] {
+    background-color: $input-disabled-bg;
+    border-color: $input-disabled-border-color;
+    opacity: 1;
+  }
+}
+
+.btn-crosshairs {
+  $border-width: 2px;
+  $hover-color:  hsl(172, 43%, 76%);
+  $color:        rgba($hover-color, 0.5);
+
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+  min-width: 1.2em;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-color: $color;
+  box-shadow: none !important;
+  color: $color;
+  line-height: 1;
+  font-size: $font-size-base * 1.75;
+  transition: none;
+
+  &:hover {
+    border-color: $hover-color;
+    color: $hover-color;
+  }
+
+  &::before {
+    content: '+';
+  }
+
+  &[aria-expanded="true"]::before {
+    content: '-';
+  }
+
+  *:first-child,
+  *:last-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    border: 0;
+    border-color: inherit;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 16%;
+      height: 18%;
+      border-color: inherit;
+    }
+  }
+
+  *:first-child::before {
+    top: 0;
+    left: 0;
+    border-style: solid none none solid;
+    border-width: $border-width 0 0 $border-width;
+  }
+
+  *:first-child::after {
+    top: 0;
+    right: 0;
+    border-style: solid solid none none;
+    border-width: $border-width $border-width 0 0;
+  }
+
+  *:last-child::before {
+    left: 0;
+    bottom: 0;
+    border-style: none none solid solid;
+    border-width: 0 0 $border-width $border-width;
+  }
+
+  *:last-child::after {
+    right: 0;
+    bottom: 0;
+    border-style: none solid solid none ;
+    border-width: 0 $border-width $border-width 0;
+  }
+}

@@ -1,12 +1,16 @@
+@import "overrides/variables";
 @import "bootstrap-icons/font/bootstrap-icons";
-@import "fonts";
-@import "bootstrap_variables";
-@import "variables";
-
-@import "bootswatch/dist/vapor/variables";
 @import "bootstrap/scss/bootstrap";
-@import "bootswatch/dist/vapor/bootswatch";
+@import "overrides/button";
 
-@import "overrides";
-@import "main";
-@import "components/network_menu";
+@import "variables";
+@import "general";
+@import "utils";
+
+@import "components/footer";
+@import "components/network_selector";
+@import "components/vaults_header";
+@import "components/vaults_table";
+@import "components/vault_panel";
+@import "components/vault_summary";
+@import "components/wallet_modal";

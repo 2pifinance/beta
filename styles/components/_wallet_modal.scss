@@ -1,0 +1,10 @@
+// Move Web3 modal over Bootstrap's components
+#WEB3_CONNECT_MODAL_ID {
+  position: relative !important;
+  z-index: 9999 !important;
+}
+
+// WalletConnect's modal inherits copy color from body otherwise
+#walletconnect-wrapper {
+  color: $dark;
+}

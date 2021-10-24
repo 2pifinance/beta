@@ -1,0 +1,43 @@
+@use "sass:map";
+@import "bootstrap/scss/variables";
+
+body {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: map.get($spacers, 5);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: -9999;
+  }
+
+  &::before {
+    top: 0;
+    bottom: 50%;
+    background:
+      linear-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 1)) bottom / 100% 20% no-repeat,
+      url(../public/images/background_top.jpg) top / cover no-repeat;
+  }
+
+  &::after {
+    top: 50%;
+    bottom: 0;
+    background:
+      linear-gradient(hsla(0, 0%, 0%, 1), hsla(0, 0%, 0%, 0)) top / 100% 20% no-repeat,
+      url(../public/images/background_bottom.jpg) bottom / cover no-repeat;
+  }
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

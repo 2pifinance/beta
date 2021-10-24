@@ -34,11 +34,10 @@ const WalletButton = () => {
   const status    = useSelector(selectStatus)
   const dispatch  = useDispatch()
   const supported = isNaN(chainId) || SUPPORTED_CHAINS.includes(chainId)
-  const border    = supported ? 'primary' : 'danger'
 
   return (
     <button type="button"
-            className={`btn btn-outline-${border} btn-sm bg-dark text-primary fw-semi-bold order-0 order-lg-1 mt-3 mt-lg-0`}
+            className={`btn btn-outline-primary`}
             disabled={status === 'loading'}
             onClick={() => { address ? dispatch(disconnectAsync()) : dispatch(connectAsync()) }}>
       <span className="me-2">

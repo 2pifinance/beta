@@ -1,0 +1,14 @@
+.app-footer {
+  > div:first-child {
+    border-top: 1px solid hsla(0, 0%, 100%, 0.6)
+  }
+
+  a {
+    color: hsla(0, 0%, 100%, 0.6);
+
+    &:hover,
+    &:focus {
+      color: hsla(0, 0%, 100%, 1);
+    }
+  }
+}

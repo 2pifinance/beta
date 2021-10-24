@@ -25,6 +25,8 @@ class MyDocument extends Document {
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://app.2pi.network" />
           <meta property="og:image" content="https://app.2pi.network/images/logo512.png" />
+
+          <link rel="stylesheet" href="https://use.typekit.net/qys1tmx.css" />
         </Head>
 
         <body>

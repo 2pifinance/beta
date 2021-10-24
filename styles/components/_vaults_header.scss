@@ -1,0 +1,85 @@
+$vaults-header-border-color:  hsla(0, 0%, 100%, 0.25) !default;
+$vaults-header-border-radius: $border-radius          !default;
+
+.vaults-header {
+  display: flex;
+  flex-direction: column-reverse;
+  border: 2px solid $vaults-header-border-color;
+  border-radius: $vaults-header-border-radius;
+  background-color: hsla(0, 0%, 0%, 0.5);
+  backdrop-filter: blur(8px);
+
+  @include media-breakpoint-up(lg) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.vaults-header-network {
+  $border-color: rgba($primary, 0.5);
+
+  @include media-breakpoint-up(lg) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 2.5rem 4rem 3.5rem;
+    background: no-repeat bottom center / 250px url('/images/network_decoration.svg');
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 20%;
+      border-top: 1px solid $border-color;
+      border-left: 1px solid $border-color;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 20%;
+      border-top: 1px solid $border-color;
+      border-right: 1px solid $border-color;
+    }
+
+    .network-selector ,
+    .network-selector-list {
+      min-width: 250px;
+    }
+  }
+}
+
+.vaults-header-network-label {
+  text-transform: uppercase;
+
+  @include media-breakpoint-up(lg) {
+    position: absolute;
+    top: 0rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 12px;
+  }
+}
+
+.vaults-header-stat {
+  margin: 0;
+  padding: 0;
+  color: $theme-green;
+  font-family: $font-family-primary;
+}
+
+.vaults-header-stat-label {
+  margin-top: -0.5rem;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.vaults-header-placeholder {
+  color: hsl(0, 0%, 27%);
+}

@@ -15,7 +15,6 @@
     "@walletconnect/web3-provider": "^1.6.6",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.6.1",
-    "bootswatch": "^5.1.3",
     "ethers-multicall": "^0.2.1",
     "jest-fetch-mock": "^3.0.3",
     "next": "^11.1.2",

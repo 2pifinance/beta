@@ -1,0 +1,48 @@
+$vault-summary-padding: $spacer * 1.5 !default;
+$vault-summary-size-sm: 14px          !default;
+$vault-summary-size:    24px          !default;
+$vault-summary-size-lg: 28px          !default;
+
+.vault-summary {
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  small {
+    display: block;
+    font-size: $vault-summary-size-sm;
+    opacity: 0.5;
+  }
+}
+
+.vault-summary-stat {
+  color: $theme-green;
+  font-family: $font-family-primary;
+  font-size: $vault-summary-size;
+
+  small + & {
+    margin-top: -0.2rem
+  }
+}
+
+.vault-summary-symbol {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-bottom: -10px;
+  padding: 0;
+  font-size: $vault-summary-size-lg;
+}
+
+.vault-summary-logo {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  margin: 0 12px 0 0;
+  padding: 0;
+}
+
+.vault-summary-platform {
+  padding-left: 48px;
+}

@@ -5,10 +5,9 @@ import { removePathTrailingSlash } from 'next/dist/client/normalize-trailing-sla
 import { getRouteRegex } from 'next/dist/shared/lib/router/utils/route-regex'
 import Head from 'next/head'
 import Link from 'next/link'
-import Experimental from '../src/components/experimental'
-import Header from '../src/components/header'
+import Header from '../src/components/Header'
 import Toasts from '../src/components/toasts'
-import Footer from '../src/components/footer'
+import Footer from '../src/components/Footer'
 import Back from '../src/components/back'
 
 const cleanPath = path => {
@@ -43,7 +42,6 @@ const NotFoundPage = () => {
         <title>2PI - Not found</title>
       </Head>
 
-      <Experimental />
       <Header />
       <NotFound />
       <Toasts />

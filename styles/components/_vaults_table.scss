@@ -1,0 +1,66 @@
+@import "bootstrap/scss/mixins/caret";
+
+$vaults-table-border-color:  hsl(0, 0%, 33%) !default;
+$vaults-table-border-radius: $border-radius  !default;
+
+.vaults-table {
+  background-color: hsla(0, 0%, 0%, 0.5);
+  backdrop-filter: blur(8px);
+  border: 2px solid $vaults-table-border-color;
+  border-radius: $vaults-table-border-radius;
+}
+
+.vaults-table-header {
+  border-bottom: 2px solid $vaults-table-border-color;
+}
+
+.vaults-table-colheader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  line-height: 1rem;
+  font-family: $font-family-base;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+
+  span:first-child {
+    user-select: none;
+    font-size: $font-size-base * 0.8;
+    cursor: pointer;
+  }
+}
+
+.vaults-table-sort {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0.5rem
+}
+
+.vaults-table-sort-asc,
+.vaults-table-sort-desc {
+  cursor: pointer;
+  line-height: 0.5;
+  opacity: 0.5;
+
+  &:hover,
+  &:active,
+  &.is-active {
+    opacity: 1;
+  }
+}
+
+.vaults-table-sort-asc {
+  @include caret(up);
+}
+
+.vaults-table-sort-desc {
+  @include caret(down);
+}
+
+.vaults-table-row {
+  &:not(:last-child) {
+    border-bottom: 2px solid $vaults-table-border-color;
+  }
+}

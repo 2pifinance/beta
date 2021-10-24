@@ -32,7 +32,7 @@ const ReferralLink = () => {
 
   return (
     <React.Fragment>
-      <h4 className="h4 text-primary mt-4 mb-3">
+      <h4 className="h4 text-info mt-4 mb-3">
         Your referral link
       </h4>
 
@@ -45,13 +45,13 @@ const ReferralLink = () => {
                id="referralInput" />
       </div>
 
-      <button className="btn btn-outline-primary bg-dark text-primary fw-bold"
+      <button className="btn btn-outline-primary"
               disabled={! copy}
               onClick={copyToClipboard}>
         Copy
       </button>
 
-      <h4 className="h4 text-primary mt-4 mb-1">
+      <h4 className="h4 text-info mt-4 mb-1">
         Total referrals
       </h4>
 

@@ -1,0 +1,64 @@
+@import "bootstrap/scss/mixins/caret";
+
+$network-selector-color:         $input-color        !default;
+$network-selector-bg-color:      $input-bg           !default;
+$network-selector-border-color:  $input-border-color !default;
+$network-selector-border-radius: $border-radius      !default;
+$network-selector-zindex:        $zindex-dropdown    !default;
+
+.network-selector {
+  position: relative;
+  display: block;
+  min-width: 200px;
+  height: 48px;
+  cursor: pointer;
+}
+
+.network-selector-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: $network-selector-zindex;
+  min-width: 200px;
+  height: auto;
+  max-height: 100%;
+  margin: 0;
+  padding: 0 0 0 0;
+  background: $network-selector-bg-color;
+  border: 1px solid $network-selector-border-color;
+  border-radius: $network-selector-border-radius;
+  list-style-type: none;
+  transition: max-height 200ms ease-in-out;
+
+  &.is-active {
+    // Set a max-height enough to show all listed networks.
+    // Transitioning height needs a hard number, not "auto".
+    max-height: 340px;
+
+    .network-selector-item:first-child:not(:last-child) {
+      @include caret(up);
+    }
+  }
+}
+
+.network-selector-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $input-btn-padding-y $input-btn-padding-x;
+
+  &:first-child:not(:last-child) {
+    @include caret(down);
+  }
+}
+
+.network-selector-button {
+  user-select: none;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  color: $network-selector-color;
+  background: transparent;
+  border: 0;
+}

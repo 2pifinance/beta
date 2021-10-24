@@ -1,4 +1,27 @@
-// Network menu
+//
+// App variables
+//
 
-$network-menu-border-color: hsla(0, 0%, 100%, 0.2);
-$network-menu-radius: 4px;
+// Colors
+// ======
+
+// Theme
+$theme-green: hsl(151, 72%, 61%);
+
+
+
+
+// Typography
+// ==========
+
+$font-family-primary:   t26-carbon, #{inspect($font-family-monospace)};
+$font-family-secondary: $font-family-sans-serif;
+
+
+
+
+// Components
+// ==========
+
+$vaults-header-border-radius: $border-radius-lg;
+$vaults-table-border-radius:  $border-radius-lg;

@@ -1,0 +1,87 @@
+//
+// Boostrap variable overrides
+//
+
+// General
+// ======
+
+// Options
+$enable-negative-margins: true;
+
+
+
+
+// Colors
+// ======
+
+$white:   hsl(0, 0%, 100%);
+$black:   hsl(0, 0%, 0%);
+$primary: hsl(197, 75%, 55%);
+$success: hsl(143, 87%, 59%);
+$info:    hsl(213, 65%, 32%);
+$warning: hsl(43, 100%, 72%);
+$danger:  hsl(337, 100%, 72%);
+
+
+
+
+// Typography
+// ==========
+
+// Bootstrap's font-family plus "proxima-nova"
+$font-family-sans-serif: proxima-nova, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+
+
+
+// Spacing
+// =======
+
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 2,
+  6: $spacer * 3,
+  7: $spacer * 5,
+  8: $spacer * 8,
+);
+
+
+
+
+// Layout
+// ======
+
+$body-color:       $white;
+$border-radius:    0.5rem;
+$border-radius-sm: 0.5rem;
+$border-radius-lg: 1rem;
+
+
+
+
+// Forms
+// =====
+
+// Inputs and buttons
+
+$input-btn-padding-y:    0.46em;
+$input-btn-padding-y-lg: 0.7em;
+
+$input-btn-focus-color:  hsla(197, 75%, 55%, 0.5);
+
+
+// Inputs
+
+$input-color:                 $white;
+$input-bg:                    $black;
+$input-border-color:          hsl(60, 0%, 46%);
+
+$input-focus-border-color:    hsla(197, 75%, 55%);
+
+$input-disabled-bg:           hsl(0, 0%, 20%);
+$input-disabled-border-color: $input-border-color;

@@ -1,13 +1,11 @@
-import Experimental from './experimental'
-import Header from './header'
+import Header from './Header'
 import AirdropClaim from './airdropClaim'
-import Footer from './footer'
+import Footer from './Footer'
 import Toasts from './toasts'
 
 const Airdrop = () => {
   return (
     <div className="container">
-      <Experimental />
       <Header />
       <AirdropClaim />
       <Toasts />

@@ -19,7 +19,7 @@ const AirdropUnlock = () => {
   return (
     <React.Fragment>
       <button type="button"
-              className="btn btn-outline-primary bg-dark text-primary fw-bold mt-4"
+              className="btn btn-outline-primary mt-4"
               disabled={['loading', 'success'].includes(status)}
               onClick={() => { dispatch(connectAsync()) }}>
         {buttonLabel()}

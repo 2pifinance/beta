@@ -1,13 +1,11 @@
-import Experimental from './experimental'
-import Header from './header'
-import Footer from './footer'
+import Header from './Header'
+import Footer from './Footer'
 import Toasts from './toasts'
 import Referral from './referral'
 
 const Referrals = () => {
   return (
     <div className="container">
-      <Experimental />
       <Header />
       <Referral />
       <Toasts />
