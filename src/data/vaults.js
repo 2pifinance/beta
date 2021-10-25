@@ -3,10 +3,12 @@ import * as Client from '../lib/client'
 import { toHuman, toNative } from '../lib/math'
 
 export const getVaults = async (chainId, wallet) => {
+  const vaults = await Client.getVaults(chainId, wallet)
+
   const [ prices, apys, ...data ] = await Promise.all([
     Client.getPrices(chainId),
     Client.getApys(),
-    ...Client.getVaults(chainId, wallet).map(toVaultData)
+    ...vaults.map(toVaultData)
   ])
 
   // Set missing APY for the Curve BTC vault
@@ -33,13 +35,13 @@ export const approve = async (wallet, vault, amount) => {
   return { ...vault, allowance: new BigNumber(amount) }
 }
 
-export const deposit = async (wallet, vault, amount) => {
+export const deposit = async (wallet, vault, amount, referral) => {
   const { id, balance, deposited, tokenDecimals } = vault
 
   const instance     = getVaultInstance(id, wallet)
   const amountNative = toNative(amount, tokenDecimals)
 
-  await instance.deposit(amountNative)
+  await instance.deposit(amountNative, referral)
 
   return {
     ...vault,
