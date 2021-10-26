@@ -5,7 +5,7 @@ import { selectVaults } from '../features/vaultsSlice'
 import { constantVaultFetch } from '../helpers/vaults'
 import { selectAddress, selectChainId } from '../features/walletSlice'
 
-const renderVault = (vault) => (
+const renderVault = vault => (
   <VaultItem key={vault.id}
              apy={vault.apy}
              balance={vault.balance}

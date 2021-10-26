@@ -15,7 +15,7 @@ export const toHuman = (integer, decimals) => {
   if (decimals === undefined) throw new TypeError('Missing decimal precision')
 
   const bigInt           = new BigNumber(integer.toString())
-  const adjustmentFactor = new BigNumber(10).pow(decimals)
+  const adjustmentFactor = new BigNumber(10).pow(`${decimals}`)
 
   return bigInt.div(adjustmentFactor)
 }
