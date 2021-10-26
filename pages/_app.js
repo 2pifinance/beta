@@ -16,28 +16,10 @@ if (release) {
   Sentry.init({ dsn, release, integrations, tracesSampleRate: 1.0 })
 }
 
-const useLoading = () => {
-  const routerEvents          = useRouter().events
-  const [loading, setLoading] = useState(false)
-
-  const handleRouteStart    = () => { setLoading(true) }
-  const handleRouteComplete = () => { setLoading(false) }
-
-  useEffect(() => {
-    routerEvents.on('routeChangeStart', handleRouteStart)
-    routerEvents.on('routeChangeComplete', handleRouteComplete)
-
-    return () => {
-      routerEvents.off('routeChangeStart', handleRouteStart)
-      routerEvents.off('routeChangeComplete', handleRouteComplete)
-    }
-  }, [routerEvents])
-
-  return loading
-}
-
 const App = ({ Component, pageProps }) => {
   const loading = useLoading()
+
+  useReferral()
 
   return (
     <Provider store={store}>
@@ -58,3 +40,37 @@ App.propTypes = {
 }
 
 export default App
+
+const useLoading = () => {
+  const router                  = useRouter()
+  const [ loading, setLoading ] = useState(false)
+
+  const handleRouteStart    = () => { setLoading(true) }
+  const handleRouteComplete = () => { setLoading(false) }
+
+  useEffect(() => {
+    const routerEvents = router.events
+
+    routerEvents.on('routeChangeStart', handleRouteStart)
+    routerEvents.on('routeChangeComplete', handleRouteComplete)
+
+    return () => {
+      routerEvents.off('routeChangeStart', handleRouteStart)
+      routerEvents.off('routeChangeComplete', handleRouteComplete)
+    }
+  }, [])
+
+  return loading
+}
+
+const useReferral = () => {
+  const router   = useRouter()
+  const referral = router.query?.ref
+
+  useEffect(() => {
+    // Prevent overriding the referral if it already exists
+    if (!referral || localStorage.getItem('referral')) return
+
+    localStorage.setItem('referral', referral)
+  }, [ referral ])
+}

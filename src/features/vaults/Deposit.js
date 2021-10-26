@@ -8,8 +8,6 @@ import { errorToastAdded, successToastAdded } from '../toastsSlice'
 import { selectWallet } from '../walletSlice'
 import { validateDeposit } from './utils/validations'
 
-// [TODO]
-// - Set referral.
 const Deposit = ({ vault, onUpdate }) => {
   const dispatch                    = useDispatch()
   const wallet                      = useSelector(selectWallet)
@@ -50,7 +48,8 @@ const Deposit = ({ vault, onUpdate }) => {
     setIsPending(true)
 
     try {
-      const newVault = await deposit(wallet, vault, value)
+      const referral = localStorage.getItem('referral')
+      const newVault = await deposit(wallet, vault, value, referral)
 
       setValue('')
       onUpdate(newVault)

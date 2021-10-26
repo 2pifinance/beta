@@ -33,13 +33,13 @@ export const approve = async (wallet, vault, amount) => {
   return { ...vault, allowance: new BigNumber(amount) }
 }
 
-export const deposit = async (wallet, vault, amount) => {
+export const deposit = async (wallet, vault, amount, referral) => {
   const { id, balance, deposited, tokenDecimals } = vault
 
   const instance     = getVaultInstance(id, wallet)
   const amountNative = toNative(amount, tokenDecimals)
 
-  await instance.deposit(amountNative)
+  await instance.deposit(amountNative, referral)
 
   return {
     ...vault,
@@ -135,6 +135,7 @@ const toWalletData = async vault => {
     pricePerFullShare,
     balanceNative,
     allowanceNative,
+    pendingPiTokens,
     tokenDecimals
   ] = await Promise.all([
     vault.shares(),
@@ -142,14 +143,16 @@ const toWalletData = async vault => {
     vault.pricePerFullShare(),
     vault.balance(),
     vault.allowance(),
+    vault.pendingPiTokens(),
     vault.tokenDecimals()
   ])
 
-  const balance    = toHuman(balanceNative, tokenDecimals)
-  const shares     = toHuman(sharesNative, vaultDecimals)
-  const sharePrice = toHuman(pricePerFullShare, tokenDecimals)
-  const deposited  = shares.times(sharePrice)
-  const allowance  = toHuman(allowanceNative, tokenDecimals)
+  const balance     = toHuman(balanceNative, tokenDecimals)
+  const shares      = toHuman(sharesNative, vaultDecimals)
+  const sharePrice  = toHuman(pricePerFullShare, tokenDecimals)
+  const deposited   = shares.times(sharePrice)
+  const allowance   = toHuman(allowanceNative, tokenDecimals)
+  const twoPiEarned = toHuman(pendingPiTokens, 18)
 
-  return { allowance, balance, deposited, sharePrice, vaultDecimals }
+  return { allowance, balance, deposited, sharePrice, twoPiEarned, vaultDecimals }
 }
