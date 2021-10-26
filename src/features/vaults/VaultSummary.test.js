@@ -4,6 +4,7 @@ import VaultSummary from './VaultSummary'
 
 const vault = {
   id:            'polygon-dai-aave',
+  chainId:       137,
   symbol:        'DAI',
   token:         'dai',
   tokenDecimals: 18,

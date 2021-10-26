@@ -64,6 +64,14 @@ export const withdraw = async (wallet, vault, amount) => {
   }
 }
 
+export const harvest = async (wallet, vault) => {
+  const instance = getVaultInstance(vault.id, wallet)
+
+  await instance.harvest()
+
+  return { ...vault, twoPiEarned: new BigNumber(0) }
+}
+
 
 
 // -- HELPERS --
@@ -94,13 +102,14 @@ const toVaultData = async vault => {
     toWalletData(vault)
   ])
 
-  const { id, symbol, token, earn, uses, priceId }                   = vault
+  const { id, chainId, symbol, token, earn, uses, priceId }          = vault
   const { allowance, balance, deposited, sharePrice, vaultDecimals } = wallet
 
   const tvl = toHuman(tvlNative, tokenDecimals)
 
   return {
     id,
+    chainId,
     symbol,
     token,
     tokenDecimals,

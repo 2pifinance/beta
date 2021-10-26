@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
 import configureStore from 'redux-mock-store'
-import VaultPanel from './VaultPanel'
+import Claim from './Claim'
 
 const mockStore = configureStore([])
 
@@ -24,30 +24,25 @@ const vault = {
   price:         new BigNumber(1),
 }
 
-describe('VaultPanel component', () => {
+describe('Claim component', () => {
   let store
 
   beforeEach(() => {
     const initialState = {
-      wallet: { chainId: 137 }
+      wallet: {}
     }
 
     store = mockStore(initialState)
   })
 
-  test('VaultPanel component renders', () => {
-    const props = { vault, connected: true }
-
+  test('Claim component renders', () => {
     render(
       <Provider store={store}>
-        <VaultPanel {...props} />
+        <Claim vault={vault} />
       </Provider>
     )
 
-    const elements = [
-      ...screen.getAllByText(/Deposit/),
-      ...screen.getAllByText(/Withdraw/)
-    ]
+    const elements = screen.getAllByText(/Claim/)
 
     elements.forEach(element => expect(element).toBeInTheDocument())
   })
