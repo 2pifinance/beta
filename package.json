@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@2pi-network/js-sdk": "git+ssh://git@github.com/2pinetwork/sdk.git",
+    "@2pi-network/js-sdk": "git+ssh://git@github.com/2pinetwork/sdk.git#next",
     "@gnosis.pm/safe-apps-web3modal": "^4.0.0",
     "@popperjs/core": "^2.10.2",
     "@reduxjs/toolkit": "^1.6.2",
