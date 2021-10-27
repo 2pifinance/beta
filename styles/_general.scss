@@ -20,7 +20,7 @@ body {
     bottom: 50%;
     background:
       linear-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 1)) bottom / 100% 20% no-repeat,
-      url(../public/images/background_top.jpg) top / cover no-repeat;
+      url(../public/images/background_top.jpg) top / 100% auto no-repeat;
   }
 
   &::after {
@@ -28,7 +28,7 @@ body {
     bottom: 0;
     background:
       linear-gradient(hsla(0, 0%, 0%, 1), hsla(0, 0%, 0%, 0)) top / 100% 20% no-repeat,
-      url(../public/images/background_bottom.jpg) bottom / cover no-repeat;
+      url(../public/images/background_bottom.jpg) bottom / 100% auto no-repeat;
   }
 }
 
