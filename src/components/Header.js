@@ -74,7 +74,7 @@ const MobilePrimaryNav = () => (
     <li className="nav-item d-lg-none">
       <a className="nav-link" target="_blank" rel="noreferrer"
          href="https://docs.2pi.network/how-to-guide">
-        Help
+        Docs
       </a>
     </li>
 
@@ -100,7 +100,7 @@ const DesktopPrimaryNav = () => (
 
     <a className="btn btn-outline-primary py-3 me-3" target="_blank"
        rel="noreferrer" href="https://docs.2pi.network/how-to-guide">
-      Help
+      Docs
     </a>
 
     <WalletButton />
