@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { approve, deposit } from '../../data/vaults'
 import { classNames, preventDefault } from '../../lib/html'
 import { toNumber } from '../../lib/locales'
-import { errorToastAdded, successToastAdded } from '../toastsSlice'
+import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
 import { selectWallet } from '../walletSlice'
 import { validateDeposit } from './utils/validations'
 
@@ -25,16 +25,19 @@ const Deposit = ({ vault, onUpdate }) => {
     setIsPending(true)
 
     try {
-      const newVault = await approve(wallet, vault, 1e58)
+      const transaction = await approve(wallet, vault, 1e58)
 
-      onUpdate(newVault)
-      dispatch(approveSuccess())
+      setIsPending(false)
+      dispatch(approveSent(transaction.hash))
+
+      const receipt = await transaction.wait()
+
+      onUpdate()
+      dispatch(approveSuccess(receipt.transactionHash))
 
     } catch (error) {
-      dispatch(approveError(error))
-
-    } finally {
       setIsPending(false)
+      dispatch(approveError(error))
     }
   }
 
@@ -48,18 +51,21 @@ const Deposit = ({ vault, onUpdate }) => {
     setIsPending(true)
 
     try {
-      const referral = localStorage.getItem('referral')
-      const newVault = await deposit(wallet, vault, value, referral)
+      const referral    = localStorage.getItem('referral')
+      const transaction = await deposit(wallet, vault, value, referral)
 
       setValue('')
-      onUpdate(newVault)
-      dispatch(depositSuccess())
+      setIsPending(false)
+      dispatch(depositSent())
+
+      const receipt = await transaction.wait()
+
+      onUpdate()
+      dispatch(depositSuccess(receipt.transactionHash))
 
     } catch (error) {
-      dispatch(depositError(error))
-
-    } finally {
       setIsPending(false)
+      dispatch(depositError(error))
     }
   }
 
@@ -118,10 +124,12 @@ const isTokenApproved = ({ token, allowance, balance }) => {
   return allowance.isGreaterThan(balance)
 }
 
-const approveSuccess = () => {
-  const message = 'The approval was successful, you may deposit now.'
+const approveSent = () => {
+  return infoToastAdded('Approve sent', 'Your approve has been sent.')
+}
 
-  return successToastAdded('Success', message)
+const approveSuccess = () => {
+  return successToastAdded('Success', 'The approval was successful, you may deposit now.')
 }
 
 const approveError = error => {
@@ -130,8 +138,12 @@ const approveError = error => {
   return errorToastAdded('Approval rejected', message)
 }
 
+const depositSent = () => {
+  return infoToastAdded('Deposit sent', 'Your deposit has been sent.')
+}
+
 const depositSuccess = () => {
-  return successToastAdded('Success', 'Your deposit was successful')
+  return successToastAdded('Success', 'Your deposit was successful.')
 }
 
 const depositError = error => {

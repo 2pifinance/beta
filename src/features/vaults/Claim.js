@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { harvest } from '../../data/vaults'
 import { toNumber } from '../../lib/locales'
-import { errorToastAdded, successToastAdded } from '../toastsSlice'
+import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
 import { selectWallet } from '../walletSlice'
 
 export const Claim = ({ vault, onUpdate }) => {
@@ -20,17 +20,19 @@ export const Claim = ({ vault, onUpdate }) => {
     setIsPending(true)
 
     try {
-      const newVault = await harvest(wallet, vault)
+      const transaction = await harvest(wallet, vault)
 
-      onUpdate(newVault)
-      dispatch(claimSuccess())
+      setIsPending(false)
+      dispatch(claimSent(transaction.hash))
+
+      const receipt = await transaction.wait()
+
+      onUpdate()
+      dispatch(claimSuccess(receipt.transactionHash))
 
     } catch (error) {
-      console.error(error)
-      dispatch(claimError(error))
-
-    } finally {
       setIsPending(false)
+      dispatch(claimError(error))
     }
   }
 
@@ -59,8 +61,12 @@ export default Claim
 
 // -- HELPERS --
 
+const claimSent = () => {
+  return infoToastAdded('Claim sent', 'Your claim has been sent.')
+}
+
 const claimSuccess = () => {
-  return successToastAdded('Success', 'Your claim was successful')
+  return successToastAdded('Success', 'Your claim was successful.')
 }
 
 const claimError = error => {

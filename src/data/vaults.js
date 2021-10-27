@@ -28,48 +28,32 @@ export const approve = async (wallet, vault, amount) => {
   const instance     = getVaultInstance(id, wallet)
   const amountNative = toNative(amount, tokenDecimals)
 
-  await instance.approve(amountNative)
-
-  return { ...vault, allowance: new BigNumber(amount) }
+  return instance.approve(amountNative)
 }
 
 export const deposit = async (wallet, vault, amount, referral) => {
-  const { id, balance, deposited, tokenDecimals } = vault
+  const { id, tokenDecimals } = vault
 
   const instance     = getVaultInstance(id, wallet)
   const amountNative = toNative(amount, tokenDecimals)
 
-  await instance.deposit(amountNative, referral)
-
-  return {
-    ...vault,
-    balance:   balance.minus(amount),
-    deposited: deposited.plus(amount)
-  }
+  return instance.deposit(amountNative, referral)
 }
 
 export const withdraw = async (wallet, vault, amount) => {
-  const { id, balance, deposited, sharePrice, vaultDecimals } = vault
+  const { id, sharePrice, vaultDecimals } = vault
 
   const instance     = getVaultInstance(id, wallet)
   const shares       = new BigNumber(amount).div(sharePrice)
   const amountNative = toNative(shares, vaultDecimals)
 
-  await instance.withdraw(amountNative)
-
-  return {
-    ...vault,
-    balance:   balance.plus(amount),
-    deposited: deposited.minus(amount)
-  }
+  return instance.withdraw(amountNative)
 }
 
 export const harvest = async (wallet, vault) => {
   const instance = getVaultInstance(vault.id, wallet)
 
-  await instance.harvest()
-
-  return { ...vault, twoPiEarned: new BigNumber(0) }
+  return instance.harvest()
 }
 
 

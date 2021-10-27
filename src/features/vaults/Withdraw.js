@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { withdraw } from '../../data/vaults'
 import { classNames, preventDefault } from '../../lib/html'
 import { toNumber } from '../../lib/locales'
-import { errorToastAdded, successToastAdded } from '../toastsSlice'
+import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
 import { selectWallet } from '../walletSlice'
 import { validateWithdraw } from './utils/validations'
 
@@ -33,17 +33,20 @@ const Withdraw = ({ vault, onUpdate }) => {
     setIsPending(true)
 
     try {
-      const newVault = await withdraw(wallet, vault, value)
+      const transaction = await withdraw(wallet, vault, value)
 
       setValue('')
-      onUpdate(newVault)
-      dispatch(withdrawSuccess())
+      setIsPending(false)
+      dispatch(withdrawSent(transaction.hash))
+
+      const receipt = await transaction.wait()
+
+      onUpdate()
+      dispatch(withdrawSuccess(receipt.transactionHash))
 
     } catch (error) {
-      dispatch(withdrawError(error))
-
-    } finally {
       setIsPending(false)
+      dispatch(withdrawError(error))
     }
   }
 
@@ -92,8 +95,12 @@ export default Withdraw
 
 // -- HELPERS --
 
+const withdrawSent = () => {
+  return infoToastAdded('Withdraw sent', 'Your withdraw has been sent.')
+}
+
 const withdrawSuccess = () => {
-  return successToastAdded('Success', 'Your withdraw was successful')
+  return successToastAdded('Success', 'Your withdraw was successful.')
 }
 
 const withdrawError = error => {

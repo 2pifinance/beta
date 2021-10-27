@@ -12,6 +12,16 @@ export const selectToasts = state => state.toasts
 
 // -- ACTIONS --
 
+export const infoToastAdded = (title, message, autohide = false) => {
+  return toastAdded({
+    title:    title,
+    body:     message,
+    icon:     'exclamation-circle',
+    style:    'info',
+    autohide
+  })
+}
+
 export const successToastAdded = (title, message, autohide = false) => {
   return toastAdded({
     title:    title,
