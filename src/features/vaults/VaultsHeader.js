@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { SUPPORTED_CHAINS } from '../../data/constants'
 import { toCurrency } from '../../lib/locales'
 import NetworkSelector from './NetworkSelector'
-import Mint from '../mint/Mint'
 
 const VaultsHeader = ({ chainId, vaults, connected = false, onChainChange }) => {
   const tvl       = (vaults) ? aggregateTvl(vaults) : undefined
@@ -35,8 +34,6 @@ const VaultsHeader = ({ chainId, vaults, connected = false, onChainChange }) => 
         <p className="text-muted">
           This app is experimental, please do your own research.
         </p>
-
-        <Mint />
       </div>
     </header>
   )

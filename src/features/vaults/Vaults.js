@@ -4,6 +4,7 @@ import { selectWallet, selectChainId, setChainAsync } from '../walletSlice'
 import { getVaults, useVaults } from './utils/vaults'
 import VaultsHeader from './VaultsHeader'
 import VaultsTable from './VaultsTable'
+import Mint from '../mint/Mint'
 
 const Vaults = () => {
   const dispatch              = useDispatch()
@@ -26,6 +27,8 @@ const Vaults = () => {
     <React.Fragment>
       <VaultsHeader chainId={chainId} vaults={vaults} connected={isConnected}
                     onChainChange={onChainChange} />
+
+      {(isConnected) ? <Mint /> : null }
 
       {(vaults)
          ? <VaultsTable vaults={vaults} connected={isConnected} onUpdate={onUpdate} />

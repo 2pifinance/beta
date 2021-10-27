@@ -7,15 +7,18 @@
     $white                // active-color
   );
 
+  padding-left:  2.5em;
+  padding-right: 2.5em;
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.7;
   letter-spacing: 1.6px;
   text-transform: uppercase;
 
-  &:not(.btn-sm) {
-    padding-left:  2.5em;
-    padding-right: 2.5em;
+  &.btn-sm {
+    padding-left:  1em;
+    padding-right: 1em;
+    font-size: 0.8rem;
   }
 
   &:hover {
