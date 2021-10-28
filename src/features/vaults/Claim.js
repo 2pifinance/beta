@@ -44,7 +44,7 @@ export const Claim = ({ vault, onUpdate }) => {
       </strong>
 
       <button className="btn btn-outline-primary btn-sm ms-3"
-              onClick={onClaim} disabled={isPending}>
+              onClick={onClaim} disabled={isZero || isPending}>
         {buttonLabel}
       </button>
     </p>
