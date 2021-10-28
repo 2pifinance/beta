@@ -3,15 +3,19 @@ import * as Client from '../lib/client'
 import { toHuman, toNative } from '../lib/math'
 
 export const getVaults = async (chainId, wallet) => {
-  const [ prices, apys, ...data ] = await Promise.all([
+  const [ prices, ...data ] = await Promise.all([
     Client.getPrices(chainId),
-    Client.getApys(),
     ...Client.getVaults(chainId, wallet).map(toVaultData)
   ])
 
-  // Set missing APY for the Curve BTC vault
-  const btcCurve = data.find(v => v.id === 'polygon-btc-curve')
-  if (btcCurve) { btcCurve.apy = (apys['curve-poly-ren'] || {}).totalApy }
+  try {
+    const apys = await Client.getApys()
+
+    // Set missing APY for the Curve BTC vault
+    const btcCurve = data.find(v => v.id === 'polygon-btc-curve')
+    if (btcCurve) { btcCurve.apy = (apys['curve-poly-ren'] || {}).totalApy }
+
+  } catch (error) {}
 
   // Add prices
   for (const item of data) {

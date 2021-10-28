@@ -12,7 +12,7 @@ export const getVaults = async (chainId, wallet) => {
   const vaults = await doGetVaults(chainId, wallet)
 
   for (const vault of vaults) {
-    vault.daily = toDailyRate(vault.apy)
+    vault.daily = vault.apy && toDailyRate(vault.apy)
   }
 
   return vaults
@@ -34,7 +34,7 @@ export const useVaults = (chainId, wallet) => {
     const cancelLoop = loopWithBackOff(getData, { delay, onSuccess, onError })
 
     return cancelLoop
-  }, [ chainId, wallet, dispatch ])
+  }, [ chainId, wallet ])
 
   return [ vaults, setVaults ]
 }

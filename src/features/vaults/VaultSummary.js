@@ -5,10 +5,15 @@ import { toNumber, toCurrency, toPercentage } from '../../lib/locales'
 const VaultSummary = ({ vault, connected }) => {
   const { price, symbol, token, uses } = vault
 
-  const apy      = toPercentage(vault.apy, { precision: 3 })
-  const daily    = toPercentage(vault.daily, { precision: 3 })
-  const tvl      = toCurrency(vault.tvl.times(price), { compact: true })
   const tokenSrc = `/images/tokens/${token}.svg`
+
+  const apy = (vault.apy)
+    ? toPercentage(vault.apy, { precision: 3 })
+    : undefined
+
+  const daily = (vault.daily)
+    ? toPercentage(vault.daily, { precision: 3 })
+    : undefined
 
   const balance = (vault.balance?.isGreaterThan(0))
     ? toNumber(vault.balance, { compact: true, precision: { max: 3 } })
@@ -25,6 +30,10 @@ const VaultSummary = ({ vault, connected }) => {
   const depositedUsd = (vault.deposited?.isGreaterThan(0))
     ? toCurrency(vault.deposited.times(price), { compact: true })
     : toCurrency(0)
+
+  const tvl = (vault.tvl?.isGreaterThan(0))
+    ? toCurrency(vault.tvl.times(price), { compact: true })
+    : undefined
 
   return (
     <div className="vault-summary row">
@@ -67,15 +76,15 @@ const VaultSummary = ({ vault, connected }) => {
       }
 
       <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
-        <p className="vault-summary-stat">{apy}</p>
+        <p className="vault-summary-stat">{(apy) ? apy : '-.--' }</p>
       </div>
 
       <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
-        <p className="vault-summary-stat">{daily}</p>
+        <p className="vault-summary-stat">{(daily) ? daily : '-.--' }</p>
       </div>
 
       <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
-        <p className="vault-summary-stat">{tvl}</p>
+        <p className="vault-summary-stat">{(tvl) ? tvl : '-.--' }</p>
       </div>
 
       <div role="gridcell" className="col d-flex align-items-center justify-content-end py-4" tabIndex="-1">
