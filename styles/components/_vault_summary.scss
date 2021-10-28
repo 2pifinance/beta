@@ -17,9 +17,9 @@ $vault-summary-size-lg: 28px          !default;
 }
 
 .vault-summary-stat {
-  color: $theme-green;
   font-family: $font-family-primary;
   font-size: $vault-summary-size;
+  color: $theme-green;
 
   small + & {
     margin-top: -0.2rem

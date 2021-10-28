@@ -1,0 +1,139 @@
+@use "sass:map";
+
+.airdrop-phases {
+  position: relative;
+  overflow: hidden;
+
+  @include media-breakpoint-up(lg) {
+    &::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 23%;
+      width: 200px;
+      height: 200px;
+      background: center / contain no-repeat url('/images/airdrop/astronaut.svg');
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 160px;
+      left: 50%;
+      z-index: -1;
+      width: 6000px;
+      height: 6000px;
+      border: 3px dashed hsla(0, 0%, 100%, 0.3);
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+#airdrop-phase-1 {
+  .airdrop-phase-flag {
+    top: 0;
+    left: 50%;
+    width: 180px;
+    transform: translateX(-50%);
+  }
+
+  .airdrop-phase-planet {
+    left: 50%;
+    bottom: 0;
+    width: 220px;
+    transform: translateX(-50%);
+  }
+}
+
+#airdrop-phase-2 {
+  .airdrop-phase-flag {
+    top: -10px;
+    left: 50%;
+    width: 148px;
+    transform: translateX(10%);
+  }
+
+  .airdrop-phase-planet {
+    left: 50%;
+    bottom: 55px;
+    width: 300px;
+    transform: translateX(-55%);
+  }
+}
+
+#airdrop-phase-3 {
+  .airdrop-phase-flag {
+    top: 25px;
+    left: 50%;
+    width: 170px;
+    transform: translateX(-40%);
+  }
+
+  .airdrop-phase-planet {
+    left: 50%;
+    bottom: 0;
+    width: 220px;
+    transform: translateX(-50%);
+  }
+}
+
+.airdrop-phase-image {
+  position: relative;
+  display: none;
+  height: 260px;
+
+  @include media-breakpoint-up(lg) {
+    display: block;
+  }
+}
+
+.airdrop-phase-flag {
+  position: absolute;
+  z-index: 1
+}
+
+.airdrop-phase-planet {
+  position: absolute;
+}
+
+.airdrop-phase-stats {
+  padding: map.get($spacers, 5) map.get($spacers, 6);
+  border: 1px solid $input-border-color;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(8px);
+  border-radius: $border-radius-lg;
+}
+
+.airdrop-phase-title {
+  margin-bottom: map.get($spacers, 1);
+  font-family: $font-family-primary;
+  font-size: 2.5rem;
+  color: $theme-green;
+}
+
+.airdrop-phase-subtitle {
+  color: $theme-gray;
+  text-transform: uppercase;
+}
+
+.airdrop-phase-stat {
+  margin-bottom: map.get($spacers, 4);
+}
+
+.airdrop-phase-stat-text {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.airdrop-phase-stat-label {
+  color: $theme-gray;
+}
+
+.airdrop-phase-stat-goal {
+}
+
+.airdrop-phase-stat-progress {
+  margin: 0 -5px;
+}

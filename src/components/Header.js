@@ -65,6 +65,12 @@ const MobilePrimaryNav = () => (
       </Link>
     </li>
 
+    <li className="nav-item">
+      <Link href="/airdrop">
+        <a className="nav-link">Airdrop</a>
+      </Link>
+    </li>
+
     <li className="nav-item d-lg-none">
       <a className="nav-link" target="_blank" rel="noreferrer"
          href="https://docs.2pi.network/how-to-guide">
@@ -86,6 +92,10 @@ const DesktopPrimaryNav = () => (
 
     <Link href="/referrals">
       <a className="btn btn-outline-primary py-3">Referrals</a>
+    </Link>
+
+    <Link href="/airdrop">
+      <a className="btn btn-outline-primary py-3">Airdrop</a>
     </Link>
 
     <a className="btn btn-outline-primary py-3 me-3" target="_blank"
