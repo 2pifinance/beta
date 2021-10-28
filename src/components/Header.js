@@ -63,12 +63,6 @@ const MobilePrimaryNav = () => (
     </li>
 
     <li className="nav-item">
-      <Link href="/referrals">
-        <a className="nav-link">Referrals</a>
-      </Link>
-    </li>
-
-    <li className="nav-item">
       <Link href="/airdrop">
         <a className="nav-link">Airdrop</a>
       </Link>
@@ -91,10 +85,6 @@ const DesktopPrimaryNav = () => (
   <div className="btn-group" role="group">
     <Link href="/">
       <a className="btn btn-outline-primary py-3">Vaults</a>
-    </Link>
-
-    <Link href="/referrals">
-      <a className="btn btn-outline-primary py-3">Referrals</a>
     </Link>
 
     <Link href="/airdrop">
