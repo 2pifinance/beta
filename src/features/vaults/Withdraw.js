@@ -8,11 +8,11 @@ import { notify, notifySuccess, notifyError } from '../../store/notifications'
 import { validateWithdraw } from './utils/validations'
 
 const Withdraw = ({ vault, onUpdate }) => {
-  const [ { wallet }, dispatch ]    = useStore()
-  const [ value, setValue ]         = useState('')
-  const [ error, setError ]         = useState()
-  const [ isPending, setIsPending ] = useState(false)
-  const { symbol, deposited }       = vault
+  const [ { wallet }, dispatch ]             = useStore()
+  const [ value, setValue ]                  = useState('')
+  const [ error, setError ]                  = useState()
+  const [ isPending, setIsPending ]          = useState(false)
+  const { symbol, deposited, withdrawalFee } = vault
 
   const buttonLabel = (isPending)
     ? 'Withdrawing...'
@@ -78,7 +78,7 @@ const Withdraw = ({ vault, onUpdate }) => {
           {buttonLabel}
         </button>
 
-        <small className="mt-2 text-muted">Withdraw fee: 0.1%</small>
+        <small className="mt-2 text-muted">Withdraw fee: {`${withdrawalFee}%`}</small>
       </div>
     </form>
   )

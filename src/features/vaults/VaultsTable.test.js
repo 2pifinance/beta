@@ -18,6 +18,7 @@ const dai = {
   sharePrice:    new BigNumber(1.5),
   vaultDecimals: 18,
   tvl:           new BigNumber(1000),
+  withdrawalFee: new BigNumber(10),
   price:         new BigNumber(1),
 }
 

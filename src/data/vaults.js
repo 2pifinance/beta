@@ -83,9 +83,16 @@ const getVaultApy = vault => {
 }
 
 const toVaultData = async vault => {
-  const [ apy, tvlNative, tokenDecimals, wallet ] = await Promise.all([
+  const [
+    apy,
+    tvlNative,
+    withdrawalFeeNative,
+    tokenDecimals,
+    wallet
+  ] = await Promise.all([
     getVaultApy(vault),
     vault.tvl(),
+    vault.withdrawalFee(),
     vault.tokenDecimals(),
     toWalletData(vault)
   ])
@@ -93,7 +100,8 @@ const toVaultData = async vault => {
   const { id, chainId, symbol, token, earn, uses, priceId }          = vault
   const { allowance, balance, deposited, sharePrice, vaultDecimals } = wallet
 
-  const tvl = toHuman(tvlNative, tokenDecimals)
+  const tvl           = toHuman(tvlNative, tokenDecimals)
+  const withdrawalFee = toHuman(withdrawalFeeNative, 2)
 
   return {
     id,
@@ -110,7 +118,8 @@ const toVaultData = async vault => {
     balance,
     sharePrice,
     vaultDecimals,
-    tvl
+    tvl,
+    withdrawalFee
   }
 }
 
