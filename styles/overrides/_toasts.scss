@@ -1,0 +1,19 @@
+.toast-container {
+  z-index: $zindex-fixed;
+}
+
+.toast.border-primary {
+  box-shadow: inset 0px 0px 12px rgba($primary, 0.5);
+}
+
+.toast.border-success {
+  box-shadow: inset 0px 0px 12px rgba($success, 0.5);
+}
+
+.toast.border-danger {
+  box-shadow: inset 0px 0px 12px rgba($danger, 0.5);
+}
+
+.toast .btn-close {
+  box-shadow: none !important;
+}

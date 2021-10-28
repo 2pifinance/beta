@@ -1,10 +1,7 @@
 import BigNumber from 'bignumber.js'
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../../store'
 import Deposit from './Deposit'
-
-const mockStore = configureStore([])
 
 const vault = {
   id:            'polygon-dai-aave',
@@ -25,19 +22,9 @@ const vault = {
 }
 
 describe('Deposit component', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: {}
-    }
-
-    store = mockStore(initialState)
-  })
-
   test('Deposit component renders', () => {
     render(
-      <Provider store={store}>
+      <Provider>
         <Deposit vault={vault} />
       </Provider>
     )

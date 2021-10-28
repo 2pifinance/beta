@@ -1,10 +1,7 @@
 import BigNumber from 'bignumber.js'
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../../store'
 import VaultsTable from './VaultsTable'
-
-const mockStore = configureStore([])
 
 const dai = {
   id:            'polygon-dai-aave',
@@ -27,19 +24,9 @@ const dai = {
 const vaults = [ dai ]
 
 describe('VaultsTable component', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: {}
-    }
-
-    store = mockStore(initialState)
-  })
-
   test('VaultsTable component renders', () => {
     render(
-      <Provider store={store}>
+      <Provider>
         <VaultsTable vaults={vaults} connected={true} />
       </Provider>
     )

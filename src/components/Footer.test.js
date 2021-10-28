@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import Footer from './Footer'
 
-describe('footer component render', () => {
-  test('renders 2pi network footer info', () => {
+describe('Footer component', () => {
+  test('Footer component renders', () => {
     render(
       <Footer />
     )

@@ -27,8 +27,14 @@
   ],
   "rules": {
     "eqeqeq": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "no-undef": "warn",
-    "no-unused-vars": "warn",
     "react/react-in-jsx-scope": "off"
   }
 }

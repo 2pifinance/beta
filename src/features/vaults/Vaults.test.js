@@ -1,24 +1,11 @@
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../../store'
 import Vaults from './Vaults'
 
-const mockStore = configureStore([])
-
 describe('Vaults component', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: { chainId: 137 }
-    }
-
-    store = mockStore(initialState)
-  })
-
   test('Vaults component renders', () => {
     render(
-      <Provider store={store}>
+      <Provider>
         <Vaults />
       </Provider>
     )

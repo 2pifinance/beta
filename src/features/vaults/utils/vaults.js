@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { SUPPORTED_CHAINS } from '../../../data/constants'
+import { isSupportedNetwork } from '../../../data/networks'
 import { getVaults as doGetVaults } from '../../../data/vaults'
 import { loopWithBackOff } from '../../../lib/function'
-import { errorToastAdded } from '../../toastsSlice'
 import { toDailyRate } from '../../../lib/math'
+import { useStore, dropNotificationGroup } from '../../../store'
+import { notifyError } from '../../../store/notifications'
 
 const FETCH_INTERVAL = 30 * 1000
 
@@ -19,16 +19,20 @@ export const getVaults = async (chainId, wallet) => {
 }
 
 export const useVaults = (chainId, wallet) => {
-  const dispatch = useDispatch()
+  const [ _state, dispatch ]  = useStore()
   const [ vaults, setVaults ] = useState()
 
   useEffect(() => {
-    if (! SUPPORTED_CHAINS.includes(chainId)) return
+    if (! isSupportedNetwork(chainId)) return
 
     const delay     = (wallet) ? FETCH_INTERVAL : FETCH_INTERVAL * 6
     const getData   = ()     => getVaults(chainId, wallet)
     const onSuccess = vaults => setVaults(vaults)
-    const onError   = ()     => dispatch(fetchErrorAdded())
+
+    const onError = () => {
+      dispatch(dropNotificationGroup('fetchVaults'))
+      dispatch(fetchError())
+    }
 
     // Start fetch loop
     const cancelLoop = loopWithBackOff(getData, { delay, onSuccess, onError })
@@ -39,9 +43,8 @@ export const useVaults = (chainId, wallet) => {
   return [ vaults, setVaults ]
 }
 
-const fetchErrorAdded = () => {
-  const title = 'Data loading error'
-  const msg   = 'We can’t reach out some resources, please refresh the page and try again'
+const fetchError = () => {
+  const msg = 'We can’t reach out some resources, please refresh the page and try again'
 
-  return errorToastAdded(title, msg)
+  return notifyError('fetchVaults', msg)
 }

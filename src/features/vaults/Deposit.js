@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { approve, deposit } from '../../data/vaults'
 import { classNames, preventDefault } from '../../lib/html'
 import { toNumber } from '../../lib/locales'
-import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
-import { selectWallet } from '../walletSlice'
+import { useStore, dropNotificationGroup } from '../../store'
+import { notify, notifySuccess, notifyError } from '../../store/notifications'
 import { validateDeposit } from './utils/validations'
 
 const Deposit = ({ vault, onUpdate }) => {
-  const dispatch                    = useDispatch()
-  const wallet                      = useSelector(selectWallet)
+  const [ { wallet }, dispatch ]    = useStore()
   const [ value, setValue ]         = useState('')
   const [ error, setError ]         = useState()
   const [ isPending, setIsPending ] = useState(false)
@@ -23,6 +21,7 @@ const Deposit = ({ vault, onUpdate }) => {
 
   const onApprove = async () => {
     setIsPending(true)
+    dispatch(dropNotificationGroup('deposits'))
 
     try {
       const transaction = await approve(wallet, vault, 1e58)
@@ -33,6 +32,7 @@ const Deposit = ({ vault, onUpdate }) => {
       const receipt = await transaction.wait()
 
       onUpdate()
+      dispatch(dropNotificationGroup('deposits'))
       dispatch(approveSuccess(receipt.transactionHash))
 
     } catch (error) {
@@ -49,6 +49,7 @@ const Deposit = ({ vault, onUpdate }) => {
     if (error) return
 
     setIsPending(true)
+    dispatch(dropNotificationGroup('deposits'))
 
     try {
       const referral    = localStorage.getItem('referral')
@@ -56,11 +57,12 @@ const Deposit = ({ vault, onUpdate }) => {
 
       setValue('')
       setIsPending(false)
-      dispatch(depositSent())
+      dispatch(depositSent(transaction.hash))
 
       const receipt = await transaction.wait()
 
       onUpdate()
+      dispatch(dropNotificationGroup('deposits'))
       dispatch(depositSuccess(receipt.transactionHash))
 
     } catch (error) {
@@ -125,29 +127,29 @@ const isTokenApproved = ({ token, allowance, balance }) => {
 }
 
 const approveSent = () => {
-  return infoToastAdded('Approve sent', 'Your approve has been sent.')
+  return notify('deposits', 'Your approve has been sent.')
 }
 
 const approveSuccess = () => {
-  return successToastAdded('Success', 'The approval was successful, you may deposit now.')
+  return notifySuccess('deposits', 'The approval was successful, you may deposit now.')
 }
 
 const approveError = error => {
   const message = error?.message || 'An error occurred.'
 
-  return errorToastAdded('Approval rejected', message)
+  return notifyError('deposits', message)
 }
 
 const depositSent = () => {
-  return infoToastAdded('Deposit sent', 'Your deposit has been sent.')
+  return notify('deposits', 'Your deposit has been sent.')
 }
 
 const depositSuccess = () => {
-  return successToastAdded('Success', 'Your deposit was successful.')
+  return notifySuccess('deposits', 'Your deposit was successful.')
 }
 
 const depositError = error => {
   const message = error?.message || 'An error occurred.'
 
-  return errorToastAdded('Deposit rejected', message)
+  return notifyError('deposits', message)
 }

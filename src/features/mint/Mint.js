@@ -1,17 +1,17 @@
 import { Web3Provider } from '@ethersproject/providers'
 import { ethers } from 'ethers'
-import { useSelector, useDispatch } from 'react-redux'
-import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
-import { selectWallet } from '../walletSlice'
+import { useStore, dropNotificationGroup } from '../../store'
+import { notify, notifySuccess, notifyError } from '../../store/notifications'
 
 const Mint = () => {
-  const dispatch = useDispatch()
-  const wallet   = useSelector(selectWallet)
-  const provider = wallet && new Web3Provider(wallet.provider)
-  const signer   = provider?.getSigner()
-  const contract = signer && new ethers.Contract(address, abi, signer)
+  const [ { wallet }, dispatch ] = useStore()
+  const provider                 = wallet && new Web3Provider(wallet.provider)
+  const signer                   = provider?.getSigner()
+  const contract                 = signer && new ethers.Contract(address, abi, signer)
 
   const mint = async () => {
+    dispatch(dropNotificationGroup('mint'))
+
     try {
       const transaction = await contract.mint()
 
@@ -19,7 +19,9 @@ const Mint = () => {
 
       const receipt = await transaction.wait()
 
+      dispatch(dropNotificationGroup('mint'))
       dispatch(mintSuccess(receipt.transactionHash))
+
     } catch (error) {
       dispatch(mintError(error))
     }
@@ -64,15 +66,15 @@ const abi     = [
 // -- HELPERS --
 
 const mintSent = () => {
-  return infoToastAdded('Mint sent', 'Test tokens mint has been sent.')
+  return notify('mint', 'Tokens mint has been sent.')
 }
 
 const mintSuccess = () => {
-  return successToastAdded('Success', 'The mint was successful.')
+  return notifySuccess('mint', 'Mint was successful.')
 }
 
 const mintError = error => {
   const message = error?.message || 'An error occurred.'
 
-  return errorToastAdded('Mint rejected', message)
+  return notifyError('mint', message)
 }

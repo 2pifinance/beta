@@ -1,10 +1,7 @@
 import BigNumber from 'bignumber.js'
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../../store'
 import Withdraw from './Withdraw'
-
-const mockStore = configureStore([])
 
 const vault = {
   id:            'polygon-dai-aave',
@@ -25,19 +22,9 @@ const vault = {
 }
 
 describe('Withdraw component', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: {}
-    }
-
-    store = mockStore(initialState)
-  })
-
   test('Withdraw component renders', () => {
     render(
-      <Provider store={store}>
+      <Provider>
         <Withdraw vault={vault} />
       </Provider>
     )

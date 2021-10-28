@@ -6,9 +6,7 @@ import { getRouteRegex } from 'next/dist/shared/lib/router/utils/route-regex'
 import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../src/components/Header'
-import Toasts from '../src/components/toasts'
 import Footer from '../src/components/Footer'
-import Back from '../src/components/back'
 
 const cleanPath = path => {
   return removePathTrailingSlash(path).replace(/\.html$/, '')
@@ -44,7 +42,6 @@ const NotFoundPage = () => {
 
       <Header />
       <NotFound />
-      <Toasts />
       <Footer />
     </div>
   )
@@ -52,10 +49,21 @@ const NotFoundPage = () => {
 
 const NotFound = () => {
   return (
-    <div className="card my-4 shadow-none">
+    <div className="card bg-blur shadow-none my-4">
       <div className="card-body text-center bg-blur border border-primary border-2 rounded px-lg-5 py-lg-4">
         <div className="text-start mb-0">
-          <Back />
+          <Link href="/">
+            <a className="text-decoration-none">
+              <div className="d-flex align-items-center">
+                <div className="h4 mb-0">
+                  <i className="bi-arrow-left"></i>
+                </div>
+                <div className="ms-2">
+                  Back
+                </div>
+              </div>
+            </a>
+          </Link>
         </div>
 
         <h2 className="h1 text-primary mt-4 mb-0">
@@ -67,7 +75,7 @@ const NotFound = () => {
         </p>
 
         <Link href="/">
-          <a className="btn btn-outline-primary bg-dark text-primary fw-bold my-4">
+          <a className="btn btn-outline-primary my-4">
             Go home
           </a>
         </Link>

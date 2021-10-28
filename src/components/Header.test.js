@@ -1,30 +1,17 @@
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../store'
 import Header from './Header'
 
-const mockStore = configureStore([])
-
-describe('header component render', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: {}
-    }
-
-    store = mockStore(initialState)
-  })
-
-  test('renders 2pi network link', () => {
+describe('Header component', () => {
+  test('Header component renders', () => {
     render(
-      <Provider store={store}>
+      <Provider>
         <Header />
       </Provider>
     )
 
-    const linkElement = screen.getAllByText(/Vaults/i)[0]
+    const elements = screen.getAllByText(/Vaults/i)
 
-    expect(linkElement).toBeInTheDocument()
+    elements.forEach(element => expect(element).toBeInTheDocument())
   })
 })

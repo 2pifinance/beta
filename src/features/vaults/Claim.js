@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { harvest } from '../../data/vaults'
 import { toNumber } from '../../lib/locales'
-import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
-import { selectWallet } from '../walletSlice'
+import { useStore, dropNotificationGroup } from '../../store'
+import { notify, notifySuccess, notifyError } from '../../store/notifications'
 
 export const Claim = ({ vault, onUpdate }) => {
-  const dispatch                    = useDispatch()
-  const wallet                      = useSelector(selectWallet)
+  const [ { wallet }, dispatch ]    = useStore()
   const [ isPending, setIsPending ] = useState(false)
 
   const isZero             = !vault.twoPiEarned?.gt(0)
@@ -18,6 +16,7 @@ export const Claim = ({ vault, onUpdate }) => {
 
   const onClaim = async () => {
     setIsPending(true)
+    dispatch(dropNotificationGroup('claims'))
 
     try {
       const transaction = await harvest(wallet, vault)
@@ -28,6 +27,7 @@ export const Claim = ({ vault, onUpdate }) => {
       const receipt = await transaction.wait()
 
       onUpdate()
+      dispatch(dropNotificationGroup('claims'))
       dispatch(claimSuccess(receipt.transactionHash))
 
     } catch (error) {
@@ -62,15 +62,15 @@ export default Claim
 // -- HELPERS --
 
 const claimSent = () => {
-  return infoToastAdded('Claim sent', 'Your claim has been sent.')
+  return notify('claims', 'Your claim has been sent.')
 }
 
 const claimSuccess = () => {
-  return successToastAdded('Success', 'Your claim was successful.')
+  return notifySuccess('claims', 'Your claim was successful.')
 }
 
 const claimError = error => {
   const message = error?.message || 'An error occurred.'
 
-  return errorToastAdded('Claim rejected', message)
+  return notifyError('claims', message)
 }

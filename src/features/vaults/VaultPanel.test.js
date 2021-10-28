@@ -1,10 +1,7 @@
 import BigNumber from 'bignumber.js'
-import { Provider } from 'react-redux'
 import { render, screen } from '@testing-library/react'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../../store'
 import VaultPanel from './VaultPanel'
-
-const mockStore = configureStore([])
 
 const vault = {
   id:            'polygon-dai-aave',
@@ -25,21 +22,11 @@ const vault = {
 }
 
 describe('VaultPanel component', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: { chainId: 137 }
-    }
-
-    store = mockStore(initialState)
-  })
-
   test('VaultPanel component renders', () => {
     const props = { vault, connected: true }
 
     render(
-      <Provider store={store}>
+      <Provider>
         <VaultPanel {...props} />
       </Provider>
     )

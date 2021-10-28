@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import WalletButton from './walletButton'
+import WalletButton from './WalletButton'
 
 const Header = () => {
   return (
@@ -60,12 +60,6 @@ const MobilePrimaryNav = () => (
     </li>
 
     <li className="nav-item">
-      <Link href="/airdrop">
-        <a className="nav-link">Airdrop</a>
-      </Link>
-    </li>
-
-    <li className="nav-item">
       <Link href="/referrals">
         <a className="nav-link">Referrals</a>
       </Link>
@@ -88,10 +82,6 @@ const DesktopPrimaryNav = () => (
   <div className="btn-group" role="group">
     <Link href="/">
       <a className="btn btn-outline-primary py-3">Vaults</a>
-    </Link>
-
-    <Link href="/airdrop">
-      <a className="btn btn-outline-primary py-3">Airdrop</a>
     </Link>
 
     <Link href="/referrals">

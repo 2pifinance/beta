@@ -1,10 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { render, screen } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
+import { Provider } from '../../store'
 import VaultsHeader from './VaultsHeader'
-
-const mockStore = configureStore([])
 
 const vaults = [
   { deposited: new BigNumber(10), tvl: new BigNumber(20), price: new BigNumber(1) },
@@ -13,21 +10,11 @@ const vaults = [
 ]
 
 describe('VaultsHeader component', () => {
-  let store
-
-  beforeEach(() => {
-    const initialState = {
-      wallet: {}
-    }
-
-    store = mockStore(initialState)
-  })
-
   test('VaultsHeader component renders', () => {
     const props = { vaults, chainId: 137, connected: true }
 
     render(
-      <Provider store={store}>
+      <Provider>
         <VaultsHeader {...props} />
       </Provider>
     )

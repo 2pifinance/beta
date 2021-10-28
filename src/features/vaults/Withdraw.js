@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { withdraw } from '../../data/vaults'
 import { classNames, preventDefault } from '../../lib/html'
 import { toNumber } from '../../lib/locales'
-import { infoToastAdded, successToastAdded, errorToastAdded } from '../toastsSlice'
-import { selectWallet } from '../walletSlice'
+import { useStore, dropNotificationGroup } from '../../store'
+import { notify, notifySuccess, notifyError } from '../../store/notifications'
 import { validateWithdraw } from './utils/validations'
 
 const Withdraw = ({ vault, onUpdate }) => {
-  const dispatch                    = useDispatch()
-  const wallet                      = useSelector(selectWallet)
+  const [ { wallet }, dispatch ]    = useStore()
   const [ value, setValue ]         = useState('')
   const [ error, setError ]         = useState()
   const [ isPending, setIsPending ] = useState(false)
@@ -31,6 +29,7 @@ const Withdraw = ({ vault, onUpdate }) => {
     if (error) return
 
     setIsPending(true)
+    dispatch(dropNotificationGroup('withdraws'))
 
     try {
       const transaction = await withdraw(wallet, vault, value)
@@ -42,6 +41,7 @@ const Withdraw = ({ vault, onUpdate }) => {
       const receipt = await transaction.wait()
 
       onUpdate()
+      dispatch(dropNotificationGroup('withdraws'))
       dispatch(withdrawSuccess(receipt.transactionHash))
 
     } catch (error) {
@@ -96,15 +96,15 @@ export default Withdraw
 // -- HELPERS --
 
 const withdrawSent = () => {
-  return infoToastAdded('Withdraw sent', 'Your withdraw has been sent.')
+  return notify('withdraws', 'Your withdraw has been sent.')
 }
 
 const withdrawSuccess = () => {
-  return successToastAdded('Success', 'Your withdraw was successful.')
+  return notifySuccess('withdraws', 'Your withdraw was successful.')
 }
 
 const withdrawError = error => {
   const message = error?.message || 'An error occurred.'
 
-  return errorToastAdded('Withdraw rejected', message)
+  return notifyError('withdraws', message)
 }

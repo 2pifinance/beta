@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { ARCHIMIDES_ADDRESS } from '../../data/constants'
 import { getBlockExplorerUrl } from '../../data/networks'
-import WalletButton from '../../components/walletButton'
+import WalletButton from '../../components/WalletButton'
 import Claim from './Claim'
 import Deposit from './Deposit'
 import Withdraw from './Withdraw'

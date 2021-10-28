@@ -1,17 +1,23 @@
 import React from 'react'
 import Head from 'next/head'
-import Referrals from '../src/components/referrals'
+import Header from '../src/components/Header'
+import Footer from '../src/components/Footer'
+import Referral from '../src/features/referrals/Referral'
 
-const ReferralsPage = () => {
+const Referrals = () => {
   return (
     <React.Fragment>
       <Head>
         <title>2PI - Referrals</title>
       </Head>
 
-      <Referrals />
+      <div className="container">
+        <Header />
+        <Referral />
+        <Footer />
+      </div>
     </React.Fragment>
   )
 }
 
-export default ReferralsPage
+export default Referrals
