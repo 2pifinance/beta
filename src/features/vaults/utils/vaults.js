@@ -23,6 +23,9 @@ export const useVaults = (chainId, wallet) => {
   const [ vaults, setVaults ] = useState()
 
   useEffect(() => {
+    // Reset to show "loading" state
+    setVaults(undefined)
+
     if (! isSupportedNetwork(chainId)) return
 
     const delay     = (wallet) ? FETCH_INTERVAL : FETCH_INTERVAL * 6

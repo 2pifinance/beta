@@ -15,22 +15,31 @@ const Vaults = () => {
   const [ vaults, setVaults ]    = useVaults(chainId, wallet)
   const isConnected              = (wallet !== undefined)
 
+  const addChainToWallet = chainId => {
+    const network      = networks[chainId]
+    const errorHandler = () => dispatch(unsupportedNetworkError(network))
+
+    // Avoid awaiting here, it hangs without error on some clients.
+    addChain(wallet, network).catch(errorHandler)
+  }
+
   // Get chain id from wallet
   useEffect(() => {
-    if (!wallet || !isSupportedNetwork(wallet.chainId)) return
+    const newChainId = getChainId(wallet, chainId)
 
-    setChainId(wallet.chainId)
+    // Prompt wallet to add/change to current network, but display "Unsupported
+    // Network" anyway until the wallet changes back to a supported network.
+    if (wallet && newChainId === 0) {
+      addChainToWallet(chainId || DEFAULT_CHAIN)
+    }
+
+    setChainId(newChainId)
   }, [ wallet ])
 
   // Get chain id from network selector
   const onChainChange = chainId  => {
     if (wallet) {
-      const network      = networks[chainId]
-      const errorHandler = () => dispatch(unsupportedNetworkError(network.chainName))
-
-      // Prompt wallet to add the current chain.
-      // Avoid awaiting here, it hangs without error on some clients.
-      addChain(wallet, network).catch(errorHandler)
+      addChainToWallet(chainId)
     }
 
     setChainId(chainId)
@@ -47,7 +56,7 @@ const Vaults = () => {
       <VaultsHeader chainId={chainId} vaults={vaults} connected={isConnected}
                     onChainChange={onChainChange} />
 
-      {(isConnected) ? <Mint /> : null }
+      {(isConnected && vaults) ? <Mint /> : null }
 
       {(vaults)
          ? <VaultsTable vaults={vaults} connected={isConnected} onUpdate={onUpdate} />
@@ -71,6 +80,17 @@ const Loading = () => (
 
 // -- HELPERS --
 
-const unsupportedNetworkError = name => {
-  return notifyError('wallet', `Add the ${name} network to your wallet to operate.`)
+const getChainId = (wallet, currentChainId) => {
+  if (! wallet) {
+    // Avoid "Unsupported network" when wallet is not conencted
+    return currentChainId || DEFAULT_CHAIN
+  }
+
+  return isSupportedNetwork(wallet.chainId) ? wallet.chainId : 0
+}
+
+const unsupportedNetworkError = ({ chainName }) => {
+  return notifyError('wallet',
+    `Please add the ${chainName} network to your wallet to operate with it.`
+  )
 }

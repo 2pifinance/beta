@@ -79,21 +79,16 @@ NetworkOption.propTypes = {
 // -- HELPERS --
 
 const networks = {
-  1337:   { chainId: 1337,   name: 'Local',         logo: 'localhost' },
-  42161:  { chainId: 42161,  name: 'Arbitrum',      logo: 'arbitrum' },
-  421611: { chainId: 421611, name: 'Arbitrum test', logo: 'arbitrum' },
-  137:    { chainId: 137,    name: 'Polygon',       logo: 'polygon' },
-  80001:  { chainId: 80001,  name: 'Polygon test',  logo: 'polygon' }
+  0:      { chainId: 0,      name: 'Unsupported network', logo: 'unsupported' },
+  1337:   { chainId: 1337,   name: 'Local',               logo: 'localhost' },
+  42161:  { chainId: 42161,  name: 'Arbitrum',            logo: 'arbitrum' },
+  421611: { chainId: 421611, name: 'Arbitrum test',       logo: 'arbitrum' },
+  137:    { chainId: 137,    name: 'Polygon',             logo: 'polygon' },
+  80001:  { chainId: 80001,  name: 'Polygon test',        logo: 'polygon' }
 }
 
 const getNetworks = chains => {
-  let result = chains.map(chainId => networks[chainId]).filter(Boolean)
-
-  if (result.length === 0) {
-    result = [ { name: 'Unsupported network', logo: 'unsupported' } ]
-  }
-
-  return result
+  return chains.map(chainId => networks[chainId] || networks[0])
 }
 
 const putFirst = (item, list) => {
