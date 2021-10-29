@@ -30,13 +30,13 @@ const walletSub = (wallet, handler) => {
     // Hex to decimal conversion
     chainId = +chainId
 
-    handler({ chainId, ...wallet })
+    handler({ ...wallet, chainId })
   }
 
   const onAccountsChanged = () => {
     const address = provider.selectedAddress || undefined
 
-    handler({ address, ...wallet })
+    handler({ ...wallet, address })
   }
 
   provider.on('close', onDisconnect)
