@@ -5,6 +5,7 @@ import { loopWithBackOff } from '../../../lib/function'
 import { toDailyRate } from '../../../lib/math'
 import { useStore, dropNotificationGroup } from '../../../store'
 import { notifyError } from '../../../store/notifications'
+import { usePrevious } from '../../../utils/hooks'
 
 const FETCH_INTERVAL = 30 * 1000
 
@@ -21,10 +22,13 @@ export const getVaults = async (chainId, wallet) => {
 export const useVaults = (chainId, wallet) => {
   const [ _state, dispatch ]  = useStore()
   const [ vaults, setVaults ] = useState()
+  const previousChainId       = usePrevious(chainId)
 
   useEffect(() => {
-    // Reset to show "loading" state
-    setVaults(undefined)
+    if (chainId !== previousChainId) {
+      // Reset to show "loading" state
+      setVaults(undefined)
+    }
 
     if (! isSupportedNetwork(chainId)) return
 
@@ -47,7 +51,7 @@ export const useVaults = (chainId, wallet) => {
 }
 
 const fetchError = () => {
-  const msg = 'We can’t reach out some resources, please refresh the page and try again'
-
-  return notifyError('fetchVaults', msg)
+  return notifyError('fetchVaults',
+    'We can’t reach out some resources, please refresh the page and try again'
+  )
 }

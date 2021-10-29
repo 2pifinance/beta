@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { classNames } from '../../lib/html'
+import { classNames } from '../../utils/view'
 import VaultSummary from './VaultSummary'
 import VaultPanel from './VaultPanel'
 import { useSort, sortVaultsBy } from './utils/sort'

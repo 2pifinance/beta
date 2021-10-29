@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { classNames } from '../../lib/html'
+import { classNames } from '../../utils/view'
 
 const NetworkSelector = ({ chains, value, onChange }) => {
   chains = putFirst(value, chains)

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { withdraw } from '../../data/vaults'
-import { classNames, preventDefault } from '../../lib/html'
 import { toNumber } from '../../lib/locales'
 import { useStore, dropNotificationGroup } from '../../store'
+import { classNames, preventDefault } from '../../utils/view'
 import { notify, notifySuccess, notifyError } from '../../store/notifications'
 import { validateWithdraw } from './utils/validations'
 

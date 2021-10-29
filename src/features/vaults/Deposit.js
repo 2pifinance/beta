@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { approve, deposit } from '../../data/vaults'
-import { classNames, preventDefault } from '../../lib/html'
 import { toNumber } from '../../lib/locales'
 import { useStore, dropNotificationGroup } from '../../store'
 import { notify, notifySuccess, notifyError } from '../../store/notifications'
+import { classNames, preventDefault } from '../../utils/view'
 import { validateDeposit } from './utils/validations'
 
 const Deposit = ({ vault, onUpdate }) => {
