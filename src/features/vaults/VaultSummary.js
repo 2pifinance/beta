@@ -5,7 +5,7 @@ import { toNumber, toCurrency, toPercentage } from '../../lib/locales'
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const { price, symbol, token, uses } = vault
 
-  const tokenSrc = `/images/tokens/${token}.svg`
+  const tokenLogos = token.split('-').map(name => `/images/tokens/${name}.svg`)
 
   const apy = (vault.apy)
     ? toPercentage(vault.apy, { precision: 3 })
@@ -42,7 +42,13 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
         <div>
           <div className="vault-summary-symbol">
             <figure className="vault-summary-logo">
-              <Image src={tokenSrc} alt={token} height="36" width="36" unoptimized={true} />
+              {tokenLogos.map((tokenSrc, i) => {
+                return (
+                  <span className={i === 1 ? 'ms-n2' : ''}>
+                    <Image key={`image-${token}-${i}`} src={tokenSrc} alt={token} height="36" width="36" unoptimized={true} />
+                  </span>
+                )
+              })}
             </figure>
 
             <span>{symbol}</span>
