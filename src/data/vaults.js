@@ -111,7 +111,6 @@ const toVaultData = async vault => {
     twoPiEarned
   } = wallet
 
-
   return {
     // Static data
     id,
