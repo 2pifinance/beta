@@ -44,8 +44,8 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
             <figure className="vault-summary-logo">
               {tokenLogos.map((tokenSrc, i) => {
                 return (
-                  <span className={i === 1 ? 'ms-n2' : ''}>
-                    <Image key={`image-${token}-${i}`} src={tokenSrc} alt={token} height="36" width="36" unoptimized={true} />
+                  <span key={`image-${token}-${i}`} className={i === 1 ? 'ms-n2' : ''}>
+                    <Image src={tokenSrc} alt={token} height="36" width="36" unoptimized={true} />
                   </span>
                 )
               })}
