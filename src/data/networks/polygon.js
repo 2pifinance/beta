@@ -11,14 +11,14 @@ export const polygonMainnet = {
     decimals: 18,
   },
   rpcUrls: [
-    'https://polygon-rpc.com',
-    'https://rpc-mainnet.matic.network',
-    'https://matic-mainnet.chainstacklabs.com'
+    'https://polygon-rpc.com/',
+    'https://rpc-mainnet.matic.network/',
+    'https://matic-mainnet.chainstacklabs.com/'
   ],
   blockExplorerUrls: [
-    'https://polygonscan.com',
-    'https://polygon-explorer-mainnet.chainstacklabs.com',
-    'https://explorer-mainnet.maticvigil.com'
+    'https://polygonscan.com/',
+    'https://polygon-explorer-mainnet.chainstacklabs.com/',
+    'https://explorer-mainnet.maticvigil.com/'
   ]
 }
 
@@ -30,6 +30,6 @@ export const polygonTestnet = {
     symbol:   'MATIC',
     decimals: 18,
   },
-  rpcUrls:           [ 'https://rpc-mumbai.matic.today' ],
-  blockExplorerUrls: [ 'https://mumbai.polygonscan.com' ]
+  rpcUrls:           [ 'https://rpc-mumbai.matic.today/' ],
+  blockExplorerUrls: [ 'https://mumbai.polygonscan.com/' ]
 }

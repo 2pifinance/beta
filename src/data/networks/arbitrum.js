@@ -10,7 +10,7 @@ export const arbitrumMainnet = {
     symbol:   'ETH',
     decimals: 18,
   },
-  rpcUrls:           [ 'https://arb1.arbitrum.io/rpc' ],
+  rpcUrls:           [ 'https://arb1.arbitrum.io/rpc/' ],
   blockExplorerUrls: [ 'https://arbiscan.io/' ]
 }
 
@@ -24,6 +24,6 @@ export const arbitrumTestnet = {
     symbol:   'ETH',
     decimals: 18,
   },
-  rpcUrls:           [ 'https://rinkeby.arbitrum.io/rpc' ],
-  blockExplorerUrls: [ 'https://rinkeby-explorer.arbitrum.io' ]
+  rpcUrls:           [ 'https://rinkeby.arbitrum.io/rpc/' ],
+  blockExplorerUrls: [ 'https://rinkeby-explorer.arbitrum.io/' ]
 }

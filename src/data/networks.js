@@ -2,6 +2,8 @@ import { arbitrumMainnet, arbitrumTestnet } from './networks/arbitrum'
 import { polygonMainnet, polygonTestnet } from './networks/polygon'
 import { SUPPORTED_CHAINS } from './constants'
 
+// NOTE: Always add trailing slashes to network URLs.
+// https://github.com/MetaMask/metamask-extension/issues/3245
 export const networks = {
   // Arbitrum
   42161:  arbitrumMainnet,
