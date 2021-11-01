@@ -1,13 +1,11 @@
-import { Web3Provider } from '@ethersproject/providers'
-import { ethers } from 'ethers'
+import { Contract } from 'ethers'
 import { useStore, dropNotificationGroup } from '../../store'
 import { notify, notifySuccess, notifyError } from '../../store/notifications'
 
 const Mint = () => {
   const [ { wallet }, dispatch ] = useStore()
-  const provider                 = wallet && new Web3Provider(wallet.provider)
-  const signer                   = provider?.getSigner()
-  const contract                 = signer && new ethers.Contract(address, abi, signer)
+  const signer                   = wallet?.provider.getSigner()
+  const contract                 = signer && new Contract(address, abi, signer)
 
   const mint = async () => {
     dispatch(dropNotificationGroup('mint'))

@@ -1,4 +1,4 @@
-import { JsonRpcProvider, Web3Provider, getDefaultProvider } from '@ethersproject/providers'
+import { JsonRpcProvider, getDefaultProvider } from '@ethersproject/providers'
 import { TwoPi } from '@2pi-network/js-sdk'
 import doGetPrices from '@2pi-network/js-sdk/dist/fetchers/prices'
 
@@ -43,7 +43,7 @@ const networks = {
 
 const getEthersProvider = (chainId, wallet) => {
   return (wallet)
-    ? new Web3Provider(wallet.provider)
+    ? wallet.provider
     : getDefaultProvider(getEthersNetwork(chainId))
 }
 

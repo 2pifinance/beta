@@ -12,7 +12,7 @@ export const useWallet = () => {
     const cancelWalletSub = walletSub(wallet, onWalletChange)
 
     return cancelWalletSub
-  }, [ wallet, dispatch ])
+  }, [ wallet ])
 }
 
 
@@ -20,10 +20,21 @@ export const useWallet = () => {
 // -- HELPERS --
 
 const walletSub = (wallet, handler) => {
-  const provider = wallet.provider
+  // Ethers providers don't emit EIP-1193 events ("wallet events"),
+  // use the original wrapped provider instead.
+  // https://github.com/ethers-io/ethers.js/issues/1396#issuecomment-806380431
+  const provider = wallet.provider.provider
 
-  const onDisconnect = () => {
-    handler(null)
+  // Not all wallets provide an `on` method.
+  if (! provider.on) return
+
+  const onAccountsChanged = ([ address ]) => {
+    // Wallet is locked or the user disconnected all accounts
+    if (! address) {
+      return handler(null)
+    }
+
+    handler({ ...wallet, address })
   }
 
   const onChainChanged = chainId => {
@@ -33,21 +44,13 @@ const walletSub = (wallet, handler) => {
     handler({ ...wallet, chainId })
   }
 
-  const onAccountsChanged = () => {
-    const address = provider.selectedAddress || undefined
-
-    handler({ ...wallet, address })
-  }
-
-  provider.on('close', onDisconnect)
-  provider.on('disconnect', onDisconnect)
-  provider.on('chainChanged', onChainChanged)
+  // EIP-1139 events (wallet events)
+  // https://eips.ethereum.org/EIPS/eip-1193#events-1
   provider.on('accountsChanged', onAccountsChanged)
+  provider.on('chainChanged', onChainChanged)
 
   return () => {
-    provider.removeListener('close', onDisconnect)
-    provider.removeListener('disconnect', onDisconnect)
-    provider.removeListener('chainChanged', onChainChanged)
     provider.removeListener('accountsChanged', onAccountsChanged)
+    provider.removeListener('chainChanged', onChainChanged)
   }
 }

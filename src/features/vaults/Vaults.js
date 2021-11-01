@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { DEFAULT_CHAIN } from '../../data/constants'
 import { networks, isSupportedNetwork } from '../../data/networks'
 import { addChain } from '../../data/wallet'
-import { useStore } from '../../store'
+import { useStore, dropNotificationGroup } from '../../store'
 import { notifyError } from '../../store/notifications'
 import { getVaults, useVaults } from './utils/vaults'
 import VaultsHeader from './VaultsHeader'
@@ -16,8 +16,12 @@ const Vaults = () => {
   const isConnected              = (wallet !== undefined)
 
   const addChainToWallet = chainId => {
-    const network      = networks[chainId]
-    const errorHandler = () => dispatch(unsupportedNetworkError(network))
+    const network = networks[chainId]
+
+    const errorHandler = () => {
+      dispatch(dropNotificationGroup('wallet'))
+      dispatch(unsupportedNetworkError(network))
+    }
 
     // Avoid awaiting here, it hangs without error on some clients.
     addChain(wallet, network).catch(errorHandler)
@@ -27,12 +31,13 @@ const Vaults = () => {
   useEffect(() => {
     const newChainId = getChainId(wallet, chainId)
 
-    // Prompt wallet to add/change to current network, but display "Unsupported
-    // Network" anyway until the wallet changes back to a supported network.
     if (wallet && newChainId === 0) {
       addChainToWallet(chainId || DEFAULT_CHAIN)
     }
 
+    // When the wallet's network is unsupported, prompt the wallet to switch
+    // to the current network but change `chainId` anyway and display
+    // "Unsupported Network" until the wallet switches to a supported one.
     setChainId(newChainId)
   }, [ wallet ])
 
@@ -82,7 +87,7 @@ const Loading = () => (
 
 const getChainId = (wallet, currentChainId) => {
   if (! wallet) {
-    // Avoid "Unsupported network" when wallet is not conencted
+    // Avoid selecting an unsupported network when wallet is not conencted
     return currentChainId || DEFAULT_CHAIN
   }
 
@@ -91,6 +96,6 @@ const getChainId = (wallet, currentChainId) => {
 
 const unsupportedNetworkError = ({ chainName }) => {
   return notifyError('wallet',
-    `Please add the ${chainName} network to your wallet to operate with it.`
+    `Please add the ${chainName} network to your wallet in order to operate on it.`
   )
 }

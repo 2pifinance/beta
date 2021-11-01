@@ -1,28 +1,20 @@
-import Web3 from 'web3'
+import { Web3Provider } from '@ethersproject/providers'
 import { createWalletModal } from '../lib/wallet'
 
 export const createSession = async () => {
-  const modal       = createWalletModal()
-  const provider    = await modal.requestProvider()
-  const web3        = new Web3(provider)
-  const chainId     = await web3.eth.getChainId()
-  const [ address ] = await web3.eth.getAccounts()
+  const modal          = createWalletModal()
+  const walletProvider = await modal.requestProvider()
+  const ethersProvider = new Web3Provider(walletProvider, 'any')
+  const [ address ]    = await ethersProvider.listAccounts()
+  const { chainId }    = await ethersProvider.getNetwork()
 
   // Return current wallet state
-  return { address, chainId, provider, web3, modal }
+  return { address, chainId, modal, provider: ethersProvider }
 }
 
 export const destroySession = async wallet => {
-  if (! wallet) return
-
-  const { modal, provider } = wallet
-
-  if (provider.close) {
-    await provider.close()
-  }
-
-  if (modal.clearCachedProvider) {
-    await modal.clearCachedProvider()
+  if (wallet) {
+    await wallet.modal.clearCachedProvider()
   }
 
   // Return current wallet state
@@ -32,8 +24,8 @@ export const destroySession = async wallet => {
 // NOTE: Don't rely on this ever resolving.
 // On some clients `provider.request` _hangs_ without error.
 export const addChain = async (wallet, networkSettings) => {
-  const provider = wallet.provider
-  const method   = 'wallet_addEthereumChain'
+  const walletProvider = wallet.provider.provider
+  const params         = [ networkSettings ]
 
-  await provider.request({ method, params: [ networkSettings ] })
+  await walletProvider.request({ method: 'wallet_addEthereumChain', params })
 }
