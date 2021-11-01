@@ -72,7 +72,7 @@ const Deposit = ({ vault, onUpdate }) => {
   }
 
   const onChange = ({ target }) => setValue(target.value)
-  const onMax    = () => setValue(balance.toString())
+  const onMax    = () => setValue(balance.toFixed())
   const onSubmit = (isApproved) ? onDeposit : onApprove
 
   return (
@@ -83,7 +83,7 @@ const Deposit = ({ vault, onUpdate }) => {
         <p className="vault-panel-highlight">
           Balance:{' '}
 
-          <span title={`${balance} ${symbol}`}>
+          <span title={`${balance.toFixed()} ${symbol}`}>
             {toNumber(balance, { precision: { max: 8 } })} {symbol}
           </span>
         </p>

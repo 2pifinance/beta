@@ -19,7 +19,7 @@ const Withdraw = ({ vault, onUpdate }) => {
     : 'Withdraw'
 
   const onChange = ({ target }) => setValue(target.value)
-  const onMax    = () => setValue(deposited.toString())
+  const onMax    = () => setValue(deposited.toFixed())
 
   const onSubmit = async () => {
     const error = validateWithdraw(vault, value)
@@ -58,7 +58,7 @@ const Withdraw = ({ vault, onUpdate }) => {
         <p className="vault-panel-highlight">
           Available to withdraw:{' '}
 
-          <span title={`${deposited} ${symbol}`}>
+          <span title={`${deposited.toFixed()} ${symbol}`}>
             {toNumber(deposited, { precision: { max: 8 } })} {symbol}
           </span>
         </p>

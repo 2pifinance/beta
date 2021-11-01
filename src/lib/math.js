@@ -22,11 +22,11 @@ export const toHuman = (integer, decimals) => {
 
 // Convert _real_ numbers to native integer-only representation
 export const toNative = (number, decimals) => {
-  if (number === undefined)   throw new TypeError('Missing number')
+  if (number   === undefined) throw new TypeError('Missing number')
   if (decimals === undefined) throw new TypeError('Missing decimal precision')
 
   const bigNumber        = new BigNumber(number.toString())
   const adjustmentFactor = new BigNumber(10).pow(decimals.toString())
 
-  return bigNumber.times(adjustmentFactor).toFixed(0)
+  return bigNumber.times(adjustmentFactor).toFixed(0, BigNumber.ROUND_DOWN)
 }

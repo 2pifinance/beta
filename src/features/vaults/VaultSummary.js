@@ -37,7 +37,8 @@ const VaultSummary = ({ vault, connected }) => {
 
   return (
     <div className="vault-summary row">
-      <div role="gridcell"  className="col d-flex align-items-center py-5 px-5" tabIndex="-1">
+      <div className="col d-flex align-items-center py-5 px-5"
+           role="gridcell" tabIndex="-1">
         <div>
           <div className="vault-summary-symbol">
             <figure className="vault-summary-logo">
@@ -52,42 +53,50 @@ const VaultSummary = ({ vault, connected }) => {
       </div>
 
       {(connected) &&
-        <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
+        <div className="col d-flex align-items-center py-4 px-5"
+             role="gridcell" tabIndex="-1">
           <div>
             <small>{balanceUsd}</small>
 
-            <p className="vault-summary-stat" title={`${vault.balance} ${symbol}`}>
-              {(balance) ? balance : '-.--' }
+            <p className="vault-summary-stat"
+               title={`${vault.balance?.toFixed()} ${symbol}`}>
+              {balance || '-.--'}
             </p>
           </div>
         </div>
       }
 
       {(connected) &&
-        <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
+        <div className="col d-flex align-items-center py-4 px-5"
+             role="gridcell" tabIndex="-1">
           <div>
             <small>{depositedUsd}</small>
 
-            <p className="vault-summary-stat" title={`${vault.deposited} ${symbol}`}>
-              {(deposited) ? deposited : '-.--' }
+            <p className="vault-summary-stat"
+               title={`${vault.deposited?.toFixed()} ${symbol}`}>
+              {deposited || '-.--'}
             </p>
           </div>
         </div>
       }
 
-      <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
-        <p className="vault-summary-stat">{(apy) ? apy : '-.--' }</p>
+      <div className="col d-flex align-items-center py-4 px-5"
+           role="gridcell" tabIndex="-1">
+        <p className="vault-summary-stat">{apy || '-.--'}</p>
       </div>
 
-      <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
-        <p className="vault-summary-stat">{(daily) ? daily : '-.--' }</p>
+      <div className="col d-flex align-items-center py-4 px-5"
+           role="gridcell" tabIndex="-1">
+        <p className="vault-summary-stat">{daily || '-.--'}</p>
       </div>
 
-      <div role="gridcell" className="col d-flex align-items-center py-4 px-5" tabIndex="-1">
-        <p className="vault-summary-stat">{(tvl) ? tvl : '-.--' }</p>
+      <div className="col d-flex align-items-center py-4 px-5"
+           role="gridcell" tabIndex="-1">
+        <p className="vault-summary-stat">{tvl || '-.--'}</p>
       </div>
 
-      <div role="gridcell" className="col d-flex align-items-center justify-content-end py-4" tabIndex="-1">
+      <div className="col d-flex align-items-center justify-content-end py-4"
+           role="gridcell" tabIndex="-1">
         <button className="btn btn-crosshairs me-5" data-bs-toggle="collapse"
                 data-bs-target={`#vault-panel-${vault.id}`}>
           <span></span>
