@@ -9,10 +9,9 @@ export const Claim = ({ vault, onUpdate }) => {
   const [ { wallet }, dispatch ]    = useStore()
   const [ isPending, setIsPending ] = useState(false)
 
-  const isZero             = !vault.twoPiEarned?.gt(0)
-  const twoPiEarned        = (isZero) ? 0 : vault.twoPiEarned
-  const compactTwoPiEarned = toNumber(twoPiEarned, { precision: { max: 6 } })
-  const buttonLabel        = (isPending) ? 'Claiming...' : 'Claim'
+  const twoPiEarned = vault.twoPiEarned
+  const isZero      = !twoPiEarned.isGreaterThan(0)
+  const buttonLabel = (isPending) ? 'Claiming...' : 'Claim'
 
   const onClaim = async () => {
     setIsPending(true)
@@ -40,7 +39,9 @@ export const Claim = ({ vault, onUpdate }) => {
     <p className='text-primary m-0'>
       2PI Earned:{' '}
 
-      <strong title={`${twoPiEarned} 2PI`}>{compactTwoPiEarned}</strong>
+      <strong title={`${twoPiEarned.toFixed()} 2PI`}>
+        {toNumber(twoPiEarned, { compact: true, precision: { max: 3 } })}
+      </strong>
 
       <button className="btn btn-outline-primary btn-sm ms-3"
               onClick={onClaim} disabled={isZero || isPending}>

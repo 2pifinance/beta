@@ -45,11 +45,11 @@ export const deposit = async (wallet, vault, amount, referral) => {
 }
 
 export const withdraw = async (wallet, vault, amount) => {
-  const { id, sharePrice, vaultDecimals } = vault
+  const { id, sharesDecimals, sharePrice } = vault
 
   const instance     = getVaultInstance(id, wallet)
   const shares       = new BigNumber(amount).div(sharePrice)
-  const amountNative = toNative(shares, vaultDecimals)
+  const amountNative = toNative(shares, sharesDecimals)
 
   return instance.withdraw(amountNative)
 }
@@ -97,29 +97,44 @@ const toVaultData = async vault => {
     toWalletData(vault)
   ])
 
-  const { id, chainId, symbol, token, earn, uses, priceId }          = vault
-  const { allowance, balance, deposited, sharePrice, vaultDecimals } = wallet
+  const { id, chainId, priceId, symbol, token, earn, uses } = vault
 
   const tvl           = toHuman(tvlNative, tokenDecimals)
   const withdrawalFee = toHuman(withdrawalFeeNative, 2)
 
+  const {
+    allowance,
+    balance,
+    deposited,
+    sharesDecimals,
+    sharePrice,
+    twoPiEarned
+  } = wallet
+
+
   return {
+    // Static data
     id,
     chainId,
+    priceId,
     symbol,
     token,
     tokenDecimals,
     earn,
     uses,
+
+    // Vault data
     apy,
-    priceId,
-    allowance,
-    deposited,
-    balance,
-    sharePrice,
-    vaultDecimals,
     tvl,
-    withdrawalFee
+    withdrawalFee,
+
+    // Wallet data
+    allowance,
+    balance,
+    deposited,
+    sharesDecimals,
+    sharePrice,
+    twoPiEarned,
   }
 }
 
@@ -128,7 +143,7 @@ const toWalletData = async vault => {
 
   const [
     sharesNative,
-    vaultDecimals,
+    sharesDecimals,
     pricePerFullShare,
     balanceNative,
     allowanceNative,
@@ -145,11 +160,11 @@ const toWalletData = async vault => {
   ])
 
   const balance     = toHuman(balanceNative, tokenDecimals)
-  const shares      = toHuman(sharesNative, vaultDecimals)
+  const shares      = toHuman(sharesNative, sharesDecimals)
   const sharePrice  = toHuman(pricePerFullShare, tokenDecimals)
   const deposited   = shares.times(sharePrice)
   const allowance   = toHuman(allowanceNative, tokenDecimals)
   const twoPiEarned = toHuman(pendingPiTokens, 18)
 
-  return { allowance, balance, deposited, sharePrice, twoPiEarned, vaultDecimals }
+  return { allowance, balance, deposited, sharesDecimals, sharePrice, twoPiEarned }
 }
