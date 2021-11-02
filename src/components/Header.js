@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Drawer from './Drawer'
 import WalletButton from './WalletButton'
 
 const Header = () => {
+  const [ isOpen, setIsOpen ] = useState(false)
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
       <div className="container">
@@ -14,9 +17,9 @@ const Header = () => {
             </Link>
 
             <button type="button" className="navbar-toggler"
-                    data-bs-toggle="collapse" data-bs-target="#app-mobile-nav"
+                    aria-label="Toggle navigation"
                     aria-controls="app-nav-toggle" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    onClick={() => setIsOpen(!isOpen)}>
               <span className="navbar-toggler-icon"></span>
             </button>
           </div>
@@ -27,9 +30,9 @@ const Header = () => {
           </div>
 
           <div className="d-lg-none">
-            <div id="app-mobile-nav" className="collapse navbar-collapse">
+            <Drawer active={isOpen}>
               <MobilePrimaryNav />
-            </div>
+            </Drawer>
           </div>
         </div>
       </div>

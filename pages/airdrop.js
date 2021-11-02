@@ -2,24 +2,24 @@ import React from 'react'
 import Head from 'next/head'
 import Header from '../src/components/Header'
 import Footer from '../src/components/Footer'
-import Airdrop from '../src/features/airdrop/Airdrop'
+import AirdropHeader from '../src/features/airdrop/AirdropHeader'
+import AirdropPhases from '../src/features/airdrop/AirdropPhases'
 
-const Index = () => {
-  return (
-    <React.Fragment>
-      <Head>
-        <title>2PI - Airdrop</title>
-      </Head>
+const Airdrop = () => (
+  <React.Fragment>
+    <Head>
+      <title>2PI - Airdrop</title>
+    </Head>
 
-      <Header />
+    <Header />
 
-      <div className="container">
-        <Airdrop />
-      </div>
+    <div className="container">
+      <AirdropHeader />
+      <AirdropPhases />
+    </div>
 
-      <Footer />
-    </React.Fragment>
-  )
-}
+    <Footer />
+  </React.Fragment>
+)
 
-export default Index
+export default Airdrop

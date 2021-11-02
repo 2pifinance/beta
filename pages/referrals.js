@@ -4,20 +4,20 @@ import Header from '../src/components/Header'
 import Footer from '../src/components/Footer'
 import Referral from '../src/features/referrals/Referral'
 
-const Referrals = () => {
-  return (
-    <React.Fragment>
-      <Head>
-        <title>2PI - Referrals</title>
-      </Head>
+const Referrals = () => (
+  <React.Fragment>
+    <Head>
+      <title>2PI - Referrals</title>
+    </Head>
 
-      <div className="container">
-        <Header />
-        <Referral />
-        <Footer />
-      </div>
-    </React.Fragment>
-  )
-}
+    <Header />
+
+    <div className="container">
+      <Referral />
+    </div>
+
+    <Footer />
+  </React.Fragment>
+)
 
 export default Referrals

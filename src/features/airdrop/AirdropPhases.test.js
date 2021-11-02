@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import AirdropPhases from './Airdrop'
+import AirdropPhases from './AirdropPhases'
 
 describe('AirdropPhases component', () => {
   test('AirdropPhases component renders', () => {
