@@ -4,17 +4,19 @@ import doGetPrices from '@2pi-network/js-sdk/dist/fetchers/prices'
 
 const APYS_API_URL = process.env.NEXT_PUBLIC_APYS_API_URL
 
-let twoPi
+const twoPis = {}
 
 const getClient = (chainId, wallet) => {
-  if (! twoPi || twoPi.chainId ==! chainId) {
+  const key = `${chainId}-${wallet}`
+
+  if (! twoPis[key]) {
     const provider = getEthersProvider(chainId, wallet)
     const signer   = wallet && provider.getSigner()
 
-    twoPi = new TwoPi(chainId, provider, signer)
+    twoPis[key] = new TwoPi(chainId, provider, signer)
   }
 
-  return twoPi
+  return twoPis[key]
 }
 
 export const getPrices = async (chainId, wallet) => {
