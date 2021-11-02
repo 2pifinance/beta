@@ -18,7 +18,7 @@ export const destroySession = async wallet => {
   }
 
   // Return current wallet state
-  return null
+  return undefined
 }
 
 // NOTE: Don't rely on this ever resolving.
