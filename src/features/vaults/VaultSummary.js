@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import Image from 'next/image'
 import { toNumber, toCurrency, toPercentage } from '../../lib/locales'
 
-const VaultSummary = ({ vault, connected }) => {
+const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const { price, symbol, token, uses } = vault
 
   const tokenSrc = `/images/tokens/${token}.svg`
@@ -97,8 +97,8 @@ const VaultSummary = ({ vault, connected }) => {
 
       <div className="col d-flex align-items-center justify-content-end py-4"
            role="gridcell" tabIndex="-1">
-        <button className="btn btn-crosshairs me-5" data-bs-toggle="collapse"
-                data-bs-target={`#vault-panel-${vault.id}`}>
+        <button className={`btn btn-crosshairs me-5 ${(active) ? 'active' : ''}`}
+                onClick={onToggle}>
           <span></span>
           <span></span>
         </button>
@@ -108,8 +108,10 @@ const VaultSummary = ({ vault, connected }) => {
 }
 
 VaultSummary.propTypes = {
-  vault: PropTypes.object.isRequired,
-  connected: PropTypes.bool
+  vault:     PropTypes.object.isRequired,
+  active:    PropTypes.bool,
+  connected: PropTypes.bool,
+  onToggle:  PropTypes.func
 }
 
 export default VaultSummary

@@ -82,7 +82,7 @@
     content: '+';
   }
 
-  &[aria-expanded="true"]::before {
+  &.active::before {
     content: '-';
   }
 

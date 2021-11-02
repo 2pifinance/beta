@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from '../../store'
 import App from './App'
 
-describe('Notifications component', () => {
-  test('Notifications component renders', () => {
+describe('App component', () => {
+  test('App component renders', () => {
     render(
       <Provider>
         <App>

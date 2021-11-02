@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { render, screen } from '@testing-library/react'
 import { Provider } from '../../store'
-import VaultPanel from './VaultPanel'
+import VaultDetails from './VaultDetails'
 
 const vault = {
   id:             'polygon-dai-aave',
@@ -23,19 +23,19 @@ const vault = {
   twoPiEarned:    new BigNumber(10)
 }
 
-describe('VaultPanel component', () => {
-  test('VaultPanel component renders', () => {
+describe('VaultDetails component', () => {
+  test('VaultDetails component renders', () => {
     const props = { vault, connected: true }
 
     render(
       <Provider>
-        <VaultPanel {...props} />
+        <VaultDetails {...props} />
       </Provider>
     )
 
     const elements = [
-      ...screen.getAllByText(/Deposit/),
-      ...screen.getAllByText(/Withdraw/)
+      ...screen.getAllByText('Deposit'),
+      ...screen.getAllByText('Withdraw')
     ]
 
     elements.forEach(element => expect(element).toBeInTheDocument())

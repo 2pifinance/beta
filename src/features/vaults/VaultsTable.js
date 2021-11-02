@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types'
 import { classNames } from '../../utils/view'
-import VaultSummary from './VaultSummary'
-import VaultPanel from './VaultPanel'
 import { useSort, sortVaultsBy } from './utils/sort'
+import Vault from './Vault'
 
 const VaultsTable = ({ vaults, connected, onUpdate }) => {
   const [ sort, sortFor, sortBy ] = useSort('symbol', 'asc')
@@ -45,11 +44,7 @@ const VaultsTable = ({ vaults, connected, onUpdate }) => {
 
       {vaults.map(vault => (
         <Row key={vault.id}>
-          <VaultSummary vault={vault} connected={connected} />
-
-          <div className="collapse" id={`vault-panel-${vault.id}`}>
-            <VaultPanel vault={vault} connected={connected} onUpdate={onUpdate} />
-          </div>
+          <Vault vault={vault} connected={connected} onUpdate={onUpdate} />
         </Row>
       ))}
     </Table>

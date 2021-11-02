@@ -6,12 +6,12 @@ import Claim from './Claim'
 import Deposit from './Deposit'
 import Withdraw from './Withdraw'
 
-export const VaultPanel = ({ vault, connected, onUpdate }) => {
+export const VaultDetails = ({ vault, connected, onUpdate }) => {
   if (! connected)     return <WalletPrompt />
   if (! vault.balance) return <Loading />
 
   return (
-    <div className="vault-panel mt-3 mb-5 mx-5 pt-5">
+    <div className="vault-details mt-3 mb-5 mx-5 pt-5">
       <div className="row justify-content-lg-start mb-4">
         <div className="col col-4">
           <ContractLink chainId={vault.chainId} />
@@ -22,7 +22,7 @@ export const VaultPanel = ({ vault, connected, onUpdate }) => {
         </div>
       </div>
 
-      <div className="vault-panel-actions row">
+      <div className="vault-details-actions row">
         <div className="col-lg pe-lg-5">
           <Deposit vault={vault} onUpdate={onUpdate} />
         </div>
@@ -35,17 +35,17 @@ export const VaultPanel = ({ vault, connected, onUpdate }) => {
   )
 }
 
-VaultPanel.propTypes = {
+VaultDetails.propTypes = {
   vault:     PropTypes.object.isRequired,
-  connected: PropTypes.bool.isRequired,
+  connected: PropTypes.bool,
   onUpdate:  PropTypes.func
 }
 
-export default VaultPanel
+export default VaultDetails
 
 const WalletPrompt = () => (
   <div className="mt-3 mb-5 mx-5">
-    <div className="vault-panel-connect text-center py-4">
+    <div className="vault-details-connect text-center py-4">
       <span className="me-3">Connect your wallet to take off</span>
 
       <WalletButton />
@@ -54,7 +54,7 @@ const WalletPrompt = () => (
 )
 
 const Loading = () => (
-  <div className="vault-panel mt-3 mb-5 mx-5 pt-5">
+  <div className="vault-details mt-3 mb-5 mx-5 pt-5">
     <p className="text-center">Loading...</p>
   </div>
 )
