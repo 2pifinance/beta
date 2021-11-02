@@ -4,7 +4,7 @@ import { toHuman, toNative } from '../lib/math'
 
 export const getVaults = async (chainId, wallet) => {
   const [ prices, ...data ] = await Promise.all([
-    Client.getPrices(chainId),
+    Client.getPrices(chainId, wallet),
     ...Client.getVaults(chainId, wallet).map(toVaultData)
   ])
 

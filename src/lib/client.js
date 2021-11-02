@@ -4,8 +4,23 @@ import doGetPrices from '@2pi-network/js-sdk/dist/fetchers/prices'
 
 const APYS_API_URL = process.env.NEXT_PUBLIC_APYS_API_URL
 
-export const getPrices = async chainId => {
-  return doGetPrices(chainId)
+let twoPi
+
+const getClient = (chainId, wallet) => {
+  if (! twoPi || twoPi.chainId ==! chainId) {
+    const provider = getEthersProvider(chainId, wallet)
+    const signer   = wallet && provider.getSigner()
+
+    twoPi = new TwoPi(chainId, provider, signer)
+  }
+
+  return twoPi
+}
+
+export const getPrices = async (chainId, wallet) => {
+  const client = getClient(chainId, wallet)
+
+  return doGetPrices(client)
 }
 
 export const getApys = async () => {
@@ -22,9 +37,7 @@ export const getApys = async () => {
 }
 
 export const getVaults = (chainId, wallet) => {
-  const provider = getEthersProvider(chainId, wallet)
-  const signer   = wallet && provider.getSigner()
-  const client   = new TwoPi(chainId, provider, signer)
+  const client = getClient(chainId, wallet)
 
   return client.getVaults()
 }
