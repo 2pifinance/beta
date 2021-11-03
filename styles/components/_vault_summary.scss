@@ -36,13 +36,20 @@ $vault-summary-size-lg: 28px          !default;
 }
 
 .vault-summary-logo {
-  display: inline-flex;
-  width: 36px;
-  height: 36px;
-  margin: 0 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 8px 0 0;
   padding: 0;
+
+  > div {
+    max-width: 36px !important;
+    max-height: 36px !important;
+  }
 }
 
 .vault-summary-platform {
-  padding-left: 48px;
+  padding-left: 58px;
 }

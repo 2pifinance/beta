@@ -3,9 +3,7 @@ import Image from 'next/image'
 import { toNumber, toCurrency, toPercentage } from '../../lib/locales'
 
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
-  const { price, symbol, token, uses } = vault
-
-  const tokenSrc = `/images/tokens/${token}.svg`
+  const { price, symbol, uses } = vault
 
   const apy = (vault.apy)
     ? toPercentage(vault.apy, { precision: 3 })
@@ -42,7 +40,7 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
         <div>
           <div className="vault-summary-symbol">
             <figure className="vault-summary-logo">
-              <Image src={tokenSrc} alt={token} height="36" width="36" unoptimized={true} />
+              <VaultLogo vault={vault} />
             </figure>
 
             <span>{symbol}</span>
@@ -115,3 +113,17 @@ VaultSummary.propTypes = {
 }
 
 export default VaultSummary
+
+const VaultLogo = ({ vault: { token } }) => {
+  const logos = token.split('-').map(name => `/images/tokens/${name}.svg`)
+
+  return logos.map((url, i) => (
+    <div key={i} className={i === 1 ? 'mt-4 ms-n3' : undefined}>
+      <Image src={url} alt={token} height="36" width="36" unoptimized={true} />
+    </div>
+  ))
+}
+
+VaultLogo.propTypes = {
+  vault: PropTypes.object.isRequired
+}
