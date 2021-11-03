@@ -2,10 +2,12 @@ import { JsonRpcProvider, getDefaultProvider } from '@ethersproject/providers'
 import { TwoPi } from '@2pi-network/js-sdk'
 import doGetPrices from '@2pi-network/js-sdk/dist/fetchers/prices'
 
-const APYS_API_URL = process.env.NEXT_PUBLIC_APYS_API_URL
+const APYS_API_URL  = process.env.NEXT_PUBLIC_APYS_API_URL
+const clients       = {}
+let   currentWallet = undefined
 
 export const getPrices = async chainId => {
-  return doGetPrices(chainId)
+  return doGetPrices(getClient(chainId, currentWallet))
 }
 
 export const getApys = async () => {
@@ -22,11 +24,7 @@ export const getApys = async () => {
 }
 
 export const getVaults = (chainId, wallet) => {
-  const provider = getEthersProvider(chainId, wallet)
-  const signer   = wallet && provider.getSigner()
-  const client   = new TwoPi(chainId, provider, signer)
-
-  return client.getVaults()
+  return getClient(chainId, wallet).getVaults()
 }
 
 
@@ -39,6 +37,23 @@ const networks = {
   421611: { name: 'arbitrum-rinkeby', rpcUrl: 'https://rinkeby.arbitrum.io/rpc/' },
   137:    { name: 'matic',            rpcUrl: 'https://polygon-rpc.com/' },
   80001:  { name: 'matic-mumbai',     rpcUrl: 'https://matic-mumbai.chainstacklabs.com/' }
+}
+
+const getClient = (chainId, wallet) => {
+  let client = clients[chainId]
+
+  if (!client || wallet !== currentWallet) {
+    const provider = getEthersProvider(chainId, wallet)
+    const signer   = wallet && provider.getSigner()
+
+    client = new TwoPi(chainId, provider, signer)
+
+    // Update cache
+    currentWallet    = wallet
+    clients[chainId] = client
+  }
+
+  return client
 }
 
 const getEthersProvider = (chainId, wallet) => {
