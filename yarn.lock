@@ -2,13 +2,14 @@
 # yarn lockfile v1
 
 
-"@2pi-network/js-sdk@^0.2.0-beta.9":
-  version "0.2.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@2pi-network/js-sdk/-/js-sdk-0.2.0-beta.9.tgz#9e3779260c090d07b3a2cc6cd17c3e27f94d7c76"
-  integrity sha512-xn/4od9/cLhAX+ksV+qDm2ca4JHX62Vkotsu8mfYuHTxbnbZ+zuaI9hNcEKMh0ww++owFFppHk3i9DV0SKpkww==
+"@2pi-network/js-sdk@^0.2.0-beta.12":
+  version "0.2.0-beta.12"
+  resolved "https://registry.yarnpkg.com/@2pi-network/js-sdk/-/js-sdk-0.2.0-beta.12.tgz#1f511f37829aec9327eb715dca1f1d0ec36e9a32"
+  integrity sha512-fuvOWqHJNfB7pvvQiUA0YvSTacMUS2U3ziyIQw3gC3XgRLf3T5qelGzv14nDAKUe2eeU2/ts4y2SnpIC0h5UiQ==
   dependencies:
     axios "^0.24.0"
     bignumber.js "^9.0.1"
+    date-fns "^2.25.0"
     ethers "^5.5.1"
     ethers-multicall "^0.2.1"
 
@@ -3371,6 +3372,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.25.0:
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.25.0.tgz#8c5c8f1d958be3809a9a03f4b742eba894fc5680"
+  integrity sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==
 
 debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.6.9:
   version "2.6.9"

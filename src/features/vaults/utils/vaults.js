@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { isSupportedNetwork } from '../../../data/networks'
+import { isSupportedNetwork, getBlockExplorerUrl } from '../../../data/networks'
 import { getVaults as doGetVaults } from '../../../data/vaults'
 import { loopWithBackOff } from '../../../lib/function'
 import { toDailyRate } from '../../../lib/math'
@@ -49,6 +49,18 @@ export const useVaults = (chainId, wallet) => {
 
   return [ vaults, setVaults ]
 }
+
+export const getContractUrl = ({ address, chainId }) => {
+  const explorerUrl = getBlockExplorerUrl(chainId)
+
+  if (!address || !explorerUrl) return ''
+
+  return `${explorerUrl}address/${address}`
+}
+
+
+
+// -- HELPERS --
 
 const fetchError = () => {
   return notifyError('fetchVaults',

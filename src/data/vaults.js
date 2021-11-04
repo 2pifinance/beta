@@ -97,7 +97,7 @@ const toVaultData = async vault => {
     toWalletData(vault)
   ])
 
-  const { id, chainId, priceId, symbol, token, earn, uses } = vault
+  const { id, chainId, priceId, address, symbol, token, earn, uses } = vault
 
   const tvl           = toHuman(tvlNative, tokenDecimals)
   const withdrawalFee = toHuman(withdrawalFeeNative, 2)
@@ -117,6 +117,7 @@ const toVaultData = async vault => {
     id,
     chainId,
     priceId,
+    address,
     symbol,
     token,
     tokenDecimals,
