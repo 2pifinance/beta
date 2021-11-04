@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
-import { ARCHIMIDES_ADDRESS } from '../../data/constants'
-import { getBlockExplorerUrl } from '../../data/networks'
+import { getContractUrl } from './utils/vaults'
 import WalletButton from '../../components/WalletButton'
 import Claim from './Claim'
 import Deposit from './Deposit'
@@ -10,15 +9,20 @@ export const VaultDetails = ({ vault, connected, onUpdate }) => {
   if (! connected)     return <WalletPrompt />
   if (! vault.balance) return <Loading />
 
+  const hasClaim = (vault.token !== '2pi')
+
   return (
     <div className="vault-details mt-3 mb-5 mx-5 pt-5">
       <div className="row justify-content-lg-start mb-4">
         <div className="col col-4">
-          <ContractLink chainId={vault.chainId} />
+          <a className="link-primary" href={getContractUrl(vault)}
+             target="_blank" rel="noreferrer">
+            Contract <i className="bi-box-arrow-up-right"></i>
+          </a>
         </div>
 
         <div className="col col-lg-4 text-end text-lg-center">
-          <Claim vault={vault} onUpdate={onUpdate} />
+          {(hasClaim) ? <Claim vault={vault} onUpdate={onUpdate} /> : null}
         </div>
       </div>
 
@@ -58,21 +62,3 @@ const Loading = () => (
     <p className="text-center">Loading...</p>
   </div>
 )
-
-const ContractLink = ({ chainId }) => {
-  const explorerUrl = getBlockExplorerUrl(chainId)
-
-  if (! explorerUrl) return null
-
-  const url = `${explorerUrl}/address/${ARCHIMIDES_ADDRESS}`
-
-  return (
-    <a className="link-primary" href={url} target="_blank" rel="noreferrer">
-      Contract <i className="bi-box-arrow-up-right"></i>
-    </a>
-  )
-}
-
-ContractLink.propTypes = {
-  chainId: PropTypes.number.isRequired
-}
