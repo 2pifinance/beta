@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { getClientBuildManifest } from 'next/dist/client/route-loader'
 import { removePathTrailingSlash } from 'next/dist/client/normalize-trailing-slash'
@@ -35,51 +35,49 @@ const NotFoundPage = () => {
   }, [router])
 
   return (
-    <div className="container">
+    <React.Fragment>
       <Head>
         <title>2PI - Not found</title>
       </Head>
 
       <Header />
-      <NotFound />
+
+      <div className="container flex-grow-1">
+        <NotFound />
+      </div>
+
       <Footer />
-    </div>
+    </React.Fragment>
   )
 }
 
 const NotFound = () => {
   return (
-    <div className="card bg-blur shadow-none my-4">
-      <div className="card-body text-center bg-blur border border-primary border-2 rounded px-lg-5 py-lg-4">
-        <div className="text-start mb-0">
-          <Link href="/">
-            <a className="text-decoration-none">
-              <div className="d-flex align-items-center">
-                <div className="h4 mb-0">
-                  <i className="bi-arrow-left"></i>
-                </div>
-                <div className="ms-2">
-                  Back
-                </div>
-              </div>
-            </a>
-          </Link>
-        </div>
-
-        <h2 className="h1 text-primary mt-4 mb-0">
-          Not found
-        </h2>
-
-        <p className="text-center lead my-4">
-          The page that you are looking for doesn’t exist.
-        </p>
-
+    <div className="box-rounded bg-blur text-center my-4 px-lg-5 py-lg-4">
+      <div className="text-start mb-0">
         <Link href="/">
-          <a className="btn btn-outline-primary my-4">
-            Go home
+          <a className="text-decoration-none">
+            <div className="d-flex align-items-center">
+              <i className="bi-arrow-left"></i>
+              <div className="ms-2">Back</div>
+            </div>
           </a>
         </Link>
       </div>
+
+      <h2 className="h1 text-highlight mt-4 mb-0">
+        Not found
+      </h2>
+
+      <p className="text-center lead my-4">
+        The page that you are looking for doesn’t exist.
+      </p>
+
+      <Link href="/">
+        <a className="btn btn-outline-primary my-4">
+          Go home
+        </a>
+      </Link>
     </div>
   )
 }

@@ -36,7 +36,7 @@ describe('Disconnected Referral component', () => {
       </Provider>
     )
 
-    const unlockButton = screen.getByText('Unlock')
+    const unlockButton = screen.getByText(/unlock your referral link/)
 
     expect(unlockButton).toBeInTheDocument()
   })

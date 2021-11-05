@@ -1,23 +1,36 @@
-$vaults-header-border-color:  hsla(0, 0%, 100%, 0.25) !default;
-$vaults-header-border-radius: $border-radius          !default;
-
 .vaults-header {
   display: flex;
   flex-direction: column-reverse;
-  border: 2px solid $vaults-header-border-color;
-  border-radius: $vaults-header-border-radius;
-  background-color: hsla(0, 0%, 0%, 0.5);
-  backdrop-filter: blur(8px);
 
   @include media-breakpoint-up(lg) {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
+
+  .box-corners {
+    &::before,
+    &::after {
+      content: none;
+
+      @include media-breakpoint-up(xl) {
+        content: '';
+      }
+    }
+
+    &::after {
+      width: 100px;
+    }
+  }
 }
 
 .vaults-header-network {
   $border-color: rgba($primary, 0.5);
+
+  .network-selector ,
+  .network-selector-list {
+    width: 100%
+  }
 
   @include media-breakpoint-up(lg) {
     position: relative;
@@ -48,9 +61,13 @@ $vaults-header-border-radius: $border-radius          !default;
       border-right: 1px solid $border-color;
     }
 
-    .network-selector ,
+    .network-selector,
     .network-selector-list {
       min-width: 250px;
+    }
+
+    .network-selector-list {
+      width: auto;
     }
   }
 }
