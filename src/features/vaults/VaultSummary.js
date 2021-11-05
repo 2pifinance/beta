@@ -1,37 +1,18 @@
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import { toNumber, toCurrency, toPercentage } from '../../lib/locales'
+import * as Locales from '../../lib/locales'
 
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
-  const { price, symbol, uses } = vault
+  const { symbol, uses, price, balance, deposited, tvl } = vault
 
-  const apy = (vault.apy)
-    ? toPercentage(vault.apy, { precision: 3 })
-    : undefined
-
-  const daily = (vault.daily)
-    ? toPercentage(vault.daily, { precision: 3 })
-    : undefined
-
-  const balance = (vault.balance?.isGreaterThan(0))
-    ? toNumber(vault.balance, { compact: true, precision: { max: 3 } })
-    : undefined
-
-  const balanceUsd = (vault.balance?.isGreaterThan(0))
-    ? toCurrency(vault.balance.times(price), { compact: true })
-    : toCurrency(0)
-
-  const deposited = (vault.deposited?.isGreaterThan(0))
-    ? toNumber(vault.deposited, { compact: true, precision: { max: 3 } })
-    : undefined
-
-  const depositedUsd = (vault.deposited?.isGreaterThan(0))
-    ? toCurrency(vault.deposited.times(price), { compact: true })
-    : toCurrency(0)
-
-  const tvl = (vault.tvl?.isGreaterThan(0))
-    ? toCurrency(vault.tvl.times(price), { compact: true })
-    : undefined
+  const apy            = toPercentage(vault.apy)
+  const daily          = toPercentage(vault.daily)
+  const rewardsApy     = toPercentage(vault.rewardsApy)
+  const tvlUsd         = toCurrency(tvl.times(price))
+  const balanceToken   = balance   && toCompact(balance)
+  const balanceUsd     = balance   && toCurrency(balance.times(price))
+  const depositedToken = deposited && toCompact(deposited)
+  const depositedUsd   = deposited && toCurrency(deposited.times(price))
 
   return (
     <div className="vault-summary row">
@@ -57,8 +38,8 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
             <small>{balanceUsd}</small>
 
             <p className="vault-summary-stat"
-               title={`${vault.balance?.toFixed()} ${symbol}`}>
-              {balance || '-.--'}
+               title={(balance) ? `${balance.toFixed()} ${symbol}` : ''}>
+              {(balance && !balance.isZero()) ? balanceToken : '-.--' }
             </p>
           </div>
         </div>
@@ -71,8 +52,8 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
             <small>{depositedUsd}</small>
 
             <p className="vault-summary-stat"
-               title={`${vault.deposited?.toFixed()} ${symbol}`}>
-              {deposited || '-.--'}
+               title={(deposited) ? `${deposited.toFixed()} ${symbol}` : ''}>
+              {(deposited && !deposited.isZero()) ? depositedToken : '-.--' }
             </p>
           </div>
         </div>
@@ -80,17 +61,21 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
 
       <div className="col d-flex align-items-center py-4 px-5"
            role="gridcell" tabIndex="-1">
-        <p className="vault-summary-stat">{apy || '-.--'}</p>
+          <div>
+            <small>2PI APY: {rewardsApy}</small>
+
+            <p className="vault-summary-stat">{apy}</p>
+          </div>
       </div>
 
       <div className="col d-flex align-items-center py-4 px-5"
            role="gridcell" tabIndex="-1">
-        <p className="vault-summary-stat">{daily || '-.--'}</p>
+        <p className="vault-summary-stat">{daily}</p>
       </div>
 
       <div className="col d-flex align-items-center py-4 px-5"
            role="gridcell" tabIndex="-1">
-        <p className="vault-summary-stat">{tvl || '-.--'}</p>
+        <p className="vault-summary-stat">{tvlUsd}</p>
       </div>
 
       <div className="col d-flex align-items-center justify-content-end py-4"
@@ -126,4 +111,20 @@ const VaultLogo = ({ vault: { token } }) => {
 
 VaultLogo.propTypes = {
   vault: PropTypes.object.isRequired
+}
+
+
+
+// -- HELPERS --
+
+const toCompact = number => {
+  return Locales.toNumber(number, { compact: true, precision: { max: 3 } })
+}
+
+const toCurrency = number => {
+  return Locales.toCurrency(number, { compact: true })
+}
+
+const toPercentage  = number => {
+  return Locales.toPercentage(number, { precision: 3 })
 }

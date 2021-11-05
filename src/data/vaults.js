@@ -1,20 +1,21 @@
-import BigNumber from 'bignumber.js'
 import * as Client from '../lib/client'
-import { toHuman, toNative } from '../lib/math'
+import { toBigNumber, toNative } from '../lib/math'
+import { toData } from './vaults/vault'
 
 export const getVaults = async (chainId, wallet) => {
   const [ prices, ...data ] = await Promise.all([
     Client.getPrices(chainId),
-    ...Client.getVaults(chainId, wallet).map(toVaultData)
+    ...Client.getVaults(chainId, wallet).map(toData)
   ])
 
   try {
-    const apys = await Client.getApys()
-
-    // Set missing APY for the Curve BTC vault
+    const apys     = await Client.getApys()
     const btcCurve = data.find(v => v.id === 'polygon-btc-curve')
-    if (btcCurve) { btcCurve.apy = (apys['curve-poly-ren'] || {}).totalApy }
 
+    if (btcCurve) {
+      // Set missing APY for the Curve BTC vault
+      btcCurve.apy = (apys['curve-poly-ren'] || {}).totalApy
+    }
   } catch (error) {}
 
   // Add prices
@@ -48,7 +49,7 @@ export const withdraw = async (wallet, vault, amount) => {
   const { id, sharesDecimals, sharePrice } = vault
 
   const instance     = getVaultInstance(id, wallet)
-  const shares       = new BigNumber(amount).div(sharePrice)
+  const shares       = toBigNumber(amount).div(sharePrice)
   const amountNative = toNative(shares, sharesDecimals)
 
   return instance.withdraw(amountNative)
@@ -73,99 +74,4 @@ const getVaultInstance = (vaultId, wallet) => {
   if (! vault) throw RangeError('Vault not found')
 
   return vault
-}
-
-const getVaultApy = vault => {
-  // Avoid the "unimplemented" error on the BTC vault on Curve
-  return (vault.id === 'polygon-btc-curve')
-    ? undefined
-    : vault.apy()
-}
-
-const toVaultData = async vault => {
-  const [
-    apy,
-    tvlNative,
-    withdrawalFeeNative,
-    tokenDecimals,
-    wallet
-  ] = await Promise.all([
-    getVaultApy(vault),
-    vault.tvl(),
-    vault.withdrawalFee(),
-    vault.tokenDecimals(),
-    toWalletData(vault)
-  ])
-
-  const { id, chainId, priceId, address, symbol, token, earn, uses } = vault
-
-  const tvl           = toHuman(tvlNative, tokenDecimals)
-  const withdrawalFee = toHuman(withdrawalFeeNative, 2)
-
-  const {
-    allowance,
-    balance,
-    deposited,
-    sharesDecimals,
-    sharePrice,
-    twoPiEarned
-  } = wallet
-
-
-  return {
-    // Static data
-    id,
-    chainId,
-    priceId,
-    address,
-    symbol,
-    token,
-    tokenDecimals,
-    earn,
-    uses,
-
-    // Vault data
-    apy,
-    tvl,
-    withdrawalFee,
-
-    // Wallet data
-    allowance,
-    balance,
-    deposited,
-    sharesDecimals,
-    sharePrice,
-    twoPiEarned,
-  }
-}
-
-const toWalletData = async vault => {
-  if (! vault.canSign()) return {}
-
-  const [
-    sharesNative,
-    sharesDecimals,
-    pricePerFullShare,
-    balanceNative,
-    allowanceNative,
-    pendingPiTokens,
-    tokenDecimals
-  ] = await Promise.all([
-    vault.shares(),
-    vault.decimals(),
-    vault.pricePerFullShare(),
-    vault.balance(),
-    vault.allowance(),
-    vault.pendingPiTokens(),
-    vault.tokenDecimals()
-  ])
-
-  const balance     = toHuman(balanceNative, tokenDecimals)
-  const shares      = toHuman(sharesNative, sharesDecimals)
-  const sharePrice  = toHuman(pricePerFullShare, tokenDecimals)
-  const deposited   = shares.times(sharePrice)
-  const allowance   = toHuman(allowanceNative, tokenDecimals)
-  const twoPiEarned = toHuman(pendingPiTokens, 18)
-
-  return { allowance, balance, deposited, sharesDecimals, sharePrice, twoPiEarned }
 }
