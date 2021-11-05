@@ -9,14 +9,16 @@ const VaultsHeader = ({ chainId, vaults, connected = false, onChainChange }) => 
   const deposited = (vaults && connected) ? aggregateDeposits(vaults) : undefined
 
   return (
-    <header className="vaults-header mb-5 p-5 py-lg-6 px-lg-7">
-      <div className="vaults-header-network">
-        <p className="vaults-header-network-label">Select network</p>
+    <header className="vaults-header box-rounded box-ruler bg-blur mb-5 py-3 px-5 px-lg-7">
+      <div className="vaults-header-network mb-3 mb-lg-0">
+        <p className="d-none d-lg-block vaults-header-network-label">
+          Select network
+        </p>
 
         <NetworkSelector chains={SUPPORTED_CHAINS} value={chainId} onChange={onChainChange} />
       </div>
 
-      <div className="text-lg-end pb-5 pb-lg-0">
+      <div className="box-corners text-lg-end pb-5 py-xl-2 px-xl-7">
         <div className="mb-2">
           <p className="vaults-header-stat fs-1">
             {(tvl) ? toCurrency(tvl, { precision: 0 }) : <Placeholder />}
@@ -24,16 +26,16 @@ const VaultsHeader = ({ chainId, vaults, connected = false, onChainChange }) => 
           <p className="vaults-header-stat-label">TVL</p>
         </div>
 
-        <div className="">
+        <div className="mb-2">
           <p className="vaults-header-stat fs-2">
             {(deposited) ? toCurrency(deposited, { compact: true }) : <Placeholder />}
           </p>
           <p className="vaults-header-stat-label">Deposited</p>
         </div>
 
-        <p className="text-muted">
+        <small className="d-block text-muted ms-xl-5 mb-xl-n3 me-xl-n7">
           This app is experimental, please do your own research.
-        </p>
+        </small>
       </div>
     </header>
   )

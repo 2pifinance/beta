@@ -1,8 +1,8 @@
 const AirdropHeader = () => (
-  <div className="airdrop-header mb-8">
-    <h1 className="display-5">Airdrops</h1>
+  <div className="box-rounded box-ruler bg-blur mb-8 p-5 px-lg-7">
+    <h1 className="display-5 text-highlight">Airdrops</h1>
 
-    <p className="h5">Comming soon!</p>
+    <p className="h5 text-muted">Comming soon!</p>
   </div>
 )
 

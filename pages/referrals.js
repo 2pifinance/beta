@@ -12,7 +12,7 @@ const Referrals = () => (
 
     <Header />
 
-    <div className="container">
+    <div className="container flex-grow-1">
       <Referral />
     </div>
 

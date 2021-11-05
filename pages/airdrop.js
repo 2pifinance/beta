@@ -13,7 +13,7 @@ const Airdrop = () => (
 
     <Header />
 
-    <div className="container">
+    <div className="container flex-grow-1">
       <AirdropHeader />
       <AirdropPhases />
     </div>

@@ -1,0 +1,51 @@
+@use "sass:map";
+
+.box-rounded {
+  border: 2px solid hsl(0, 0%, 25%);
+  border-radius: $border-radius-lg;
+}
+
+.box-corners {
+  $color: darken($primary, 25%);
+
+  position: relative;
+
+  &::before ,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 50%;
+    max-width: 200px;
+    height: 50%;
+    max-height: 80px;
+    background-repeat: no-repeat;
+    background-size: 140px 9px;
+  }
+
+  &::before {
+    top: 0;
+    right: 0;
+    background-image: linear-gradient(30deg, rgba($color, 0) 49%, rgba($color, 1) 50%);
+    background-position: top 0% right 0%;
+    border-top: 1px solid $color;
+    border-right: 1px solid $color;
+  }
+
+  &::after {
+    left: 0;
+    bottom: 0;
+    background-image: linear-gradient(30deg, rgba($color, 1) 49%, rgba($color, 0) 50%);
+    background-position: bottom 0% left 0%;
+    border-left: 1px solid $color;
+    border-bottom: 1px solid $color;
+  }
+}
+
+.box-ruler {
+  @include media-breakpoint-up(lg) {
+    background-image: url('../../public/images/ruler.svg');
+    background-repeat: no-repeat;
+    background-position: center left map.get($spacers, 3);
+    background-size: 9px 132px;
+  }
+}

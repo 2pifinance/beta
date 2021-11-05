@@ -12,7 +12,7 @@ const Index = () => (
 
     <Header />
 
-    <div className="container">
+    <div className="container flex-grow-1">
       <Vaults />
     </div>
 

@@ -24,6 +24,10 @@ $vaults-table-border-radius: $border-radius  !default;
   letter-spacing: 1.3px;
   text-transform: uppercase;
 
+  &:first-child {
+    min-width: 254px;
+  }
+
   span:first-child {
     user-select: none;
     font-size: $font-size-base * 0.8;

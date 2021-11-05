@@ -2,3 +2,8 @@
   background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(8px);
 }
+
+.text-highlight {
+  font-family: $font-family-primary;
+  color: $theme-green;
+}

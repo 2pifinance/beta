@@ -10,7 +10,9 @@ const App = ({ children }) => {
 
   return (
     <React.Fragment>
-      {children}
+      <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+        {children}
+      </div>
 
       <Notifications />
     </React.Fragment>
