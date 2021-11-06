@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@2pi-network/js-sdk@^0.2.0-beta.12":
-  version "0.2.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@2pi-network/js-sdk/-/js-sdk-0.2.0-beta.12.tgz#1f511f37829aec9327eb715dca1f1d0ec36e9a32"
-  integrity sha512-fuvOWqHJNfB7pvvQiUA0YvSTacMUS2U3ziyIQw3gC3XgRLf3T5qelGzv14nDAKUe2eeU2/ts4y2SnpIC0h5UiQ==
+"@2pi-network/js-sdk@^0.2.0-beta.16":
+  version "0.2.0-beta.16"
+  resolved "https://registry.yarnpkg.com/@2pi-network/js-sdk/-/js-sdk-0.2.0-beta.16.tgz#a789088c60ad1d180feb7118ba3774b2d498d6c8"
+  integrity sha512-Mcb3Xf438T2geG9zSaN76BLTdrmlMnY1gcrKqnDL8FCnUGRr1oe0r04RIsYvGQz7G5gKCUFOzNXa7qlNZt3EjA==
   dependencies:
     axios "^0.24.0"
     bignumber.js "^9.0.1"
