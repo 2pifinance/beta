@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import * as Locales from '../../lib/locales'
+import { toCurrency, toNumber, toPercentage } from '../../lib/locales'
 
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const { symbol, uses, price, balance, deposited, tvl } = vault
 
   const apy            = toPercentage(vault.apy)
-  const daily          = toPercentage(vault.daily)
+  const daily          = toPercentage(vault.daily, { precision: 3 })
   const rewardsApy     = toPercentage(vault.rewardsApy)
-  const tvlUsd         = toCurrency(tvl.times(price))
+  const tvlUsd         = toCompactCurrency(tvl.times(price))
   const balanceToken   = balance   && toCompact(balance)
-  const balanceUsd     = balance   && toCurrency(balance.times(price))
+  const balanceUsd     = balance   && toCompactCurrency(balance.times(price))
   const depositedToken = deposited && toCompact(deposited)
-  const depositedUsd   = deposited && toCurrency(deposited.times(price))
+  const depositedUsd   = deposited && toCompactCurrency(deposited.times(price))
 
   return (
     <div className="vault-summary row">
@@ -64,7 +64,10 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
           <div>
             <small>2PI APY: {rewardsApy}</small>
 
-            <p className="vault-summary-stat">{apy}</p>
+            <div className="vault-summary-stat">
+              <ApyBreakdown vault={vault} />
+              {apy}
+            </div>
           </div>
       </div>
 
@@ -113,18 +116,47 @@ VaultLogo.propTypes = {
   vault: PropTypes.object.isRequired
 }
 
+const ApyBreakdown = ({ vault }) => {
+  const apy        = toPercentage(vault.apy)
+  const vaultApy   = toPercentage(vault.vaultApy)
+  const rewardsApy = toPercentage(vault.rewardsApy)
+
+  return (
+    <div className="apy-breakdown ms-n4 me-2">
+      <i className="bi-info-circle-fill text-primary"></i>
+
+      <ul className="apy-breakdown-dropdown">
+        <li>
+          <span>{vault.symbol} APY:</span>
+          <strong>{vaultApy}</strong>
+        </li>
+
+        <li>
+          <span>2PI APY:</span>
+          <strong>{rewardsApy}</strong>
+        </li>
+
+        <li>
+          <strong>Total:</strong>
+          <strong>{apy}</strong>
+        </li>
+      </ul>
+    </div>
+  )
+}
+
+ApyBreakdown.propTypes = {
+  vault: PropTypes.object.isRequired
+}
+
 
 
 // -- HELPERS --
 
 const toCompact = number => {
-  return Locales.toNumber(number, { compact: true, precision: { max: 3 } })
+  return toNumber(number, { compact: true, precision: { max: 3 } })
 }
 
-const toCurrency = number => {
-  return Locales.toCurrency(number, { compact: true })
-}
-
-const toPercentage  = number => {
-  return Locales.toPercentage(number, { precision: 3 })
+const toCompactCurrency = number => {
+  return toCurrency(number, { compact: true })
 }
