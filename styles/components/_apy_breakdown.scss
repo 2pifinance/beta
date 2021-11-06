@@ -1,0 +1,49 @@
+@use "sass:map";
+
+.apy-breakdown {
+  position: relative;
+  display: inline-block;
+  font-family: $font-family-sans-serif;
+  font-size: 1rem;
+
+  &:hover .apy-breakdown-dropdown {
+    display: block;
+  }
+
+  > i {
+    cursor: pointer;
+  }
+}
+
+.apy-breakdown-dropdown {
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  z-index: $zindex-dropdown;
+  display: none;
+  margin: 0;
+  padding: 0.8rem 1.4rem;
+  border-radius: 0 $border-radius $border-radius $border-radius;
+  background-color: hsla(214, 74%, 52%);
+  color: rgba($white, 0.5);
+  list-style: none;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: map.get($spacers, 2);
+    padding: 0 0.2rem;
+    white-space: nowrap;
+
+    span {
+      margin-right: map.get($spacers, 2);
+    }
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+    padding-top: map.get($spacers, 2);
+    border-top: 1px solid rgba($white, 0.5);
+    color: $white;
+  }
+}
