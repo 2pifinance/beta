@@ -17,7 +17,7 @@
 
 .apy-breakdown-dropdown {
   position: absolute;
-  top: 2rem;
+  top: 1.6rem;
   left: 0;
   z-index: $zindex-dropdown;
   display: none;
@@ -42,8 +42,5 @@
 
   li:last-child {
     margin-bottom: 0;
-    padding-top: map.get($spacers, 2);
-    border-top: 1px solid rgba($white, 0.5);
-    color: $white;
   }
 }

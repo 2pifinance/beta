@@ -13,7 +13,7 @@ export const getVaults = async (chainId, wallet) => {
   const vaults = await doGetVaults(chainId, wallet)
 
   for (const vault of vaults) {
-    vault.daily = toDailyRate(vault.apy.toNumber())
+    vault.daily = toDailyRate(vault.apy)
   }
 
   return vaults
