@@ -5,9 +5,10 @@ import { toCurrency, toNumber, toPercentage } from '../../lib/locales'
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const { symbol, uses, price, balance, deposited, tvl } = vault
 
+  const hasRewards     = (vault.token !== '2pi')
   const apy            = toPercentage(vault.apy)
   const daily          = toPercentage(vault.daily, { precision: 3 })
-  const rewardsApy     = toPercentage(vault.rewardsApy)
+  const rewardsApr     = toPercentage(vault.rewardsApr)
   const tvlUsd         = toCompactCurrency(tvl.times(price))
   const balanceToken   = balance   && toCompact(balance)
   const balanceUsd     = balance   && toCompactCurrency(balance.times(price))
@@ -62,10 +63,10 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
       <div className="col d-flex align-items-center py-4 px-5"
            role="gridcell" tabIndex="-1">
           <div>
-            <small>2PI APY: {rewardsApy}</small>
+            {(hasRewards) ? <small>2PI APR: {rewardsApr}</small> : null}
 
             <div className="vault-summary-stat">
-              <ApyBreakdown vault={vault} />
+              {(hasRewards) ? <ApyBreakdown vault={vault} /> : null}
               {apy}
             </div>
           </div>
@@ -117,9 +118,8 @@ VaultLogo.propTypes = {
 }
 
 const ApyBreakdown = ({ vault }) => {
-  const apy        = toPercentage(vault.apy)
+  const rewardsApr = toPercentage(vault.rewardsApr)
   const vaultApy   = toPercentage(vault.vaultApy)
-  const rewardsApy = toPercentage(vault.rewardsApy)
 
   return (
     <div className="apy-breakdown ms-n4 me-2">
@@ -127,18 +127,13 @@ const ApyBreakdown = ({ vault }) => {
 
       <ul className="apy-breakdown-dropdown">
         <li>
+          <span>2PI APR:</span>
+          <strong>{rewardsApr}</strong>
+        </li>
+
+        <li>
           <span>{vault.symbol} APY:</span>
           <strong>{vaultApy}</strong>
-        </li>
-
-        <li>
-          <span>2PI APY:</span>
-          <strong>{rewardsApy}</strong>
-        </li>
-
-        <li>
-          <strong>Total:</strong>
-          <strong>{apy}</strong>
         </li>
       </ul>
     </div>

@@ -1,4 +1,4 @@
-import { toPositiveOrZero, toHuman } from '../../lib/math'
+import { toCompoundRate, toPositiveOrZero, toHuman } from '../../lib/math'
 
 export const toData = async vault => {
   const [ vaultData, walletData, staticData ] = await Promise.all([
@@ -31,27 +31,30 @@ const toVaultData = async vault => {
   const [
     tokenDecimalsBN,
     unsafeVaultApy,
-    unsafeRewardsApy,
+    unsafeRewardsApr,
     tvlNative,
     withdrawalFeeNative
   ] = await Promise.all([
     vault.tokenDecimals(),
     getVaultApy(vault),
-    vault.rewardsApy(),
+    vault.rewardsApr(),
     vault.tvl(),
     vault.withdrawalFee()
   ])
 
   const tokenDecimals = parseInt(tokenDecimalsBN.toString())
+  const vaultApy      = parseFloat(unsafeVaultApy.toString()) || 0
+  const rewardsApr    = parseFloat(unsafeRewardsApr.toString()) || 0
 
   // Ensure positive `BigNumber`s
-  const vaultApy      = toPositiveOrZero(unsafeVaultApy)
-  const rewardsApy    = toPositiveOrZero(unsafeRewardsApy)
-  const apy           = vaultApy.plus(rewardsApy)
   const tvl           = toPositiveOrZero(toHuman(tvlNative, tokenDecimals))
   const withdrawalFee = toPositiveOrZero(toHuman(withdrawalFeeNative, 2))
 
-  return { apy, vaultApy, rewardsApy, tokenDecimals, tvl, withdrawalFee }
+  // Total APY. Assumes rewards are claimed manually, swapped,
+  // and re-invested daily on the same vault.
+  const apy = (1 + toCompoundRate(rewardsApr)) * (1 + vaultApy) - 1
+
+  return { apy, vaultApy, rewardsApr, tokenDecimals, tvl, withdrawalFee }
 }
 
 const toWalletData = async vault => {

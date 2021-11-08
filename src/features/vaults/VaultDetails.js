@@ -9,7 +9,7 @@ export const VaultDetails = ({ vault, connected, onUpdate }) => {
   if (! connected)     return <WalletPrompt />
   if (! vault.balance) return <Loading />
 
-  const hasClaim = (vault.token !== '2pi')
+  const hasRewards = (vault.token !== '2pi')
 
   return (
     <div className="vault-details mt-3 mb-5 mx-5 pt-5">
@@ -22,7 +22,7 @@ export const VaultDetails = ({ vault, connected, onUpdate }) => {
         </div>
 
         <div className="col col-lg-4 text-end text-lg-center">
-          {(hasClaim) ? <Claim vault={vault} onUpdate={onUpdate} /> : null}
+          {(hasRewards) ? <Claim vault={vault} onUpdate={onUpdate} /> : null}
         </div>
       </div>
 
