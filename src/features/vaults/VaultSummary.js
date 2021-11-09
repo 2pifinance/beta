@@ -16,7 +16,7 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const depositedUsd   = deposited && toCompactCurrency(deposited.times(price))
 
   return (
-    <div className="vault-summary row">
+    <div className="vault-summary row" onClick={onToggle}>
       <div className="col d-flex align-items-center py-5 px-5"
            role="gridcell" tabIndex="-1">
         <div>
@@ -84,8 +84,7 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
 
       <div className="col d-flex align-items-center justify-content-end py-4"
            role="gridcell" tabIndex="-1">
-        <button className={`btn btn-crosshairs me-5 ${(active) ? 'active' : ''}`}
-                onClick={onToggle}>
+        <button className={`btn btn-crosshairs me-5 ${(active) ? 'active' : ''}`}>
           <span></span>
           <span></span>
         </button>

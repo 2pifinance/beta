@@ -4,6 +4,12 @@ $vault-summary-size:    24px          !default;
 $vault-summary-size-lg: 28px          !default;
 
 .vault-summary {
+  cursor: pointer;
+
+  > .col:last-child {
+    max-width: 100px;
+  }
+
   p {
     margin: 0;
     padding: 0;
