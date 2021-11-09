@@ -4,7 +4,7 @@ import { withdraw } from '../../data/vaults'
 import { toNumber } from '../../lib/locales'
 import { useStore, dropNotificationGroup } from '../../store'
 import { classNames, preventDefault } from '../../utils/view'
-import { notify, notifySuccess, notifyError } from '../../store/notifications'
+import { txSent, txSuccess, txError } from './utils/transactions'
 import { validateWithdraw } from './utils/validations'
 
 const Withdraw = ({ vault, onUpdate }) => {
@@ -22,31 +22,33 @@ const Withdraw = ({ vault, onUpdate }) => {
   const onMax    = () => setValue(deposited.toFixed())
 
   const onSubmit = async () => {
-    const error = validateWithdraw(vault, value)
+    const chainId = vault.chainId
+    const error   = validateWithdraw(vault, value)
 
     // Update the displayed error message and abort if there's an error
     setError(error)
     if (error) return
 
     setIsPending(true)
-    dispatch(dropNotificationGroup('withdraws'))
 
     try {
       const transaction = await withdraw(wallet, vault, value)
 
       setValue('')
       setIsPending(false)
-      dispatch(withdrawSent(transaction.hash))
+      dispatch(dropNotificationGroup('withdraws'))
+      dispatch(withdrawSent(chainId, transaction.hash))
 
       const receipt = await transaction.wait()
 
       onUpdate()
       dispatch(dropNotificationGroup('withdraws'))
-      dispatch(withdrawSuccess(receipt.transactionHash))
+      dispatch(withdrawSuccess(chainId, receipt.transactionHash))
 
     } catch (error) {
       setIsPending(false)
-      dispatch(withdrawError(error))
+      dispatch(dropNotificationGroup('withdraws'))
+      dispatch(withdrawError(chainId, error))
     }
   }
 
@@ -95,16 +97,14 @@ export default Withdraw
 
 // -- HELPERS --
 
-const withdrawSent = () => {
-  return notify('withdraws', 'Your withdraw has been sent.')
+const withdrawSent = (chainId, hash) => {
+  return txSent('withdraws', 'withdraw', chainId, hash)
 }
 
-const withdrawSuccess = () => {
-  return notifySuccess('withdraws', 'Your withdraw was successful.')
+const withdrawSuccess = (chainId, hash) => {
+  return txSuccess('withdraws', 'withdraw', chainId, hash)
 }
 
-const withdrawError = error => {
-  const message = error?.message || 'An error occurred.'
-
-  return notifyError('withdraws', message)
+const withdrawError = (chainId, error) => {
+  return txError('withdraws', 'withdraw', chainId, error)
 }

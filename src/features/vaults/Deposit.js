@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { approve, deposit } from '../../data/vaults'
 import { toNumber } from '../../lib/locales'
 import { useStore, dropNotificationGroup } from '../../store'
-import { notify, notifySuccess, notifyError } from '../../store/notifications'
+import { notifySuccess } from '../../store/notifications'
 import { classNames, preventDefault } from '../../utils/view'
+import { txSent, txSuccess, txError } from './utils/transactions'
 import { validateDeposit } from './utils/validations'
 
 const Deposit = ({ vault, onUpdate }) => {
@@ -20,36 +21,40 @@ const Deposit = ({ vault, onUpdate }) => {
     : (isPending ? 'Approving...'  : 'Approve')
 
   const onApprove = async () => {
+    const chainId = vault.chainId
+
     setIsPending(true)
-    dispatch(dropNotificationGroup('deposits'))
 
     try {
       const transaction = await approve(wallet, vault, 1e58)
 
-      setIsPending(false)
-      dispatch(approveSent(transaction.hash))
+      dispatch(dropNotificationGroup('deposits'))
+      dispatch(approveSent(chainId, transaction.hash))
 
       const receipt = await transaction.wait()
 
       onUpdate()
       dispatch(dropNotificationGroup('deposits'))
-      dispatch(approveSuccess(receipt.transactionHash))
+      dispatch(approveSuccess(chainId, receipt.transactionHash))
 
     } catch (error) {
+      dispatch(dropNotificationGroup('deposits'))
+      dispatch(approveError(chainId, error))
+
+    } finally {
       setIsPending(false)
-      dispatch(approveError(error))
     }
   }
 
   const onDeposit = async () => {
-    const error = validateDeposit(vault, value)
+    const chainId = vault.chainId
+    const error   = validateDeposit(vault, value)
 
     // Update the displayed error message and abort if there's an error
     setError(error)
     if (error) return
 
     setIsPending(true)
-    dispatch(dropNotificationGroup('deposits'))
 
     try {
       const referral    = localStorage.getItem('referral')
@@ -57,17 +62,19 @@ const Deposit = ({ vault, onUpdate }) => {
 
       setValue('')
       setIsPending(false)
-      dispatch(depositSent(transaction.hash))
+      dispatch(dropNotificationGroup('deposits'))
+      dispatch(depositSent(chainId, transaction.hash))
 
       const receipt = await transaction.wait()
 
       onUpdate()
       dispatch(dropNotificationGroup('deposits'))
-      dispatch(depositSuccess(receipt.transactionHash))
+      dispatch(depositSuccess(chainId, receipt.transactionHash))
 
     } catch (error) {
       setIsPending(false)
-      dispatch(depositError(error))
+      dispatch(dropNotificationGroup('deposits'))
+      dispatch(depositError(chainId, error))
     }
   }
 
@@ -126,30 +133,28 @@ const isTokenApproved = ({ token, allowance, balance }) => {
   return allowance.isGreaterThan(balance)
 }
 
-const approveSent = () => {
-  return notify('deposits', 'Your approve has been sent.')
+const approveSent = (chainId, hash) => {
+  return txSent('deposits', 'approval', chainId, hash)
 }
 
 const approveSuccess = () => {
-  return notifySuccess('deposits', 'The approval was successful, you may deposit now.')
+  const message = 'The approval was successful, you may deposit now.'
+
+  return notifySuccess('deposits', message)
 }
 
-const approveError = error => {
-  const message = error?.message || 'An error occurred.'
-
-  return notifyError('deposits', message)
+const approveError = (chainId, error) => {
+  return txError('deposits', 'approval', chainId, error)
 }
 
-const depositSent = () => {
-  return notify('deposits', 'Your deposit has been sent.')
+const depositSent = (chainId, hash) => {
+  return txSent('deposits', 'deposit', chainId, hash)
 }
 
-const depositSuccess = () => {
-  return notifySuccess('deposits', 'Your deposit was successful.')
+const depositSuccess = (chainId, hash) => {
+  return txSuccess('deposits', 'deposit', chainId, hash)
 }
 
-const depositError = error => {
-  const message = error?.message || 'An error occurred.'
-
-  return notifyError('deposits', message)
+const depositError = (chainId, error) => {
+  return txError('deposits', 'deposit', chainId, error)
 }

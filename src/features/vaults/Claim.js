@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { harvest } from '../../data/vaults'
 import { toNumber } from '../../lib/locales'
 import { useStore, dropNotificationGroup } from '../../store'
-import { notify, notifySuccess, notifyError } from '../../store/notifications'
+import { txSent, txSuccess, txError } from './utils/transactions'
 
 export const Claim = ({ vault, onUpdate }) => {
   const [ { wallet }, dispatch ]    = useStore()
@@ -14,24 +14,28 @@ export const Claim = ({ vault, onUpdate }) => {
   const buttonLabel = (isPending) ? 'Claiming...' : 'Claim'
 
   const onClaim = async () => {
+    const chainId = vault.chainId
+
     setIsPending(true)
-    dispatch(dropNotificationGroup('claims'))
 
     try {
       const transaction = await harvest(wallet, vault)
 
-      setIsPending(false)
-      dispatch(claimSent(transaction.hash))
+      dispatch(dropNotificationGroup('claims'))
+      dispatch(claimSent(chainId, transaction.hash))
 
       const receipt = await transaction.wait()
 
       onUpdate()
       dispatch(dropNotificationGroup('claims'))
-      dispatch(claimSuccess(receipt.transactionHash))
+      dispatch(claimSuccess(chainId, receipt.transactionHash))
 
     } catch (error) {
+      dispatch(dropNotificationGroup('claims'))
+      dispatch(claimError(chainId, error))
+
+    } finally {
       setIsPending(false)
-      dispatch(claimError(error))
     }
   }
 
@@ -62,16 +66,14 @@ export default Claim
 
 // -- HELPERS --
 
-const claimSent = () => {
-  return notify('claims', 'Your claim has been sent.')
+const claimSent = (chainId, hash) => {
+  return txSent('claims', 'claim', chainId, hash)
 }
 
-const claimSuccess = () => {
-  return notifySuccess('claims', 'Your claim was successful.')
+const claimSuccess = (chainId, hash) => {
+  return txSuccess('claims', 'claim', chainId, hash)
 }
 
-const claimError = error => {
-  const message = error?.message || 'An error occurred.'
-
-  return notifyError('claims', message)
+const claimError = (chainId, error) => {
+  return txError('claims', 'claim', chainId, error)
 }
