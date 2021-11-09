@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import Image from 'next/image'
 
 const AirdropPhases = () => (
-  <div className="airdrop-phases row gy-3 gx-xl-7">
+  <div className="airdrop-phases row gy-3 gx-xl-7 mb-6">
     <div id="airdrop-phase-1" className="col">
       <figure className="airdrop-phase-image">
         <div className="airdrop-phase-flag">
