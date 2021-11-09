@@ -24,6 +24,10 @@ export const validateDeposit = (vault, amount) => {
       : 'You don’t have enough funds.'
   }
 
+  if (vault.availableQuota.isLessThan(amount)) {
+    return 'Can’t be more than the vault’s remaining quota.'
+  }
+
   return null
 }
 

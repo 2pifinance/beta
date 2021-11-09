@@ -33,13 +33,19 @@ const toVaultData = async vault => {
     unsafeVaultApy,
     unsafeRewardsApr,
     tvlNative,
-    withdrawalFeeNative
+    withdrawalFeeNative,
+    isPaused,
+    quotaNative,
+    availableQuotaNative
   ] = await Promise.all([
     vault.tokenDecimals(),
     getVaultApy(vault),
     vault.rewardsApr(),
     vault.tvl(),
-    vault.withdrawalFee()
+    vault.withdrawalFee(),
+    vault.paused(),
+    vault.depositCap(),
+    vault.availableDeposit()
   ])
 
   const tokenDecimals = parseInt(tokenDecimalsBN.toString())
@@ -47,14 +53,26 @@ const toVaultData = async vault => {
   const rewardsApr    = parseFloat(unsafeRewardsApr.toString()) || 0
 
   // Ensure positive `BigNumber`s
-  const tvl           = toPositiveOrZero(toHuman(tvlNative, tokenDecimals))
-  const withdrawalFee = toPositiveOrZero(toHuman(withdrawalFeeNative, 2))
+  const tvl            = toPositiveOrZero(toHuman(tvlNative, tokenDecimals))
+  const withdrawalFee  = toPositiveOrZero(toHuman(withdrawalFeeNative, 2))
+  const quota          = toPositiveOrZero(toHuman(quotaNative, tokenDecimals))
+  const availableQuota = toPositiveOrZero(toHuman(availableQuotaNative, tokenDecimals))
 
   // Total APY. Assumes rewards are claimed manually, swapped,
   // and re-invested daily on the same vault.
   const apy = (1 + toCompoundRate(rewardsApr)) * (1 + vaultApy) - 1
 
-  return { apy, vaultApy, rewardsApr, tokenDecimals, tvl, withdrawalFee }
+  return {
+    apy,
+    vaultApy,
+    rewardsApr,
+    tokenDecimals,
+    tvl,
+    withdrawalFee,
+    isPaused,
+    quota,
+    availableQuota
+  }
 }
 
 const toWalletData = async vault => {
