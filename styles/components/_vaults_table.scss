@@ -28,6 +28,10 @@ $vaults-table-border-radius: $border-radius  !default;
     min-width: 254px;
   }
 
+  &:last-child {
+    max-width: 100px;
+  }
+
   span:first-child {
     user-select: none;
     font-size: $font-size-base * 0.8;
