@@ -15,6 +15,7 @@ const Deposit = ({ vault, onUpdate }) => {
   const [ isPending, setIsPending ] = useState(false)
   const { symbol, balance }         = vault
   const isApproved                  = isTokenApproved(vault)
+  const isDisabled                  = vault.isPaused || isPending
 
   const buttonLabel = (isApproved)
     ? (isPending ? 'Depositing...' : 'Deposit')
@@ -96,7 +97,7 @@ const Deposit = ({ vault, onUpdate }) => {
         </p>
       </header>
 
-      <fieldset className="input-group has-validation" disabled={!isApproved || isPending}>
+      <fieldset className="input-group has-validation" disabled={!isApproved || isDisabled}>
         <input name="deposit" type="number" value={value} onChange={onChange}
                className={classNames({ 'form-control': true, 'is-invalid': error })} />
 
@@ -106,7 +107,7 @@ const Deposit = ({ vault, onUpdate }) => {
       </fieldset>
 
       <div className="d-flex flex-column align-items-center mt-4">
-        <button type="submit" className="btn btn-outline-primary" disabled={isPending}>
+        <button type="submit" className="btn btn-outline-primary" disabled={isDisabled}>
           {buttonLabel}
         </button>
 

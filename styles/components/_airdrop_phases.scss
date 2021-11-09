@@ -8,11 +8,12 @@
     &::before {
       content: "";
       position: absolute;
-      top: -10px;
-      left: 23%;
+      top: 0px;
+      left: -10px;
       width: 200px;
       height: 200px;
       background: center / contain no-repeat url('/images/airdrop/astronaut.svg');
+      transform: rotate(-5.5deg);
     }
 
     &::after {
@@ -26,6 +27,18 @@
       border: 3px dashed hsla(0, 0%, 100%, 0.3);
       border-radius: 50%;
       transform: translateX(-50%);
+    }
+  }
+
+  @include media-breakpoint-up(xl) {
+    &::before {
+      top: 16px;
+    }
+  }
+
+  @include media-breakpoint-up(xxl) {
+    &::before {
+      top: 34px;
     }
   }
 }
