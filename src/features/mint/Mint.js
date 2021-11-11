@@ -43,7 +43,7 @@ export default Mint
 
 // STATIC CONTRACT DATA
 
-const address = '0x0e478b6a45da53e04d90d52e39c6a7963897d5cf'
+const address = '0x90305218d28f3A75fDAA288c0ed143Fa6F2efC88'
 const abi     = [
   {
     'inputs':          [],
