@@ -13,6 +13,7 @@ export const getVaults = async (chainId, wallet) => {
   const vaults = await doGetVaults(chainId, wallet)
 
   for (const vault of vaults) {
+    vault.rank  = getRank(vault)
     vault.daily = toDailyRate(vault.apy)
   }
 
@@ -61,6 +62,23 @@ export const getContractUrl = ({ address, chainId }) => {
 
 
 // -- HELPERS --
+
+const ranks = {
+  'polygon-2pi-maxi':        1,
+  'polygon-btc-aave':        2,
+  'polygon-eth-aave':        3,
+  'polygon-dai-aave':        4,
+  'polygon-usdc-aave':       5,
+  'polygon-usdt-aave':       6,
+  'polygon-matic-aave':      7,
+  'polygon-eth-2pi-sushi':   8,
+  'polygon-dai-2pi-sushi':   9,
+  'polygon-matic-2pi-sushi': 10
+}
+
+const getRank = ({ id }) => {
+  return ranks[id] || 9999
+}
 
 const fetchError = () => {
   return notifyError('fetchVaults',
