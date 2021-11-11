@@ -4,7 +4,7 @@ import { useSort, sortVaultsBy } from './utils/sort'
 import Vault from './Vault'
 
 const VaultsTable = ({ vaults, connected, onUpdate }) => {
-  const [ sort, sortFor, sortBy ] = useSort('symbol', 'asc')
+  const [ sort, sortFor, sortBy ] = useSort('rank', 'asc')
 
   vaults = sortVaultsBy(vaults, sort.column, sort.direction !== 'desc')
 
