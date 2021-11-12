@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { approve, deposit } from '../../data/vaults'
@@ -14,8 +15,9 @@ const Deposit = ({ vault, onUpdate }) => {
   const [ error, setError ]         = useState()
   const [ isPending, setIsPending ] = useState(false)
   const { symbol, balance }         = vault
-  const isApproved                  = isTokenApproved(vault)
-  const isDisabled                  = vault.isPaused || isPending
+
+  const isApproved = isTokenApproved(vault)
+  const isDisabled = vault.isPaused || vault.isFull || isPending
 
   const buttonLabel = (isApproved)
     ? (isPending ? 'Depositing...' : 'Deposit')
@@ -79,8 +81,16 @@ const Deposit = ({ vault, onUpdate }) => {
     }
   }
 
+  const onMax = () => {
+    // Take time into account, by now the available quota is lower than when
+    // data was fetched (rewards are harvested on each block).
+    const availableQuota = vault.availableQuota.times(0.99)
+    const value          = BigNumber.min(balance, availableQuota)
+
+    setValue(value.toFixed())
+  }
+
   const onChange = ({ target }) => setValue(target.value)
-  const onMax    = () => setValue(balance.toFixed())
   const onSubmit = (isApproved) ? onDeposit : onApprove
 
   return (

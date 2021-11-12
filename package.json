@@ -42,7 +42,7 @@
   },
   "jest": {
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
+      "<rootDir>/test/setup.js"
     ],
     "testEnvironment": "jsdom"
   },

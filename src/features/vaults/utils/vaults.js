@@ -13,8 +13,9 @@ export const getVaults = async (chainId, wallet) => {
   const vaults = await doGetVaults(chainId, wallet)
 
   for (const vault of vaults) {
-    vault.rank  = getRank(vault)
-    vault.daily = toDailyRate(vault.apy)
+    vault.rank   = getRank(vault)
+    vault.daily  = toDailyRate(vault.apy)
+    vault.isFull = vault.availableQuota.isZero()
   }
 
   return vaults

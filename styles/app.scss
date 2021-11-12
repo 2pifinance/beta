@@ -1,8 +1,9 @@
 @import "overrides/variables";
 @import "bootstrap-icons/font/bootstrap-icons";
 @import "bootstrap/scss/bootstrap";
-@import "overrides/toasts";
+@import "overrides/alert";
 @import "overrides/button";
+@import "overrides/toasts";
 
 @import "variables";
 @import "general";
