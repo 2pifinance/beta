@@ -15,8 +15,9 @@ const Deposit = ({ vault, onUpdate }) => {
   const [ error, setError ]         = useState()
   const [ isPending, setIsPending ] = useState(false)
   const { symbol, balance }         = vault
-  const isApproved                  = isTokenApproved(vault)
-  const isDisabled                  = vault.isPaused || isPending
+
+  const isApproved = isTokenApproved(vault)
+  const isDisabled = vault.isPaused || vault.isFull || isPending
 
   const buttonLabel = (isApproved)
     ? (isPending ? 'Depositing...' : 'Deposit')

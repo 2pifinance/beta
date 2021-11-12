@@ -9,6 +9,8 @@ const Vault = ({ vault, connected, onUpdate }) => {
 
   return (
     <React.Fragment>
+      <VaultMessage vault={vault} />
+
       <VaultSummary vault={vault} active={isOpen} connected={connected}
                     onToggle={() => setIsOpen(!isOpen)} />
 
@@ -26,3 +28,30 @@ Vault.propTypes = {
 }
 
 export default Vault
+
+const VaultMessage = ({ vault: { isPaused, isFull } }) => {
+  if (isPaused) {
+    return (
+      <div className="alert alert-danger text-center m-5 mb-n2" role="alert">
+        <i className="bi bi-exclamation-circle-fill text-danger me-2"></i>
+        <strong>Deposits are temporary disabled at this vault.</strong>
+      </div>
+    )
+  }
+
+  if (isFull) {
+    return (
+      <div className="alert alert-success text-center m-5 mb-n2" role="alert">
+        <i className="bi bi-check-circle-fill text-success me-2"></i>
+        <strong>Vault at Max Cap:</strong>{' '}
+        Stay tuned until the deposits limit is raised.
+      </div>
+    )
+  }
+
+  return null
+}
+
+VaultMessage.propTypes = {
+  vault: PropTypes.object.isRequired
+}

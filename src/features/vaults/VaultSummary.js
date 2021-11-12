@@ -6,7 +6,6 @@ import { classNames } from '../../utils/view'
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const { symbol, uses, price, balance, deposited, quota, tvl } = vault
 
-  const hasRewards     = (vault.token !== '2pi')
   const apy            = toPercentage(vault.apy)
   const daily          = toPercentage(vault.daily, { precision: 3 })
   const rewardsApr     = toPercentage(vault.rewardsApr)
@@ -17,9 +16,13 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
   const depositedToken = deposited && toCompact(deposited)
   const depositedUsd   = deposited && toCompactCurrency(deposited.times(price))
 
+  const isDisabled = vault.isPaused || vault.isFull
+  const hasRewards = (vault.token !== '2pi')
+
   return (
-    <div className="vault-summary row" onClick={onToggle}>
-      <div className="col d-flex align-items-center py-5 px-5"
+    <div className={classNames({ 'row': true, 'vault-summary': true, 'disabled': isDisabled })}
+         onClick={onToggle}>
+      <div className="col d-flex align-items-center p-5"
            role="gridcell" tabIndex="-1">
         <div>
           <div className="vault-summary-symbol">
