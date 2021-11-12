@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
 import Image from 'next/image'
 import { toCurrency, toNumber, toPercentage } from '../../lib/locales'
+import { classNames } from '../../utils/view'
 
 const VaultSummary = ({ vault, active, connected, onToggle }) => {
-  const { symbol, uses, price, balance, deposited, tvl } = vault
+  const { symbol, uses, price, balance, deposited, quota, tvl } = vault
 
   const hasRewards     = (vault.token !== '2pi')
   const apy            = toPercentage(vault.apy)
   const daily          = toPercentage(vault.daily, { precision: 3 })
   const rewardsApr     = toPercentage(vault.rewardsApr)
+  const quotaUsd       = toCompactCurrency(quota.times(price))
   const tvlUsd         = toCompactCurrency(tvl.times(price))
   const balanceToken   = balance   && toCompact(balance)
   const balanceUsd     = balance   && toCompactCurrency(balance.times(price))
@@ -33,7 +35,7 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
       </div>
 
       {(connected) &&
-        <div className="col d-flex align-items-center py-4 px-5"
+        <div className="col d-flex align-items-center p-5"
              role="gridcell" tabIndex="-1">
           <div>
             <small>{balanceUsd}</small>
@@ -47,7 +49,7 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
       }
 
       {(connected) &&
-        <div className="col d-flex align-items-center py-4 px-5"
+        <div className="col d-flex align-items-center p-5"
              role="gridcell" tabIndex="-1">
           <div>
             <small>{depositedUsd}</small>
@@ -60,29 +62,39 @@ const VaultSummary = ({ vault, active, connected, onToggle }) => {
         </div>
       }
 
-      <div className="col d-flex align-items-center py-4 px-5"
+      <div className="col d-flex align-items-center p-5"
            role="gridcell" tabIndex="-1">
           <div>
-            {(hasRewards) ? <small>2PI APR: {rewardsApr}</small> : null}
+            {(hasRewards) && <small>2PI APR: {rewardsApr}</small>}
 
-            <div className="vault-summary-stat">
-              {(hasRewards) ? <ApyBreakdown vault={vault} /> : null}
+            <div className={classNames({ 'vault-summary-stat': true, 'mt-3': !hasRewards})}>
+              {(hasRewards) && <ApyBreakdown vault={vault} />}
               {apy}
             </div>
           </div>
       </div>
 
-      <div className="col d-flex align-items-center py-4 px-5"
+      <div className="col d-flex align-items-center p-5"
            role="gridcell" tabIndex="-1">
-        <p className="vault-summary-stat">{daily}</p>
+        <div>
+          <p className="vault-summary-stat mt-3">{daily}</p>
+        </div>
       </div>
 
       <div className="col d-flex align-items-center py-4 px-5"
            role="gridcell" tabIndex="-1">
-        <p className="vault-summary-stat">{tvlUsd}</p>
+        <div>
+          {(quota.isZero()) ||
+            <small title="Maximum liquidity allowed">Max Cap: {quotaUsd}</small>
+          }
+
+          <p className={classNames({ 'vault-summary-stat': true, 'mt-3': quota.isZero()})}>
+            {tvlUsd}
+          </p>
+        </div>
       </div>
 
-      <div className="col d-flex align-items-center justify-content-end py-4"
+      <div className="col d-flex align-items-center justify-content-end py-5"
            role="gridcell" tabIndex="-1">
         <button className={`btn btn-crosshairs me-5 ${(active) ? 'active' : ''}`}>
           <span></span>

@@ -12,6 +12,7 @@ const vault = {
   uses:           'Aave',
   apy:            new BigNumber(0.17),
   price:          new BigNumber(1),
+  quota:          new BigNumber(9999),
   tvl:            new BigNumber(1000),
   withdrawalFee:  new BigNumber(10),
   allowance:      new BigNumber(0),

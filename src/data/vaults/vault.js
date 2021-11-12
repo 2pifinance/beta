@@ -48,15 +48,15 @@ const toVaultData = async vault => {
     vault.availableDeposit()
   ])
 
-  const tokenDecimals = parseInt(tokenDecimalsBN.toString())
-  const vaultApy      = parseFloat(unsafeVaultApy.toString()) || 0
-  const rewardsApr    = parseFloat(unsafeRewardsApr.toString()) || 0
+  const tokenDecimals = Number(tokenDecimalsBN.toString())
+  const vaultApy      = Number(unsafeVaultApy.toString()) || 0
+  const rewardsApr    = Number(unsafeRewardsApr.toString()) || 0
 
   // Ensure positive `BigNumber`s
-  const tvl            = toPositiveOrZero(toHuman(tvlNative, tokenDecimals))
   const withdrawalFee  = toPositiveOrZero(toHuman(withdrawalFeeNative, 2))
   const quota          = toPositiveOrZero(toHuman(quotaNative, tokenDecimals))
   const availableQuota = toPositiveOrZero(toHuman(availableQuotaNative, tokenDecimals))
+  const tvl            = toPositiveOrZero(toHuman(tvlNative, tokenDecimals))
 
   // Total APY. Assumes rewards are claimed manually, swapped,
   // and re-invested daily on the same vault.
@@ -66,12 +66,12 @@ const toVaultData = async vault => {
     apy,
     vaultApy,
     rewardsApr,
-    tokenDecimals,
-    tvl,
     withdrawalFee,
-    isPaused,
+    tokenDecimals,
     quota,
-    availableQuota
+    availableQuota,
+    tvl,
+    isPaused
   }
 }
 
@@ -96,8 +96,8 @@ const toWalletData = async vault => {
     vault.pendingPiTokens()
   ])
 
-  const tokenDecimals  = parseInt(tokenDecimalsBN.toString())
-  const sharesDecimals = parseInt(sharesDecimalsBN.toString())
+  const tokenDecimals  = Number(tokenDecimalsBN.toString())
+  const sharesDecimals = Number(sharesDecimalsBN.toString())
   const shares         = toHuman(sharesNative, sharesDecimals)
   const sharePrice     = toHuman(pricePerFullShare, tokenDecimals)
 

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { approve, deposit } from '../../data/vaults'
@@ -79,8 +80,16 @@ const Deposit = ({ vault, onUpdate }) => {
     }
   }
 
+  const onMax = () => {
+    // Take time into account, by now the available quota is lower than when
+    // data was fetched (rewards are harvested on each block).
+    const availableQuota = vault.availableQuota.times(0.99)
+    const value          = BigNumber.min(balance, availableQuota)
+
+    setValue(value.toFixed())
+  }
+
   const onChange = ({ target }) => setValue(target.value)
-  const onMax    = () => setValue(balance.toFixed())
   const onSubmit = (isApproved) ? onDeposit : onApprove
 
   return (
