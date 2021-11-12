@@ -48,12 +48,10 @@ VaultDetails.propTypes = {
 export default VaultDetails
 
 const WalletPrompt = () => (
-  <div className="mt-3 mb-5 mx-5">
-    <div className="vault-details-connect text-center py-4">
-      <span className="me-3">Connect your wallet to take off</span>
+  <div className="alert alert-info text-center mt-3 mb-6 mx-8" role="alert">
+    <span className="me-3">Connect your wallet to take off</span>
 
-      <WalletButton />
-    </div>
+    <WalletButton />
   </div>
 )
 

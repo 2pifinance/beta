@@ -26,9 +26,8 @@ const Mint = () => {
   }
 
   return (
-    <div className="d-flex align-items-center justify-content-center bg-blur border border-primary rounded mb-5 p-3"
-          style={{ boxShadow: 'inset 0px 0px 6px hsl(197, 75%, 55%)' }}>
-      <span className="text-primary me-3">Get some test tokens and try the app: </span>
+    <div className="alert alert-info bg-blur text-center mb-5 py-3">
+      <span className="me-3">Get some test tokens and try the app: </span>
 
       <button className="btn btn-sm btn-outline-primary" onClick={mint}>
         Mint test tokens

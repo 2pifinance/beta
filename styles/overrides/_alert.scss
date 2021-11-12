@@ -1,0 +1,21 @@
+@mixin app-alert($color) {
+  @include alert-variant(transparent, $color, $color);
+
+  box-shadow: inset 0px 0px 12px rgba($color, 0.5);
+}
+
+.alert-success {
+  @include app-alert($success);
+}
+
+.alert-info {
+  @include app-alert($primary);
+}
+
+.alert-warning {
+  @include app-alert($warning);
+}
+
+.alert-danger {
+  @include app-alert($danger);
+}

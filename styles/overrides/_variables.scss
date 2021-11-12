@@ -2,6 +2,11 @@
 // Boostrap variable overrides
 //
 
+@use "sass:map";
+
+
+
+
 // General
 // ======
 
@@ -86,3 +91,11 @@ $input-focus-border-color:    hsla(197, 75%, 55%);
 
 $input-disabled-bg:           hsl(0, 0%, 20%);
 $input-disabled-border-color: $input-border-color;
+
+
+
+
+// Components
+// ===========
+
+$alert-padding-y: map.get($spacers, 2);

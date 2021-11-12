@@ -27,10 +27,10 @@ const Referral = () => {
 export default Referral
 
 const WalletPrompt = () => (
-  <div className="text-center d-lg-flex align-items-center justify-content-center">
-    <div className="text-primary mb-3 mb-lg-0 me-3">
+  <div className="alert alert-info text-center">
+    <span className="me-3">
       Connect your wallet to unlock your referral link
-    </div>
+    </span>
 
     <WalletButton />
   </div>
