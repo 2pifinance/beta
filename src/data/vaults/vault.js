@@ -22,7 +22,8 @@ const getVaultApy = vault => {
 }
 
 const toStaticData = vault => {
-  const { id, chainId, priceId, address, symbol, token, earn, uses } = vault
+  const { id, chainId, priceId, address, earn, uses } = vault
+  const { name: token, symbol }                       = vault.token
 
   return { id, chainId, priceId, address, symbol, token, earn, uses }
 }
