@@ -22,10 +22,20 @@ const getVaultApy = vault => {
 }
 
 const toStaticData = vault => {
-  const { id, chainId, priceId, address, earn, uses } = vault
-  const { name: token, symbol }                       = vault.token
+  const { id, chainId, priceId, address, earn, uses, token } = vault
+  const { name: tokenName, symbol }                          = token
 
-  return { id, chainId, priceId, address, symbol, token, earn, uses }
+  return {
+    id,
+    chainId,
+    priceId,
+    address,
+    symbol,
+    earn,
+    uses,
+    token: tokenName,
+    tokenInstance: token
+  }
 }
 
 const toVaultData = async vault => {
