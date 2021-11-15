@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { Token } from '@2pi-network/js-sdk'
 
 export const buildVault = (data = {}) => {
   return {
@@ -10,6 +11,7 @@ export const buildVault = (data = {}) => {
     token:          'dai',
     earn:           'DAI',
     uses:           'Aave',
+    tokenInstance:  new Token({ name: 'dai', chainId: 137 }),
 
     // Vault data
     apy:            0.17,
