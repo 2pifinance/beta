@@ -29,7 +29,7 @@ const Mint = () => {
     <div className="alert alert-info bg-blur text-center mb-5 py-3">
       <span className="me-3">Get some test tokens and try the app: </span>
 
-      <button className="btn btn-sm btn-outline-primary" onClick={mint}>
+      <button className="btn btn-sm btn-primary" onClick={mint}>
         Mint test tokens
       </button>
     </div>

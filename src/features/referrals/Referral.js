@@ -32,7 +32,7 @@ const WalletPrompt = () => (
       Connect your wallet to unlock your referral link
     </span>
 
-    <WalletButton />
+    <WalletButton className="btn btn-primary btn-sm" />
   </div>
 )
 

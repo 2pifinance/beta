@@ -67,7 +67,7 @@ const WalletPrompt = () => (
   <div className="alert alert-info text-center mt-3 mb-6 mx-8" role="alert">
     <span className="me-3">Connect your wallet to take off</span>
 
-    <WalletButton />
+    <WalletButton className="btn btn-primary btn-sm"/>
   </div>
 )
 

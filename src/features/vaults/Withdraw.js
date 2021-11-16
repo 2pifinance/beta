@@ -76,7 +76,7 @@ const Withdraw = ({ vault, onUpdate }) => {
       </fieldset>
 
       <div className="d-flex flex-column align-items-center mt-4">
-        <button type="submit" className="btn btn-outline-primary" disabled={isPending}>
+        <button type="submit" className="btn btn-primary" disabled={isPending}>
           {buttonLabel}
         </button>
 
