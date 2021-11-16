@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types'
 import { useStore } from '../store'
 import { connectAsync, disconnectAsync } from '../store/wallet'
 
-const WalletButton = () => {
+const WalletButton = ({ className }) => {
   const [ state, dispatch ] = useStore()
 
   return (
-    <button type="button" onClick={buttonAction(state, dispatch)}
-            className="btn btn-outline-primary" disabled={state.isConnecting}>
+    <button type="button" className={className} disabled={state.isConnecting}
+            onClick={buttonAction(state, dispatch)}>
       <span className="me-2">
         <i className={buttonIcon(state)}></i>
       </span>
@@ -14,6 +15,10 @@ const WalletButton = () => {
       {buttonLabel(state)}
     </button>
   )
+}
+
+WalletButton.propTypes = {
+  className: PropTypes.string
 }
 
 export default WalletButton

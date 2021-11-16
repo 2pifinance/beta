@@ -117,7 +117,7 @@ const Deposit = ({ vault, onUpdate }) => {
       </fieldset>
 
       <div className="d-flex flex-column align-items-center mt-4">
-        <button type="submit" className="btn btn-outline-primary" disabled={isDisabled}>
+        <button type="submit" className="btn btn-primary" disabled={isDisabled}>
           {buttonLabel}
         </button>
 

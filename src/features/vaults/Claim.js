@@ -47,7 +47,7 @@ export const Claim = ({ vault, onUpdate }) => {
         {toNumber(twoPiEarned, { compact: true, precision: { max: 3 } })}
       </strong>
 
-      <button className="btn btn-outline-primary btn-sm ms-3"
+      <button className="btn btn-primary btn-sm ms-3"
               onClick={onClaim} disabled={isZero || isPending}>
         {buttonLabel}
       </button>

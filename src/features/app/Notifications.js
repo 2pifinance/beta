@@ -40,7 +40,7 @@ const Notification = ({ type, message, onClose }) => {
 
 Notification.propTypes = {
   type:    PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired
 }
 

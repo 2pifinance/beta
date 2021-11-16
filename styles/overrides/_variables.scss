@@ -76,6 +76,7 @@ $border-radius-lg: 1rem;
 // Inputs and buttons
 
 $input-btn-padding-y:    0.46em;
+$input-btn-padding-y-sm: 0.2em;
 $input-btn-padding-y-lg: 0.7em;
 
 $input-btn-focus-color:  hsla(197, 75%, 55%, 0.5);
@@ -91,6 +92,18 @@ $input-focus-border-color:    hsla(197, 75%, 55%);
 
 $input-disabled-bg:           hsl(0, 0%, 20%);
 $input-disabled-border-color: $input-border-color;
+
+
+// Buttons
+
+$btn-padding-x:    2.5em;
+$btn-font-size:    0.9rem;
+$btn-line-height:  1.7;
+
+$btn-padding-x-sm: 1em;
+$btn-font-size-sm: 0.8rem;
+
+$btn-padding-x-lg: 2.5em;
 
 
 

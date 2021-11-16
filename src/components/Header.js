@@ -82,7 +82,7 @@ const MobilePrimaryNav = () => (
     </li>
 
     <li className="nav-item mt-2">
-      <WalletButton />
+      <WalletButton className="btn btn-outline-primary" />
     </li>
   </ul>
 )
@@ -106,7 +106,7 @@ const DesktopPrimaryNav = () => (
       Docs
     </a>
 
-    <WalletButton />
+    <WalletButton className="btn btn-outline-primary" />
   </div>
 )
 

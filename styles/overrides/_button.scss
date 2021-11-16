@@ -1,3 +1,47 @@
+.btn {
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  @include button-variant(
+    // Idle
+    rgba($primary, 0.25),  // Background
+    $primary,              // Border
+    $white,                // Color
+
+    // Hover
+    $primary,
+    $primary,
+    $white,
+
+    // Active
+    $primary,
+    $primary,
+    $white,
+
+    // Disabled
+    hsla(0, 0%, 0%, 0.5),
+    darken($white, 25%),
+    darken($white, 25%)
+  );
+
+  text-shadow: 0px 0px 6px hsl(185, 100%, 50%);
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    text-shadow: 0px 0px 6px $white;
+  }
+
+  &:disabled,
+  &.disabled {
+    text-shadow: none;
+  }
+}
+
 .btn-outline-primary {
   @include button-outline-variant(
     darken($white, 50%),  // color
@@ -7,21 +51,10 @@
     $white                // active-color
   );
 
-  padding-left:  2.5em;
-  padding-right: 2.5em;
-  font-size: 0.9rem;
-  font-weight: 600;
-  line-height: 1.7;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-
-  &.btn-sm {
-    padding-left:  1em;
-    padding-right: 1em;
-    font-size: 0.8rem;
-  }
-
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
     text-shadow: 0px 0px 6px hsl(185, 100%, 50%);
   }
 
@@ -31,23 +64,16 @@
 }
 
 .input-group > .btn-outline-primary {
-  padding-left:  $btn-padding-x;
-  padding-right: $btn-padding-x;
+  padding-left:  $input-padding-x;
+  padding-right: $input-padding-x;
   background-color: $input-bg;
   border-color: $input-border-color;
+  color: $primary;
   font-weight: $font-weight-normal;
-
-  &:hover {
-    color: $primary;
-    text-shadow: none;
-  }
-
-  &:focus {
-    box-shadow: none;
-  }
 
   &:disabled,
   &[readonly] {
+    color: darken($white, 50%);
     background-color: $input-disabled-bg;
     border-color: $input-disabled-border-color;
     opacity: 1;
