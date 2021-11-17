@@ -1,7 +1,7 @@
 import { toCompoundRate, toPositiveOrZero, toHuman } from '../../lib/math'
 
 export const toData = async vault => {
-  const [ vaultData, walletData, staticData ] = await Promise.all([
+  const [ staticData, vaultData, walletData ] = await Promise.all([
     toStaticData(vault),
     toVaultData(vault),
     toWalletData(vault)
@@ -22,19 +22,20 @@ const getVaultApy = vault => {
 }
 
 const toStaticData = vault => {
-  const { id, chainId, priceId, address, earn, uses, token } = vault
-  const { name: tokenName, symbol }                          = token
+  const { id, chainId, priceId, address, earn, uses } = vault
+  const { name: token, symbol, type }                 = vault.token
 
   return {
     id,
     chainId,
     priceId,
     address,
+    type,
     symbol,
     earn,
     uses,
-    token: tokenName,
-    tokenInstance: token
+    token,
+    addLiquidityUrl: vault.token.addLiquidityUrl()
   }
 }
 
