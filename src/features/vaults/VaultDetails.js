@@ -5,21 +5,6 @@ import Claim from './Claim'
 import Deposit from './Deposit'
 import Withdraw from './Withdraw'
 
-const AddLiquidityLink = ({ vault }) => {
-  if (vault.tokenInstance.type === 'lp') {
-    const url = vault.tokenInstance.addLiquidityUrl()
-
-    return (
-      <a className="link-primary ms-3" href={url}
-          target="_blank" rel="noreferrer">
-        Add liquidity <i className="bi-box-arrow-up-right"></i>
-      </a>
-    )
-  } else {
-    return null
-  }
-}
-
 export const VaultDetails = ({ vault, connected, onUpdate }) => {
   if (! connected)     return <WalletPrompt />
   if (! vault.balance) return <Loading />
@@ -29,16 +14,24 @@ export const VaultDetails = ({ vault, connected, onUpdate }) => {
   return (
     <div className="vault-details mt-3 mb-5 mx-5 pt-5">
       <div className="row justify-content-lg-start mb-4">
-        <div className="col col-4">
+        <div className="col">
+          {(vault.type === 'lp') &&
+             <a className="link-primary" href={vault.addLiquidityUrl}
+               target="_blank" rel="noreferrer">
+               Add liquidity <i className="bi-box-arrow-up-right"></i>
+             </a>
+          }
+        </div>
+
+        <div className="col text-center">
+          {(hasRewards) ? <Claim vault={vault} onUpdate={onUpdate} /> : null}
+        </div>
+
+        <div className="col text-end">
           <a className="link-primary" href={getContractUrl(vault)}
              target="_blank" rel="noreferrer">
             Contract <i className="bi-box-arrow-up-right"></i>
           </a>
-          <AddLiquidityLink vault={vault} />
-        </div>
-
-        <div className="col col-lg-4 text-end text-lg-center">
-          {(hasRewards) ? <Claim vault={vault} onUpdate={onUpdate} /> : null}
         </div>
       </div>
 
