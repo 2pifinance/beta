@@ -138,8 +138,9 @@ export default Deposit
 
 // -- HELPERS --
 
-const isTokenApproved = ({ token, allowance, balance }) => {
-  if (token === 'matic') return true
+const isTokenApproved = ({ chainId, token, allowance, balance }) => {
+  if ([ 137, 80001 ].includes(chainId) && token === 'matic') return true
+  if ([ 43114, 43113 ].includes(chainId) && token === 'avax') return true
 
   return allowance.isGreaterThan(balance)
 }
