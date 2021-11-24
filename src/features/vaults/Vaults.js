@@ -61,7 +61,7 @@ const Vaults = () => {
       <VaultsHeader chainId={chainId} vaults={vaults} connected={isConnected}
                     onChainChange={onChainChange} />
 
-      {(isConnected && vaults) ? <Mint /> : null }
+      {(isConnected && vaults) ? <Mint chainId={chainId} /> : null }
 
       {(vaults)
          ? <VaultsTable vaults={vaults} connected={isConnected} onUpdate={onUpdate} />
