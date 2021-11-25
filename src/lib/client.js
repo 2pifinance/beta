@@ -35,6 +35,7 @@ const networks = {
   1337:   { name: 'local',            rpcUrl: 'http://localhost:8545/' },
   42161:  { name: 'arbitrum',         rpcUrl: 'https://arb1.arbitrum.io/rpc/' },
   421611: { name: 'arbitrum-rinkeby', rpcUrl: 'https://rinkeby.arbitrum.io/rpc/' },
+  43114:  { name: 'avalanche',        rpcUrl: 'https://api.avax.network/ext/bc/C/rpc/' },
   43113:  { name: 'avalanche-fuji',   rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc/' },
   137:    { name: 'matic',            rpcUrl: 'https://polygon-rpc.com/' },
   80001:  { name: 'matic-mumbai',     rpcUrl: 'https://matic-mumbai.chainstacklabs.com/' }

@@ -1,5 +1,5 @@
 import { arbitrumMainnet, arbitrumTestnet } from './networks/arbitrum'
-import { avalancheTestnet } from './networks/avalanche'
+import { avalancheMainnet, avalancheTestnet } from './networks/avalanche'
 import { polygonMainnet, polygonTestnet } from './networks/polygon'
 import { SUPPORTED_CHAINS } from './constants'
 
@@ -11,6 +11,7 @@ export const networks = {
   421611: arbitrumTestnet,
 
   // Avalanche
+  43114:  avalancheMainnet,
   43113:  avalancheTestnet,
 
   // Polygon
