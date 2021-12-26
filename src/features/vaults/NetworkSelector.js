@@ -84,6 +84,7 @@ const networks = {
   42161:  { chainId: 42161,  name: 'Arbitrum',            logo: 'arbitrum' },
   421611: { chainId: 421611, name: 'Arbitrum test',       logo: 'arbitrum' },
   43113:  { chainId: 43113,  name: 'Avalanche test',      logo: 'avalanche' },
+  43114:  { chainId: 43114,  name: 'Avalanche C-Chain',   logo: 'avalanche' },
   137:    { chainId: 137,    name: 'Polygon',             logo: 'polygon' },
   80001:  { chainId: 80001,  name: 'Polygon test',        logo: 'polygon' }
 }
