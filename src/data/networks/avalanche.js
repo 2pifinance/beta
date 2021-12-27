@@ -10,6 +10,18 @@ export const avalancheTestnet = {
     symbol:   'AVAX',
     decimals: 18,
   },
-  rpcUrls:           [ 'https://api.avax-test.network/ext/bc/C/rpc/' ],
+  rpcUrls:           [ 'https://api.avax-test.network/ext/bc/C/rpc' ],
   blockExplorerUrls: [ 'https://testnet.snowtrace.io/' ]
+}
+
+export const avalancheMainnet = {
+  chainId:   `0x${parseInt(43114).toString(16)}`,
+  chainName: 'Avalanche Mainnet',
+  nativeCurrency: {
+    name:     'AVAX',
+    symbol:   'AVAX',
+    decimals: 18,
+  },
+  rpcUrls:           [ 'https://api.avax.network/ext/bc/C/rpc' ],
+  blockExplorerUrls: [ 'https://snowtrace.io/' ]
 }

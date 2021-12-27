@@ -28,6 +28,9 @@ export const loopWithBackOff = (fn, { delay, onSuccess, onError }) => {
         onSuccess(result, cancel)
       }
     } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error(error)
+      }
       onError(error, cancel)
 
     } finally {
