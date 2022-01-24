@@ -2,7 +2,7 @@ const Footer = () => (
   <footer className="app-footer container mt-7 mb-4">
     <div className="d-sm-flex justify-content-between pt-3">
       <div className="text-center d-sm-flex align-items-center mb-3 m-sm-0">
-       ©2021 2PI Ltd.
+       ©2022 2PI Ltd.
       </div>
 
       <div className="text-center d-sm-flex align-items-center">
