@@ -43,6 +43,13 @@ const Footer = () => (
               <i className="bi-file-text fs-3"></i>
             </a>
           </li>
+
+          <li className="list-inline-item mx-3 me-sm-0 ms-sm-3 ms-md-4">
+            <a href="https://github.com/2pinetwork/security/blob/master/bug-bounty.md" target="_blank"
+               rel="noreferrer" title="Report issues!">
+              <i className="bi-bug fs-3"></i>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
